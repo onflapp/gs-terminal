@@ -1,0 +1,2 @@
+# gs-terminal
+GNUStep Terminal
