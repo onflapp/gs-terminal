@@ -1,0 +1,41 @@
+{
+    "## Comment" = "Do NOT change this file, Gorm maintains it";
+    FirstResponder = {
+	Actions = (
+	    "markAsChanged:",
+	    "saveServicesAs:",
+	    "newService:",
+	    "removeService:",
+	    "saveServices:"
+	);
+	Super = NSObject;
+    };
+    TerminalServicesPanel = {
+	Actions = (
+	    "newService:",
+	    "removeService:",
+	    "saveServices:",
+	    "markAsChanged:",
+	    "saveServicesAs:"
+	);
+	Outlets = (
+	    acceptFilesBtn,
+	    acceptPlainTextBtn,
+	    acceptRichTextBtn,
+	    commandTF,
+	    executeTypeBtn,
+	    keyTF,
+	    serviceTable,
+	    panel,
+	    shellMatrix,
+	    outputMatrix,
+	    selectionMatrix,
+	    tableScrollView,
+	    okBtn,
+	    accView,
+	    saveServicesTable,
+	    saveBtn
+	);
+	Super = NSObject;
+    };
+}
