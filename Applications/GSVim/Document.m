@@ -32,7 +32,7 @@
 
   Defaults* defs = [Defaults shared];
   [defs setScrollBackEnabled:NO];
-  [defs setWindowBackgroundColor:[NSColor whiteColor]];
+  [defs setWindowBackgroundColor:[NSColor blackColor]];
 
   [terminalView updateColors:defs];
 
@@ -67,14 +67,18 @@
   NSString* exec = [vp stringByAppendingPathComponent:@"start.sh"];
 
   [terminalView runProgram:exec
-    withArguments:args
-     initialInput:nil];
+             withArguments:args
+              initialInput:nil];
 
   return self;
 }
 
 - (void) dealloc {
   [super dealloc];
+}
+
+- (void) goToLine:(NSInteger) line {
+  [terminalView goToLine:line];
 }
 
 - (void) viewBecameIdle:(NSNotification*) n {

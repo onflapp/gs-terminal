@@ -61,18 +61,42 @@
 
 - (void) cut:(id) sender {
   [self ts_sendCString:"\e[1;0X~"];
+
+  [self performSelector:@selector(__readClipboardFile) withObject:nil afterDelay:1.0];
 }
 
 - (void) copy:(id) sender {
   [self ts_sendCString:"\e[1;0C~"];
+
+  [self performSelector:@selector(__readClipboardFile) withObject:nil afterDelay:1.0];
 }
 
 - (void) paste:(id) sender {
   [self ts_sendCString:"\e[1;0P~"];
+
+  NSPasteboard* pb = [NSPasteboard generalPasteboard];
+  NSString* txt = [pb stringForType:NSStringPboardType];
+  if (txt) {
+    [txt writeToFile:@"/tmp/x" atomically:NO];
+  }
 }
 
 - (void) quit:(id) sender {
   [self ts_sendCString:"\e\e:q\r"];
+}
+
+- (void) __readClipboardFile {
+  NSString* txt = [NSString stringWithContentsOfFile:@"/tmp/x"];
+  NSPasteboard* pb = [NSPasteboard generalPasteboard];
+
+  [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
+  [pb setString:txt forType:NSStringPboardType];
+}
+
+
+- (void) goToLine:(NSInteger) line {
+  NSString* txt = [NSString stringWithFormat:@"\e\e:%ld\r", line];
+  [self ts_sendCString:[txt UTF8String]];
 }
 
 @end

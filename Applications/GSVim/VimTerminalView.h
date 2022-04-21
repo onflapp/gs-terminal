@@ -31,8 +31,10 @@
 @interface VimTerminalView : TerminalView {
 
 }
+
 - (void) help:(id) sender;
 - (void) saveDocument:(id) sender;
+- (void) goToLine:(NSInteger) line;
 @end
 
 #endif // _VIMTERMINALVIEW_H_
