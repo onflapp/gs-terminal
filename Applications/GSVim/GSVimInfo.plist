@@ -1,0 +1,19 @@
+{
+    ApplicationDescription = "No description avaliable!";
+    ApplicationName = GSVim;
+    ApplicationRelease = "0.1";
+    Copyright = "Copyright (C) 200x";
+    CopyrightDescription = "Released under ...";
+    FullVersionID = "0.1";
+    NSExecutable = GSVim;
+    NSMainNibFile = "vim.gorm";
+    NSPrincipalClass = NSApplication;
+    NSRole = Application;
+    NSTypes = (
+	{
+	    NSUnixExtensions = (
+		txt
+	    );
+	}
+    );
+}

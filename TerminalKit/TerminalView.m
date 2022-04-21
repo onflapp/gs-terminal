@@ -2262,7 +2262,7 @@ static void set_foreground(NSGraphicsContext *gc,
         if (chdir(cdirectory) < 0)
           fprintf(stderr, "Unable do set directory: %s\n", cdirectory);
 
-      putenv("TERM=linux");
+      putenv("TERM=gsterm");
       putenv("TERM_PROGRAM=GNUstep_Terminal");
 
       // fprintf(stderr, "Child process terminal: %s\n", ttyname(0));
