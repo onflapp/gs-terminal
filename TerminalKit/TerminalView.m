@@ -1028,7 +1028,7 @@ static void set_foreground(NSGraphicsContext *gc,
   last_mouse_y = -1;
   mouse_tracking = b;
 
-  NSDebugLLog(@"ts", enable mouse tracking: %d", b);
+  NSDebugLLog(@"ts", @"enable mouse tracking: %d", b);
   [(NSWindow*)[self window] setAcceptsMouseMovedEvents:b];
 }
 
@@ -1910,6 +1910,20 @@ static void set_foreground(NSGraphicsContext *gc,
   return s;
 }
 
+- (void)scrollWheel:(NSEvent *)e
+{
+  if (mouse_tracking && ([e buttonNumber] == 4 || [e buttonNumber] == 5)) {
+    NSPoint c;
+    c.x = 1;
+    c.y = 1;
+
+    [tp handleMouseEvent:e atLocation:c];
+  }
+  else {
+    [super scrollWheel:e];
+  }
+}
+
 - (void)mouseDragged:(NSEvent *)e
 {
   if ([e modifierFlags] & NSShiftKeyMask) {
@@ -1970,10 +1984,12 @@ static void set_foreground(NSGraphicsContext *gc,
 
   p = [e locationInWindow];
   p = [self convertPoint:p fromView:nil];
-  p.y = self.frame.size.height - p.y;
+  p.y = self.frame.size.height - p.y - border_y;
 
-  cw = 7;
-  ch = 13;
+  p.x -= border_x;
+
+  cw = fx;
+  ch = fy;
 
   cx = (int)ceil(p.x / cw);
   cy = (int)ceil(p.y / ch);

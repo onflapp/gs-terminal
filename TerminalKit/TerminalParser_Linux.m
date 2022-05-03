@@ -1297,7 +1297,15 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
   int px = (int)(p.x);
   int py = (int)(p.y);
   
-  if (report_mouse == 1006) {
+  if ([e type] == NSScrollWheel) {
+    if ([e buttonNumber] == 5) {
+      data = [NSString stringWithFormat:@"\e[<65;%d;%dm", px, py];
+    }
+    else if ([e buttonNumber] == 4) {
+      data = [NSString stringWithFormat:@"\e[<64;%d;%dm", px, py];
+    } 
+  }
+  else if (report_mouse == 1006) {
     if ([e type] == NSLeftMouseUp) {
       data = [NSString stringWithFormat:@"\e[<0;%d;%dm", px, py];
     }
