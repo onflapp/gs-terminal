@@ -41,7 +41,7 @@
 
   enum { ESnormal, ESesc, ESsquare, ESgetpars, ESgotpars, ESfunckey,
          EShash, ESsetG0, ESsetG1, ESpercent, ESignore, ESnonstd,
-         ESpalette, EStitle_semi, EStitle_buf } ESstate;
+         ESpalette, EStitle_semi, EStitle_buf, ESgotcursor } ESstate;
   int vc_state;
 
   unsigned char decscnm,decom,decawm,deccm,decim;
@@ -52,6 +52,7 @@
   const unichar *translate;
 
   unsigned int intensity,underline,reverse,blink;
+  unsigned int cursor_mode;
   unsigned int color,def_color;
 #define foreground (color & 0x0f)
 #define background (color & 0xf0)

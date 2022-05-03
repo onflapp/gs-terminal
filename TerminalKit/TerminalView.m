@@ -971,7 +971,10 @@ static void set_foreground(NSGraphicsContext *gc,
           DPSrectfill(cur,x,y,fx,fy);
           break;
         case CURSOR_LINE:         // 3
-          DPSrectfill(cur,x,y,fx,fy*0.1);
+          DPSrectfill(cur,x,y,fx,2);
+          break;
+        case CURSOR_BEAM:         // 4
+          DPSrectfill(cur,x,y,2,fy-1.0);
           break;
         }
       draw_cursor = NO;
@@ -1030,6 +1033,14 @@ static void set_foreground(NSGraphicsContext *gc,
 
   NSDebugLLog(@"ts", @"enable mouse tracking: %d", b);
   [(NSWindow*)[self window] setAcceptsMouseMovedEvents:b];
+}
+
+- (void)ts_setCursor:(int)type {
+  if      (type == 6) [self setCursorStyle:CURSOR_BEAM];
+  else if (type == 4) [self setCursorStyle:CURSOR_LINE];
+  else                [self setCursorStyle:[defaults cursorStyle]];
+
+  [self setNeedsDisplay:YES];
 }
 
 - (void)ts_setTitle:(NSString *)new_title type:(int)title_type

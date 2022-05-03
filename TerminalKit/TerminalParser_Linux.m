@@ -139,6 +139,7 @@ static const unichar *_set_translate(int charset)
   vc_state	= ESnormal;
   ques		= 0;
   title_len = 0;
+  cursor_mode = 0;
 
   translate	= set_translate(LAT1_MAP,currcons);
   G0_charset	= LAT1_MAP;
@@ -157,6 +158,9 @@ static const unichar *_set_translate(int charset)
   decawm	= 1;
   deccm		= 1;
   decim		= 0;
+
+  report_mouse = 0;
+  [ts ts_setMouseTracking:NO];
 
 #if 0
   set_kbd(decarm);
@@ -525,13 +529,11 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       case 1003:
       case 1015:
       case 1006:
-        NSLog(@"1006 %d", on_off);
         NSDebugLLog(@"term",@"_set_mode 1006"); //mouse button, report decimal values
         report_mouse = on_off ? 1006 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       case 1000:
-        NSLog(@"1000 %d", on_off);
         NSDebugLLog(@"term",@"_set_mode 1000"); //mouse button, encode values
         report_mouse = on_off ? 1000 : 0;
         [ts ts_setMouseTracking:NO];
@@ -724,6 +726,9 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       return;
     }
   switch(vc_state) {
+  case ESgotcursor:
+    vc_state = ESnormal;
+    return;
   case ESesc:
     vc_state = ESnormal;
     switch (c) {
@@ -871,10 +876,19 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       par[npar] *= 10;
       par[npar] += c-'0';
       return;
-    } else vc_state=ESgotpars;
+    } else if (c==' ') {
+      cursor_mode = par[0];
+      [ts ts_setCursor:cursor_mode];
+      vc_state=ESgotpars;
+    } else {
+      vc_state=ESgotpars;
+    }
   case ESgotpars:
     vc_state = ESnormal;
     switch(c) {
+    case ' ':
+      vc_state = ESgotcursor;
+      return;
     case 'h':
       set_mode(currcons,1);
       return;
