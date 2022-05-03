@@ -78,6 +78,7 @@
 #import <AppKit/NSScroller.h>
 #import <AppKit/DPSOperators.h>
 #import <AppKit/NSFontDescriptor.h>
+#import <AppKit/NSWindow.h>
 
 #import "TerminalView.h"
 
@@ -1021,6 +1022,15 @@ static void set_foreground(NSGraphicsContext *gc,
   fprintf(stderr,"%8.4f  %8.5f/redraw   total_draw=%i\n",t2,t2/i,total_draw);
 }
 
+- (void)ts_setMouseTracking:(BOOL) b 
+{
+  last_mouse_x = -1;
+  last_mouse_y = -1;
+  mouse_tracking = b;
+
+  NSDebugLLog(@"ts", enable mouse tracking: %d", b);
+  [(NSWindow*)[self window] setAcceptsMouseMovedEvents:b];
+}
 
 - (void)ts_setTitle:(NSString *)new_title type:(int)title_type
 {
@@ -1900,7 +1910,92 @@ static void set_foreground(NSGraphicsContext *gc,
   return s;
 }
 
+- (void)mouseDragged:(NSEvent *)e
+{
+  if ([e modifierFlags] & NSShiftKeyMask) {
+    [super mouseDragged:e];
+  }
+  else if (mouse_tracking) {
+    [self mouseEventReport:e];
+  }
+  else {
+    [super mouseDragged:e];
+  }
+}
+
 - (void)mouseDown:(NSEvent *)e
+{
+  if ([e modifierFlags] & NSShiftKeyMask) {
+    [self mouseDownSelection:e];
+  }
+  else if (mouse_tracking) {
+    [self mouseEventReport:e];
+  }
+  else {
+    [self mouseDownSelection:e];
+  }
+}
+
+- (void)mouseUp:(NSEvent *)e
+{
+  if ([e modifierFlags] & NSShiftKeyMask) {
+    [super mouseUp:e];
+  }
+  else if (mouse_tracking) {
+    [self mouseEventReport:e];
+  }
+  else {
+    [super mouseUp:e];
+  }
+}
+
+- (void)mouseMoved:(NSEvent *)e
+{
+  if ([e modifierFlags] & NSShiftKeyMask) {
+    [super mouseMoved:e];
+  }
+  else if (mouse_tracking && [[self window] isKeyWindow]) {
+    [self mouseEventReport:e];
+  }
+  else {
+    [super mouseMoved:e];
+  }
+}
+
+- (void)mouseEventReport:(NSEvent *)e
+{
+  NSPoint p, c;
+  NSInteger mb = 0;
+  int cx, cy, ch, cw;
+
+  p = [e locationInWindow];
+  p = [self convertPoint:p fromView:nil];
+  p.y = self.frame.size.height - p.y;
+
+  cw = 7;
+  ch = 13;
+
+  cx = (int)ceil(p.x / cw);
+  cy = (int)ceil(p.y / ch);
+
+  if (cx == 0) cx = 1;
+  if (cy == 0) cy = 1;
+
+  if ([e type] == NSMouseMoved || [e type] == NSLeftMouseDragged) {
+    if (last_mouse_x == cx && last_mouse_y == cy) {
+      return;
+    }
+  }
+
+  c.x = cx;
+  c.y = cy;
+
+  [tp handleMouseEvent:e atLocation:c];
+  last_mouse_x = cx;
+  last_mouse_y = cy;
+}
+
+- (void)mouseDownSelection:(NSEvent *)e
 {
   int ofs0,ofs1,first;
   NSPoint p;

@@ -145,7 +145,7 @@ static const unichar *_set_translate(int charset)
   G1_charset	= GRAF_MAP;
 
   charset	= 0;
-  //	report_mouse	= 0;
+	report_mouse	= 0;
   utf           = 0;
   utf_count     = 0;
 
@@ -522,11 +522,19 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       case 25:		/* Cursor on/off */
         deccm = on_off;
         break;
+      case 1003:
+      case 1015:
+      case 1006:
+        NSLog(@"1006 %d", on_off);
+        NSDebugLLog(@"term",@"_set_mode 1006"); //mouse button, report decimal values
+        report_mouse = on_off ? 1006 : 0;
+        [ts ts_setMouseTracking:on_off ? YES : NO];
+        break;
       case 1000:
-        NSDebugLLog(@"term",@"ignore _set_mode 1000");
-#if 0
-        report_mouse = on_off ? 2 : 0;
-#endif
+        NSLog(@"1000 %d", on_off);
+        NSDebugLLog(@"term",@"_set_mode 1000"); //mouse button, encode values
+        report_mouse = on_off ? 1000 : 0;
+        [ts ts_setMouseTracking:NO];
         break;
       } else switch(par[i]) {		/* ANSI modes set/reset */
       case 3:			/* Monitor (display ctrls) */
@@ -1225,7 +1233,6 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
   }
 }
 
-
 /*
   Translates '\n' to '\r' when sending.
 */
@@ -1282,6 +1289,47 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
     }
 }
 
+- (void)handleMouseEvent:(NSEvent*)e atLocation:(NSPoint) p
+{
+  if (report_mouse == 0) return;
+
+  NSString* data = nil;
+  int px = (int)(p.x);
+  int py = (int)(p.y);
+  
+  if (report_mouse == 1006) {
+    if ([e type] == NSLeftMouseUp) {
+      data = [NSString stringWithFormat:@"\e[<0;%d;%dm", px, py];
+    }
+    else if ([e type] == NSLeftMouseDown) {
+      data = [NSString stringWithFormat:@"\e[<0;%d;%dM", px, py];
+    }
+    else if ([e type] == NSMouseMoved) {
+      data = [NSString stringWithFormat:@"\e[<35;%d;%dM", (int)p.x, (int)p.y];
+    }
+    else if ([e type] == NSLeftMouseDragged) {
+      data = [NSString stringWithFormat:@"\e[<32;%d;%dM", (int)p.x, (int)p.y];
+    }
+  }
+  else if (report_mouse == 1000) {
+    int st = 0;
+    px = px + 33;
+    py = py + 33;
+    if ([e type] == NSLeftMouseUp) {
+      data = [NSString stringWithFormat:@"\e[M%d%c%c", st, px, py];
+    }
+    else if ([e type] == NSLeftMouseDown) {
+      data = [NSString stringWithFormat:@"\e[M%d%c%c", st, px, py];
+    }
+  }
+
+  if (data) {
+    const char* buf = [data cString];
+    NSLog(@"%s", buf+1);
+	  [ts ts_sendCString:buf];
+  }
+}
+
 - (void)handleKeyEvent:(NSEvent *)e
 {
   NSString	*s = [e charactersIgnoringModifiers];
@@ -1312,27 +1360,35 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       break;
 
     case NSUpArrowFunctionKey:
-      // if (mask & NSShiftKeyMask)
-      //   str = "\e[1;2A"; // xterm
-      // else
+      if (mask & NSControlKeyMask)
+        str = "\e[1;5A";
+      else if (mask & NSShiftKeyMask)
+        str = "\e[1;2A"; // xterm
+      else
         str = "\eOA";
       break;
     case NSDownArrowFunctionKey:
-      // if (mask & NSShiftKeyMask)
-      //   str ="\e[1;2B"; // xterm
-      // else
+      if (mask & NSControlKeyMask)
+        str = "\e[1;5B";
+      else if (mask & NSShiftKeyMask)
+        str ="\e[1;2B"; // xterm
+      else
         str = "\eOB";
       break;
     case NSLeftArrowFunctionKey:
-      // if (mask & NSShiftKeyMask)
-      //   str = "\e[1;2D"; // xterm
-      // else
+      if (mask & NSControlKeyMask)
+        str = "\e[1;5D";
+      else if (mask & NSShiftKeyMask)
+        str = "\e[1;2D"; // xterm
+      else
         str = "\eOD";
       break;
     case NSRightArrowFunctionKey:
-      // if (mask & NSShiftKeyMask)
-      //   str="\e[1;2C"; //xterm
-      // else
+      if (mask & NSControlKeyMask)
+        str = "\e[1;5C";
+      else if (mask & NSShiftKeyMask)
+        str="\e[1;2C"; //xterm
+      else
         str="\eOC";
       break;
 

@@ -27,6 +27,7 @@
   int x,y;
 
   int top,bottom;
+  int report_mouse;
 
   unsigned int unich;
   int utf_count;
