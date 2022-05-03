@@ -1,0 +1,40 @@
+imap <silent> <ESC>[1;0P~ <C-R>=GSHandlePaste()<CR>
+noremap <silent> <ESC>[1;0P~ "=GSHandlePaste()<CR>p
+vmap <silent> <ESC>[1;0P~ "=GSHandlePaste()<CR>p
+
+if &term == "gsterm"
+  set t_ts=]0;
+  set t_fs=
+  set ttymouse=sgr
+
+	map <Esc>[<64;1;1m  <ScrollWheelUp>
+	map! <Esc>[<64;1;1m <ScrollWheelUp>
+	map <Esc>[<65;1;1m  <ScrollWheelDown>
+	map! <Esc>[<65;1;1m <ScrollWheelDown>
+endif
+
+function! GSHandlePaste()
+  let txt = join(readfile('/tmp/x'), '\n')
+  let m = mode()
+  
+  echom "xxx:" . m
+
+  if m == 'n'
+    return txt
+  endif
+  if m == 'i'
+    return txt
+  endif
+  if m == 'v'
+    return txt
+  endif
+
+endfunction
+
+vnoremap <silent> <ESC>[1;0C~ y: call GSHandleCopy()<CR>
+vnoremap <silent> <ESC>[1;0X~ d: call GSHandleCopy()<CR>
+
+function! GSHandleCopy()
+  let txt = @*
+  call writefile([txt], '/tmp/x')
+endfunction

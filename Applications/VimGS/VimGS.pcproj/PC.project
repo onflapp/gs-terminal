@@ -70,7 +70,7 @@
     );
     "PROJECT_GROUP" = "No group avaliable!";
     "PROJECT_MAINTAINER" = "Ondrej Florian,,,";
-    "PROJECT_NAME" = GSVim;
+    "PROJECT_NAME" = VimGS;
     "PROJECT_RELEASE" = "0.1";
     "PROJECT_SUMMARY" = "No summary avaliable!";
     "PROJECT_TYPE" = Application;
