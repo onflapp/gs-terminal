@@ -23,21 +23,21 @@ include $(GNUSTEP_MAKEFILES)/common.make
 # Application
 #
 VERSION = 0.1
-PACKAGE_NAME = GSVim
-APP_NAME = GSVim
-GSVim_APPLICATION_ICON = 
+PACKAGE_NAME = VimGS
+APP_NAME = VimGS
+VimGS_APPLICATION_ICON = 
 GNUSTEP_INSTALLATION_DOMAIN = LOCAL
 
 
 #
 # Libraries
 #
-GSVim_LIBRARIES_DEPEND_UPON += -lTerminalKit 
+VimGS_LIBRARIES_DEPEND_UPON += -lTerminalKit 
 
 #
 # Resource files
 #
-GSVim_RESOURCE_FILES = \
+VimGS_RESOURCE_FILES = \
 Resources/vim.gorm \
 Resources/Document.gorm \
 Resources/vimview 
@@ -46,7 +46,7 @@ Resources/vimview
 #
 # Header files
 #
-GSVim_HEADER_FILES = \
+VimGS_HEADER_FILES = \
 AppController.h \
 Document.h \
 VimTerminalView.h
@@ -54,7 +54,7 @@ VimTerminalView.h
 #
 # Objective-C Class files
 #
-GSVim_OBJC_FILES = \
+VimGS_OBJC_FILES = \
 AppController.m \
 Document.m \
 VimTerminalView.m
@@ -62,7 +62,7 @@ VimTerminalView.m
 #
 # Other sources
 #
-GSVim_OBJC_FILES += \
+VimGS_OBJC_FILES += \
 vim_main.m 
 
 #

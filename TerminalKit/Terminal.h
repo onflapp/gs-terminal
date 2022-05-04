@@ -52,6 +52,7 @@ complete. (TODO check this) */
 -(screen_char_t) ts_getCharAt:(int)x :(int)y;
 
 -(void) ts_setTitle:(NSString *)new_title type:(int)title_type;
+- (void)ts_setMouseTracking:(BOOL) b;
 
 - (id)preferences;
 - (BOOL)useMultiCellGlyphs;
@@ -66,6 +67,7 @@ complete. (TODO check this) */
                         height:(int)h
                        cursorY:(int)cursor_y;
 - (void)handleKeyEvent:(NSEvent *)e;
+- (void)handleMouseEvent:(NSEvent*)e atLocation:(NSPoint) p;
 - (void)sendString:(NSString *)str;
 
 - (void)setCharset:(NSString *)charsetName;

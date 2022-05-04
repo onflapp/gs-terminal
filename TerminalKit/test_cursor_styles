@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "mode 4"
+echo -ne "\e[4 q"
+read
+
+echo "mode 6"
+echo -ne "\e[6 q"
+read
+
+echo "mode 2"
+echo -ne "\e[2 q"
+read

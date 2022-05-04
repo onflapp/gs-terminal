@@ -163,6 +163,7 @@ extern NSString *TerminalFontUseBoldKey;
 #define CURSOR_BLOCK_STROKE  1
 #define CURSOR_BLOCK_FILL    2
 #define CURSOR_LINE          3
+#define CURSOR_BEAM          4
 
 + (NSDictionary *)descriptionFromColor:(NSColor *)color;
 + (NSColor *)colorFromDescription:(NSDictionary *)desc;

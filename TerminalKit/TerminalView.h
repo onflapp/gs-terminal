@@ -78,6 +78,9 @@ struct selection_range
   int  draw_all; /* 0=only lazy, 1=don't know, do all, 2=do all */
   BOOL draw_cursor;
 
+  int last_mouse_x, last_mouse_y;
+  BOOL mouse_tracking;
+
   struct selection_range selection;
 
   /* scrolling by compositing takes a long while, so we break out of such
