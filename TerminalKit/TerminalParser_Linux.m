@@ -678,6 +678,16 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
 
           return;
         }
+      if (vc_state==ESxosc_buf)
+        {
+          NSString *new_cmd;
+          xosc_buf[xosc_len] = 0;
+          new_cmd = [NSString stringWithCString:xosc_buf];
+          [ts ts_handleXOSC:new_cmd];
+          vc_state = ESnormal;
+
+          return;
+        }
       NSBeep();
       return;
     case 8:
@@ -799,6 +809,10 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
 	title_type=c-'0';
 	return;
 
+      case 'X':
+	vc_state=ESxosc_semi;
+	return;
+
       case 'P':
 	NSDebugLLog(@"term",@"ignore ESnonstd P");
 #if 0
@@ -813,10 +827,11 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
 #if 0
 	reset_palette(currcons);
 #endif
-	vc_state = ESnormal;
+  vc_state = ESnormal;
       }
     vc_state = ESnormal;
     return;
+
   case EStitle_semi:
     if (c==';')
       {
@@ -834,6 +849,25 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
     else
       {
 	title_buf[title_len++]=c;
+      }
+    return;
+  case ESxosc_semi:
+    if (c==';')
+      {
+	vc_state=ESxosc_buf;
+	xosc_len=0;
+      }
+    else
+      vc_state=ESnormal;
+    return;
+  case ESxosc_buf:
+    if (xosc_len==XOSC_BUF_SIZE)
+      {
+	vc_state=ESnormal;
+      }
+    else
+      {
+	xosc_buf[xosc_len++]=c;
       }
     return;
   case ESpalette:

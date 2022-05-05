@@ -1,0 +1,6 @@
+*/derived_src/
+*/*.framework/
+*/obj/
+*/*.bundle/
+*/*.app
+*.o

@@ -8,7 +8,7 @@
   of the License. See COPYING or main.m for more information.
 */
 
-/* parses escape sequences for 'TERM=linux' */
+/* parses escape sequences for 'TERM=gsterm' */
 
 #ifndef LinuxParser_h
 #define LinuxParser_h
@@ -39,9 +39,13 @@
   char title_buf[TITLE_BUF_SIZE+1];
   unsigned int title_len, title_type;
 
+#define XOSC_BUF_SIZE 1024
+  char xosc_buf[XOSC_BUF_SIZE+1];
+  unsigned int xosc_len;
+
   enum { ESnormal, ESesc, ESsquare, ESgetpars, ESgotpars, ESfunckey,
          EShash, ESsetG0, ESsetG1, ESpercent, ESignore, ESnonstd,
-         ESpalette, EStitle_semi, EStitle_buf, ESgotcursor } ESstate;
+         ESpalette, EStitle_semi, EStitle_buf, ESxosc_semi, ESxosc_buf, ESgotcursor } ESstate;
   int vc_state;
 
   unsigned char decscnm,decom,decawm,deccm,decim;

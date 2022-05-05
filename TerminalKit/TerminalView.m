@@ -1043,6 +1043,10 @@ static void set_foreground(NSGraphicsContext *gc,
   [self setNeedsDisplay:YES];
 }
 
+- (void)ts_handleXOSC:(NSString *)new_cmd
+{
+  NSDebugLLog(@"ts",@"XOSC command:[%@]", new_cmd);
+}
 - (void)ts_setTitle:(NSString *)new_title type:(int)title_type
 {
   NSDebugLLog(@"ts",@"setTitle: %@  type: %i",new_title,title_type);

@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Categories=X-GNUstep;
-Name=VimGS
-StartupWMClass=VimGS
-Comment=No description avaliable!
-Exec=/System/bin/openapp VimGS
-MimeType=

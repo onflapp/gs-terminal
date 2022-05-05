@@ -29,7 +29,8 @@
 #import <TerminalKit/TerminalKit.h>
 
 @interface VimTerminalView : TerminalView {
-
+  NSString* copyDataFile;
+  NSString* pasteDataFile;
 }
 
 - (void) help:(id) sender;

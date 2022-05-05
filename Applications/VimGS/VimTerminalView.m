@@ -28,11 +28,35 @@
 
 - (id) initWithFrame:(NSRect) frame {
   [super initWithFrame:frame];
+
   return self;
 }
 
 //ignore mouse selection, use vim selection commands instead
 - (void)_setSelection:(struct selection_range)s {
+}
+
+- (void) runVimWithFile:(NSString*) path {
+  NSMutableArray* args = [NSMutableArray new];
+  NSString* td = NSTemporaryDirectory();
+  NSString* cf = [td stringByAppendingString:[NSString stringWithFormat:@"/VimGS-copy.%lx", [self hash]]];
+  NSString* pf = [td stringByAppendingString:[NSString stringWithFormat:@"/VimGS-paste.%lx", [self hash]]];
+
+  copyDataFile = RETAIN(cf);
+  pasteDataFile = RETAIN(pf);
+
+  [args addObject:cf];
+  [args addObject:pf];
+
+  if (path) [args addObject:path];
+
+  NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"vimview"];
+  NSString* exec = [vp stringByAppendingPathComponent:@"start.sh"];
+
+  [self runProgram:exec
+     withArguments:args
+      initialInput:nil];
+
 }
 
 - (void) help:(id) sender {
@@ -61,23 +85,18 @@
 
 - (void) cut:(id) sender {
   [self ts_sendCString:"\e[1;0X~"];
-
-  [self performSelector:@selector(__readClipboardFile) withObject:nil afterDelay:1.0];
 }
 
 - (void) copy:(id) sender {
   [self ts_sendCString:"\e[1;0C~"];
-
-  [self performSelector:@selector(__readClipboardFile) withObject:nil afterDelay:1.0];
 }
 
 - (void) paste:(id) sender {
-  [self ts_sendCString:"\e[1;0P~"];
-
   NSPasteboard* pb = [NSPasteboard generalPasteboard];
   NSString* txt = [pb stringForType:NSStringPboardType];
   if (txt) {
-    [txt writeToFile:@"/tmp/x" atomically:NO];
+    [txt writeToFile:pasteDataFile atomically:NO];
+    [self ts_sendCString:"\e[1;0P~"];
   }
 }
 
@@ -85,18 +104,27 @@
   [self ts_sendCString:"\e\e:q\r"];
 }
 
-- (void) __readClipboardFile {
-  NSString* txt = [NSString stringWithContentsOfFile:@"/tmp/x"];
-  NSPasteboard* pb = [NSPasteboard generalPasteboard];
+- (void)ts_handleXOSC:(NSString *)new_cmd {
+  if ([new_cmd isEqualToString:@"COPY"]) {
+    NSString* txt = [NSString stringWithContentsOfFile:copyDataFile];
+    NSPasteboard* pb = [NSPasteboard generalPasteboard];
 
-  [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
-  [pb setString:txt forType:NSStringPboardType];
+    [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
+    [pb setString:txt forType:NSStringPboardType];
+  }
 }
 
 
 - (void) goToLine:(NSInteger) line {
   NSString* txt = [NSString stringWithFormat:@"\e\e:%ld\r", line];
   [self ts_sendCString:[txt UTF8String]];
+}
+
+- (void) dealloc {
+  RELEASE(copyDataFile);
+  RELEASE(pasteDataFile);
+
+  [super dealloc];
 }
 
 @end

@@ -54,7 +54,10 @@
 - (BOOL) application: (NSApplication *)application openFile: (NSString *)fileName {
   NSInteger x = [fileName rangeOfString:@":"].location;
   NSInteger line = -1;
-  if (x != NSNotFound) {
+  if (x == 0) {
+    fileName = [fileName substringFromIndex:1];
+  }
+  else if (x != NSNotFound) {
     line = [[fileName substringFromIndex:x+1] integerValue];
     fileName = [fileName substringToIndex:x];
   }

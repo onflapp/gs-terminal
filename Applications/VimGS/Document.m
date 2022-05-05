@@ -57,18 +57,10 @@
     }
   }
 */
-  NSArray* args = nil;
-  if (path) args = [NSArray arrayWithObject:path];
-
   [window makeFirstResponder:terminalView];
   [window makeKeyAndOrderFront:self];
 
-  NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"vimview"];
-  NSString* exec = [vp stringByAppendingPathComponent:@"start.sh"];
-
-  [terminalView runProgram:exec
-             withArguments:args
-              initialInput:nil];
+  [terminalView runVimWithFile:path];
 
   return self;
 }

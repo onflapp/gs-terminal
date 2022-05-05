@@ -14,11 +14,10 @@ if &term == "gsterm"
 endif
 
 function! GSHandlePaste()
-  let txt = join(readfile('/tmp/x'), '\n')
+  let pf = expand("$VIMGS_PASTE_FILE")
+  let txt = join(readfile(pf, "b"), "")
   let m = mode()
   
-  echom "xxx:" . m
-
   if m == 'n'
     return txt
   endif
@@ -35,6 +34,8 @@ vnoremap <silent> <ESC>[1;0C~ y: call GSHandleCopy()<CR>
 vnoremap <silent> <ESC>[1;0X~ d: call GSHandleCopy()<CR>
 
 function! GSHandleCopy()
-  let txt = @*
-  call writefile([txt], '/tmp/x')
+  let cf = expand("$VIMGS_COPY_FILE")
+  let txt = getreg("@*")
+  call writefile([txt], cf, "b")
+  call echoraw("]X;COPY")
 endfunction
