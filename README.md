@@ -21,4 +21,10 @@ Great for vim!
 
 Send commands back to your GNUstep wrapper
 
+# terminfo file
 
+Although the Terminal is originally based on Linux console terminal, it now includes support for codes used by Xterm and other terminals.
+
+To make sure terminal apps knows about all of its functions, it comes with its own terminfo file which needs to be installed for things to work properly.
+
+`TERM=gsterm`
