@@ -435,7 +435,7 @@ obj/VimGS.obj/AppController.m.o: AppController.m AppController.h \
   /Developer/Headers/AppKit/NSVisualEffectView.h \
   /Developer/Headers/AppKit/NSWindowController.h \
   /Developer/Headers/AppKit/PSOperators.h \
-  /Developer/Headers/AppKit/DPSOperators.h Document.h \
+  /Developer/Headers/AppKit/DPSOperators.h Preferences.h Document.h \
   /Developer/Headers/TerminalKit/TerminalKit.h \
   /Developer/Headers/TerminalKit/TerminalView.h \
   /Developer/Headers/TerminalKit/Terminal.h \
@@ -1341,6 +1341,8 @@ AppController.h:
 /Developer/Headers/AppKit/PSOperators.h:
 
 /Developer/Headers/AppKit/DPSOperators.h:
+
+Preferences.h:
 
 Document.h:
 

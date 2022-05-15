@@ -67,6 +67,7 @@
   return NO;
 }
 
+// Info > Preferences
 - (void) showPrefPanel: (id)sender {
 }
 

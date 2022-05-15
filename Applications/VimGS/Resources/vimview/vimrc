@@ -13,10 +13,17 @@ if &term == "gsterm"
 	map! <Esc>[<65;1;1m <ScrollWheelDown>
 endif
 
+function! GSResetAfterPaste(x)
+  set nopaste  
+endfunction
+
 function! GSHandlePaste()
   let pf = expand("$VIMGS_PASTE_FILE")
   let txt = join(readfile(pf, "b"), "")
   let m = mode()
+  set paste
+
+  call timer_start(1, "GSResetAfterPaste")
   
   if m == 'n'
     return txt
@@ -27,7 +34,6 @@ function! GSHandlePaste()
   if m == 'v'
     return txt
   endif
-
 endfunction
 
 vnoremap <silent> <ESC>[1;0C~ y: call GSHandleCopy()<CR>

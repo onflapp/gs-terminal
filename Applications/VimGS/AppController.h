@@ -12,8 +12,6 @@
 #define _PCAPPPROJ_APPCONTROLLER_H
 
 #import <AppKit/AppKit.h>
-// Uncomment if your application is Renaissance-based
-//#import <Renaissance/Renaissance.h>
 
 @interface AppController : NSObject
 {
@@ -29,8 +27,8 @@
 - (void) applicationDidFinishLaunching: (NSNotification *)aNotif;
 - (BOOL) applicationShouldTerminate: (id)sender;
 - (void) applicationWillTerminate: (NSNotification *)aNotif;
-- (BOOL) application: (NSApplication *)application
-	    openFile: (NSString *)fileName;
+- (BOOL) application: (NSApplication *)application 
+            openFile: (NSString *)fileName;
 
 - (void) showPrefPanel: (id)sender;
 - (void) newDocument: (id)sender;
