@@ -11,8 +11,13 @@
     };
     FirstResponder = {
 	Actions = (
+	    "editAlternative:",
 	    "moveLineDown:",
 	    "moveLineUp:",
+	    "movePageDown:",
+	    "movePageUp:",
+	    "closeWindow:",
+	    "splitWindow:",
 	    "} - initWithPreferences:"
 	);
 	Super = NSObject;
@@ -28,7 +33,12 @@
     VimTerminalView = {
 	Actions = (
 	    "moveLineDown:",
-	    "moveLineUp:"
+	    "moveLineUp:",
+	    "movePageDown:",
+	    "movePageUp:",
+	    "editAlternative:",
+	    "closeWindow:",
+	    "splitWindow:"
 	);
 	Outlets = (
 	);

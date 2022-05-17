@@ -43,5 +43,5 @@ function! GSHandleCopy()
   let cf = expand("$VIMGS_COPY_FILE")
   let txt = getreg("@*")
   call writefile([txt], cf, "b")
-  call echoraw("]X;COPY")
+  call writefile(["]X;COPY"], "/dev/stderr", "b")
 endfunction

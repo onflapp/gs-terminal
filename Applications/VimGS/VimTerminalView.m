@@ -67,12 +67,32 @@
   [self ts_sendCString:"\e\e:w\r"];
 }
 
+- (void) movePageDown:(id) sender {
+ [self ts_sendCString:""];
+}
+
+- (void) movePageUp:(id) sender {
+  [self ts_sendCString:""];
+}
+
 - (void) moveLineDown:(id) sender {
   [self ts_sendCString:"\e\ej"];
 }
 
 - (void) moveLineUp:(id) sender {
   [self ts_sendCString:"\e\ek"];
+}
+
+- (void) splitWindow:(id) sender {
+  [self ts_sendCString:"\e\e:sp\r"];
+}
+
+- (void) closeWindow:(id) sender {
+  [self ts_sendCString:"c"];
+}
+
+- (void) editAlternative:(id) sender {
+  [self ts_sendCString:""];
 }
 
 - (void) selectAll:(id) sender {
