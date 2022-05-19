@@ -1,6 +1,7 @@
-*/derived_src/
-*/*.framework/
-*/obj/
-*/*.bundle/
-*/*.app
+derived_src
+*.framework
+obj
+*.bundle
+*.app
 *.o
+tags
