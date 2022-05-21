@@ -14,7 +14,7 @@ if &term == "gsterm"
 endif
 
 function! GSResetAfterPaste(x)
-  set nopaste  
+  set nopaste
 endfunction
 
 function! GSHandlePaste()

@@ -1995,16 +1995,17 @@ static void set_foreground(NSGraphicsContext *gc,
 {
   NSPoint p, c;
   NSInteger mb = 0;
-  int cx, cy, ch, cw;
-
-  p = [e locationInWindow];
-  p = [self convertPoint:p fromView:nil];
-  p.y = self.frame.size.height - p.y - border_y;
-
-  p.x -= border_x;
+  int cx, cy, ch, cw, off;
 
   cw = fx;
   ch = fy;
+  off = self.frame.size.height - (sy * ch);
+
+  p = [e locationInWindow];
+  p = [self convertPoint:p fromView:nil];
+  p.y = self.frame.size.height - p.y - border_y - off;
+
+  p.x -= border_x;
 
   cx = (int)ceil(p.x / cw);
   cy = (int)ceil(p.y / ch);
