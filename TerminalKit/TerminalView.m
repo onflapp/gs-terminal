@@ -485,6 +485,8 @@ static void set_foreground(NSGraphicsContext *gc,
   if (!prefs)
     prefs = defaults;
 
+  if (normalTextColor) [normalTextColor release];
+
   if (cursorColor) [cursorColor release];
   cursorColor = [[prefs cursorColor] retain];
   
@@ -502,6 +504,7 @@ static void set_foreground(NSGraphicsContext *gc,
   TEXT_NORM_H = [winText hueComponent];
   TEXT_NORM_S = [winText saturationComponent];
   TEXT_NORM_B = [winText brightnessComponent];
+  normalTextColor = [winText retain];
 
   winBlink = [prefs textBlinkColor];
   TEXT_BLINK_H = [winBlink hueComponent];
@@ -522,6 +525,53 @@ static void set_foreground(NSGraphicsContext *gc,
   INV_FG_H = [invFG hueComponent];
   INV_FG_S = [invFG saturationComponent];
   INV_FG_B = [invFG brightnessComponent];
+}
+
+void __encodechar(int encoding, screen_char_t *ch, char *buf)
+{
+  /* we short-circuit utf8 for performance with back-art */
+  /* TODO: short-circuit latin1 too? */
+   if (encoding == NSUTF8StringEncoding)
+    {
+      unichar uch = ch->ch;
+      if (uch >= 0x800)
+        {
+          buf[2] = (uch & 0x3f) | 0x80;
+          uch >>= 6;
+          buf[1] = (uch & 0x3f) | 0x80;
+          uch >>= 6;
+          buf[0] = (uch & 0x0f) | 0xe0;
+          buf[3] = 0;
+        }
+      else if (uch >= 0x80)
+        {
+          buf[1] = (uch & 0x3f) | 0x80;
+          uch >>= 6;
+          buf[0] = (uch & 0x1f) | 0xc0;
+          buf[2] = 0;
+        }
+      else
+        {
+          buf[0] = uch;
+          buf[1] = 0;
+        }
+    }
+  else
+    {
+      unichar uch = ch->ch;
+      if (uch <= 0x80)
+        {
+          buf[0] = uch;
+          buf[1] = 0;
+        }
+      else
+        {
+          unsigned char *pbuf = (unsigned char *)buf;
+          unsigned int dlen = sizeof(buf) - 1;
+          GSFromUnicode(&pbuf,&dlen,&uch,1,encoding,NULL,
+                        GSUniTerminate);
+        }
+    }
 }
 
 - (void)drawRect:(NSRect)r
@@ -877,50 +927,8 @@ static void set_foreground(NSGraphicsContext *gc,
                     [f set];
                     current_font = f;
                   }
+                __encodechar(encoding, ch, buf);
                  
-                /* we short-circuit utf8 for performance with back-art */
-                /* TODO: short-circuit latin1 too? */
-                 if (encoding == NSUTF8StringEncoding)
-                  {
-                    unichar uch = ch->ch;
-                    if (uch >= 0x800)
-                      {
-                        buf[2] = (uch & 0x3f) | 0x80;
-                        uch >>= 6;
-                        buf[1] = (uch & 0x3f) | 0x80;
-                        uch >>= 6;
-                        buf[0] = (uch & 0x0f) | 0xe0;
-                        buf[3] = 0;
-                      }
-                    else if (uch >= 0x80)
-                      {
-                        buf[1] = (uch & 0x3f) | 0x80;
-                        uch >>= 6;
-                        buf[0] = (uch & 0x1f) | 0xc0;
-                        buf[2] = 0;
-                      }
-                    else
-                      {
-                        buf[0] = uch;
-                        buf[1] = 0;
-                      }
-                  }
-                else
-                  {
-                    unichar uch = ch->ch;
-                    if (uch <= 0x80)
-                      {
-                        buf[0] = uch;
-                        buf[1] = 0;
-                      }
-                    else
-                      {
-                        unsigned char *pbuf = (unsigned char *)buf;
-                        unsigned int dlen = sizeof(buf) - 1;
-                        GSFromUnicode(&pbuf,&dlen,&uch,1,encoding,NULL,
-                                      GSUniTerminate);
-                      }
-                  }
                 /* ~580 cycles */
                 DPSmoveto(cur,scr_x+fx0,scr_y+fy0);
                 /* baseline here for mc-case 0.65 */
@@ -961,8 +969,17 @@ static void set_foreground(NSGraphicsContext *gc,
       switch (cursorStyle)
         {
         case CURSOR_BLOCK_INVERT: // 0
-          DPScompositerect(cur,x,y,fx,fy,
-                           NSCompositeSourceIn);
+          DPSrectfill(cur,x,y,fx,fy);
+          screen_char_t *ch = &SCREEN(cursor_x,cursor_y);
+          if (ch->ch > 0) {
+            [normalTextColor set];
+
+            __encodechar(encoding, ch, buf);
+            DPSmoveto(cur,x+fx0,y+fy0);
+            DPSshow(cur,buf);
+
+            [cursorColor set];
+          }
           break;
         case CURSOR_BLOCK_STROKE: // 1
           DPSrectstroke(cur,x+0.5,y+0.5,fx-1.0,fy-1.0);

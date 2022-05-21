@@ -102,6 +102,7 @@ struct selection_range
 
   // Colors
   NSColor	*cursorColor;
+  NSColor *normalTextColor;
   NSUInteger	cursorStyle;
   // Window:Background
   CGFloat	WIN_BG_H;
