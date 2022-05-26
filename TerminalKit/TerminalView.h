@@ -105,6 +105,10 @@ struct selection_range
   NSColor	*cursorColor;
   NSColor *normalTextColor;
   NSUInteger	cursorStyle;
+  NSUInteger  cursorBlinkingState;
+  NSTimeInterval lastCursorDraw;
+  NSTimeInterval cursorBlinkingInterval;
+  NSRect lastCursorRect;
   // Window:Background
   CGFloat	WIN_BG_H;
   CGFloat	WIN_BG_S;

@@ -16,6 +16,7 @@ The mouse support is compatible with XTerm
 # Escape codes for changing cursor
 
 Great for vim!
+cursor blinking
 
 # Escape codes for communication with your wrapper
 

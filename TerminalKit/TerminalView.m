@@ -490,6 +490,15 @@ static void set_foreground(NSGraphicsContext *gc,
   if (cursorColor) [cursorColor release];
   cursorColor = [[prefs cursorColor] retain];
   
+  if ([prefs isCursorBlinking]) {
+    cursorBlinkingInterval = 0.5;
+  }
+  else {
+    cursorBlinkingInterval = 0;
+  }
+
+  cursorBlinkingState = 0;
+
   winBG = [prefs windowBackgroundColor];
   WIN_BG_H = [winBG hueComponent];
   WIN_BG_S = [winBG saturationComponent];
@@ -572,6 +581,24 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
                         GSUniTerminate);
         }
     }
+}
+
+- (void)blinkCursor
+{
+  if (!focus_mode) {
+    cursorBlinkingState = 0;
+  }
+  else if (cursorBlinkingInterval > 0) {
+    NSTimeInterval td = [NSDate timeIntervalSinceReferenceDate] - lastCursorDraw;
+    cursorBlinkingState = !cursorBlinkingState;
+    [self setNeedsDisplayInRect:lastCursorRect];
+
+    [self performSelector:@selector(blinkCursor) withObject:nil afterDelay:cursorBlinkingInterval];
+  }
+  else {
+    cursorBlinkingState = 0;
+    [self setNeedsDisplay:YES];
+  }
 }
 
 - (void)drawRect:(NSRect)r
@@ -958,13 +985,24 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   }
 
 //------------------- CURSOR ----------------------------------------------------
+  if (focus_mode && cursorBlinkingState) {
+    draw_cursor = NO;
+  }
+
+  float x,y;
+
+  x = cursor_x * fx + border_x;
+  y = (sy - 1 - cursor_y + current_scroll) * fy + border_y;
+  
+  lastCursorRect.origin.x = x;
+  lastCursorRect.origin.y = y;
+  lastCursorRect.size.width = fx;
+  lastCursorRect.size.height = fy;
+  lastCursorDraw = [NSDate timeIntervalSinceReferenceDate];
+
   if (draw_cursor)
     {
-      float x,y;
-      [cursorColor set];
-
-      x = cursor_x * fx + border_x;
-      y = (sy - 1 - cursor_y + current_scroll) * fy + border_y;
+    [cursorColor set];
 
       if (focus_mode) {
         switch (cursorStyle)
@@ -1581,6 +1619,7 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 - (BOOL)becomeFirstResponder
 {
   focus_mode = 1;
+  [self blinkCursor];
   [self setNeedsDisplay:YES];
   return YES;
 }

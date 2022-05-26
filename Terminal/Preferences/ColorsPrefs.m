@@ -71,6 +71,7 @@
   [useBoldBtn setState:([defs useBoldTerminalFont] == YES)];
 
   // Cursor
+  [cursorBlinkingBtn setState: [defs isCursorBlinking]];
   [cursorColorBtn setColor:[defs cursorColor]];
   [cursorStyleMatrix selectCellWithTag:[defs cursorStyle]];
 }
@@ -81,9 +82,11 @@
 {
   Defaults *defs = [[Preferences shared] mainWindowPreferences];
   
-  [defs setBool:[useBoldBtn state] forKey:TerminalFontUseBoldKey];
+  [defs setBool:[useBoldBtn state]?YES:NO forKey:TerminalFontUseBoldKey];
 
   // Cursor
+  NSLog(@"xxxx:%d", [cursorBlinkingBtn state]);
+  [defs setCursorBlinking:[cursorBlinkingBtn state]?YES:NO];
   [defs setCursorColor:[cursorColorBtn color]];
   [defs setCursorStyle:[[cursorStyleMatrix selectedCell] tag]];
 
@@ -121,9 +124,10 @@
   
   prefs = [[Defaults alloc] initEmpty];
   
-  [prefs setUseBoldTerminalFont:[useBoldBtn state]];
+  [prefs setUseBoldTerminalFont:[useBoldBtn state]?YES:NO];
 
   // Cursor
+  [prefs setCursorBlinking:[cursorBlinkingBtn state]?YES:NO];
   [prefs setCursorColor:[cursorColorBtn color]];
   [prefs setCursorStyle:[[cursorStyleMatrix selectedCell] tag]];
 
