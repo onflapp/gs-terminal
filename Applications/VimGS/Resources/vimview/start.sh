@@ -9,4 +9,11 @@ export VIMGS_PASTE_FILE="$2"
 shift
 shift
 
-exec /usr/bin/vim -c "source $CFG" $@
+FILE="$1"
+if [[ "$FILE" =~ ^(.*):([0-9]+)$ ]];then
+  FILE=${BASH_REMATCH[1]}
+  LINE=${BASH_REMATCH[2]}
+  exec /usr/bin/vim -c "source $CFG" "+$LINE" "$FILE"
+else
+  exec /usr/bin/vim -c "source $CFG" $@
+fi

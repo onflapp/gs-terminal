@@ -28,12 +28,16 @@
 
 - (id) initWithFrame:(NSRect) frame {
   [super initWithFrame:frame];
+  mode = '?';
 
   return self;
 }
 
 //ignore mouse selection, use vim selection commands instead
 - (void)_setSelection:(struct selection_range)s {
+  if (!mouse_tracking) {
+    [super _setSelection:s];
+  }
 }
 
 - (void) runVimWithFile:(NSString*) path {
@@ -57,6 +61,7 @@
      withArguments:args
       initialInput:nil];
 
+  mode = 'n';
 }
 
 - (void) help:(id) sender {
@@ -108,15 +113,25 @@
 }
 
 - (void) copy:(id) sender {
-  [self ts_sendCString:"\e[1;0C~"];
+  if (mode == 'v' || mode == 'i') {
+    [self ts_sendCString:"\e[1;0C~"];
+  }
+  else {
+    [super copy:sender];
+  }
 }
 
 - (void) paste:(id) sender {
-  NSPasteboard* pb = [NSPasteboard generalPasteboard];
-  NSString* txt = [pb stringForType:NSStringPboardType];
-  if (txt) {
-    [txt writeToFile:pasteDataFile atomically:NO];
-    [self ts_sendCString:"\e[1;0P~"];
+  if (mode == 'v' || mode == 'i') {
+    NSPasteboard* pb = [NSPasteboard generalPasteboard];
+    NSString* txt = [pb stringForType:NSStringPboardType];
+    if (txt) {
+      [txt writeToFile:pasteDataFile atomically:NO];
+      [self ts_sendCString:"\e[1;0P~"];
+    }
+  }
+  else {
+    [super paste:sender];
   }
 }
 
@@ -125,6 +140,7 @@
 }
 
 - (void)ts_handleXOSC:(NSString *)new_cmd {
+  NSLog(@"[%@]", new_cmd);
   if ([new_cmd isEqualToString:@"COPY"]) {
     NSString* txt = [NSString stringWithContentsOfFile:copyDataFile];
     NSPasteboard* pb = [NSPasteboard generalPasteboard];
@@ -132,12 +148,39 @@
     [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
     [pb setString:txt forType:NSStringPboardType];
   }
+  else if ([new_cmd hasPrefix:@"MODE-"]) {
+    if ([new_cmd isEqualToString:@"MODE-i"]) {
+      mode = 'i';
+      [self ts_setMouseTracking:YES];
+    }
+    else if ([new_cmd isEqualToString:@"MODE-v"]) {
+      mode = 'v';
+      [self ts_setMouseTracking:YES];
+    }
+    else if ([new_cmd isEqualToString:@"MODE-n"]) {
+      mode = 'n';
+      [self ts_setMouseTracking:YES];
+    }
+    else if ([new_cmd isEqualToString:@"MODE-c"]) {
+      mode = 'c';
+      [self ts_setMouseTracking:NO];
+    }
+    else {
+      mode = '?';
+      [self ts_setMouseTracking:NO];
+    }
+  }
 }
-
 
 - (void) goToLine:(NSInteger) line {
   NSString* txt = [NSString stringWithFormat:@"\e\e:%ld\r", line];
   [self ts_sendCString:[txt UTF8String]];
+}
+
+- (void)windowWillClose:(NSNotification *)n {
+  [self closeProgram];
+
+  //[[NSApp delegate] closeTerminalWindow:self];
 }
 
 - (void) dealloc {

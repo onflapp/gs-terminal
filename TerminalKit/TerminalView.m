@@ -2984,7 +2984,7 @@ static int handled_mask = (NSDragOperationCopy |
 - (void)scrollRangeToVisible:(NSRange)range
 {
   int scroll_to;
-  
+
   scroll_to = ((range.location/sx) - sb_length); // - sy/2;
   [self _scrollTo:scroll_to update:YES];
 }

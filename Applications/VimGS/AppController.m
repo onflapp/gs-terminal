@@ -52,18 +52,7 @@
 }
 
 - (BOOL) application: (NSApplication *)application openFile: (NSString *)fileName {
-  NSInteger x = [fileName rangeOfString:@":"].location;
-  NSInteger line = -1;
-  if (x == 0) {
-    fileName = [fileName substringFromIndex:1];
-  }
-  else if (x != NSNotFound) {
-    line = [[fileName substringFromIndex:x+1] integerValue];
-    fileName = [fileName substringToIndex:x];
-  }
-
   Document* doc = [[Document alloc] initWithFile:fileName];
-  NSLog(@"file name: %@ line:%ld", fileName, line);
   return NO;
 }
 
