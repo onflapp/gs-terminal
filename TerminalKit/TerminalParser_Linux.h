@@ -28,6 +28,7 @@
 
   int top,bottom;
   int report_mouse;
+  int focus_mode;
 
   unsigned int unich;
   int utf_count;

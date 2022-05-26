@@ -80,6 +80,7 @@ struct selection_range
 
   int last_mouse_x, last_mouse_y;
   BOOL mouse_tracking;
+  int focus_mode;
 
   struct selection_range selection;
 

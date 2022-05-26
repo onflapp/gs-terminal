@@ -153,15 +153,15 @@
       mode = 'i';
       [self ts_setMouseTracking:YES];
     }
-    else if ([new_cmd isEqualToString:@"MODE-v"]) {
+    else if ([new_cmd hasPrefix:@"MODE-v"] || [new_cmd hasPrefix:@"MODE-V"]) {
       mode = 'v';
       [self ts_setMouseTracking:YES];
     }
-    else if ([new_cmd isEqualToString:@"MODE-n"]) {
+    else if ([new_cmd hasPrefix:@"MODE-n"]) {
       mode = 'n';
       [self ts_setMouseTracking:YES];
     }
-    else if ([new_cmd isEqualToString:@"MODE-c"]) {
+    else if ([new_cmd hasPrefix:@"MODE-c"]) {
       mode = 'c';
       [self ts_setMouseTracking:NO];
     }
@@ -178,12 +178,14 @@
 }
 
 - (void)windowWillClose:(NSNotification *)n {
-  [self closeProgram];
+  [self ts_sendCString:"\e\e:q!\r"];
 
   //[[NSApp delegate] closeTerminalWindow:self];
 }
 
 - (void) dealloc {
+  [self closeProgram];
+
   RELEASE(copyDataFile);
   RELEASE(pasteDataFile);
 

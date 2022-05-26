@@ -966,34 +966,39 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
       x = cursor_x * fx + border_x;
       y = (sy - 1 - cursor_y + current_scroll) * fy + border_y;
 
-      switch (cursorStyle)
-        {
-        case CURSOR_BLOCK_INVERT: // 0
-          DPSrectfill(cur,x,y,fx,fy);
-          screen_char_t *ch = &SCREEN(cursor_x,cursor_y);
-          if (ch->ch > 0) {
-            [normalTextColor set];
+      if (focus_mode) {
+        switch (cursorStyle)
+          {
+          case CURSOR_BLOCK_INVERT: // 0
+            DPSrectfill(cur,x,y,fx,fy);
+            screen_char_t *ch = &SCREEN(cursor_x,cursor_y);
+            if (ch->ch > 0) {
+              [normalTextColor set];
 
-            __encodechar(encoding, ch, buf);
-            DPSmoveto(cur,x+fx0,y+fy0);
-            DPSshow(cur,buf);
+              __encodechar(encoding, ch, buf);
+              DPSmoveto(cur,x+fx0,y+fy0);
+              DPSshow(cur,buf);
 
-            [cursorColor set];
+              [cursorColor set];
+            }
+            break;
+          case CURSOR_BLOCK_STROKE: // 1
+            DPSrectstroke(cur,x+0.5,y+0.5,fx-1.0,fy-1.0);
+            break;
+          case CURSOR_BLOCK_FILL:   // 2
+            DPSrectfill(cur,x,y,fx,fy);
+            break;
+          case CURSOR_LINE:         // 3
+            DPSrectfill(cur,x,y,fx,2);
+            break;
+          case CURSOR_BEAM:         // 4
+            DPSrectfill(cur,x,y,2,fy-1.0);
+            break;
           }
-          break;
-        case CURSOR_BLOCK_STROKE: // 1
-          DPSrectstroke(cur,x+0.5,y+0.5,fx-1.0,fy-1.0);
-          break;
-        case CURSOR_BLOCK_FILL:   // 2
-          DPSrectfill(cur,x,y,fx,fy);
-          break;
-        case CURSOR_LINE:         // 3
-          DPSrectfill(cur,x,y,fx,2);
-          break;
-        case CURSOR_BEAM:         // 4
-          DPSrectfill(cur,x,y,2,fy-1.0);
-          break;
-        }
+      }
+      else {
+        DPSrectstroke(cur,x+0.5,y+0.5,fx-1.0,fy-1.0);
+      }
       draw_cursor = NO;
     }
 
@@ -1575,10 +1580,14 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 }
 - (BOOL)becomeFirstResponder
 {
+  focus_mode = 1;
+  [self setNeedsDisplay:YES];
   return YES;
 }
 - (BOOL)resignFirstResponder
 {
+  focus_mode = 0;
+  [self setNeedsDisplay:YES];
   return YES;
 }
 
@@ -2825,6 +2834,12 @@ static int handled_mask = (NSDragOperationCopy |
 
   [self setAdditionalWordCharacters:[defaults wordCharacters]];
 
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(windowResignedKey:)
+           name:NSWindowDidResignKeyNotification
+         object:nil];
+
   use_multi_cell_glyphs = [defaults useMultiCellGlyphs];
 
   screen = malloc(sizeof(screen_char_t)*sx*sy);
@@ -3112,6 +3127,11 @@ static int handled_mask = (NSDragOperationCopy |
   [ttyPath release];
   
   return ttyName;
+}
+
+- (void) windowResignedKey:(NSNotification*) not {
+  focus_mode = 0;
+  [self setNeedsDisplay:YES];
 }
 
 - (NSSize)windowSize

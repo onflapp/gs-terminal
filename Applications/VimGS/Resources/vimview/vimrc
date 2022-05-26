@@ -59,9 +59,10 @@ function! GSBufEnter()
 endfunction
 
 function! GSChangeMode()
-  if (g:last_vim_mode != mode())
-    call writefile(["]X;MODE-".mode().""], "/dev/stderr", "b")
-    let g:last_vim_mode = mode()
+  let m = mode()
+  if (g:last_vim_mode != m)
+    call writefile(["]X;MODE-".m.""], "/dev/stderr", "b")
+    let g:last_vim_mode = m
   endif
 endfunction
 
