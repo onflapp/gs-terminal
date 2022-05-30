@@ -85,7 +85,6 @@
   [defs setBool:[useBoldBtn state]?YES:NO forKey:TerminalFontUseBoldKey];
 
   // Cursor
-  NSLog(@"xxxx:%d", [cursorBlinkingBtn state]);
   [defs setCursorBlinking:[cursorBlinkingBtn state]?YES:NO];
   [defs setCursorColor:[cursorColorBtn color]];
   [defs setCursorStyle:[[cursorStyleMatrix selectedCell] tag]];

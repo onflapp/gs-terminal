@@ -58,6 +58,23 @@
 
 // Info > Preferences
 - (void) showPrefPanel: (id)sender {
+  // load Preferences.bundle, send 'activate' to principal class
+  if (preferencesPanel == nil) {
+    NSString *bundlePath;
+    NSBundle *bundle;
+
+    bundlePath = [[[NSBundle mainBundle] resourcePath]
+                     stringByAppendingPathComponent:@"Preferences.bundle"];
+
+    // NSLog(@"[Controller] Inspectors: %@", inspectorsPath);
+
+    bundle = [[NSBundle alloc] initWithPath:bundlePath];
+
+    // NSLog(@"[Controller] Inspectors Class: %@",
+    //       [inspectorsBundle principalClass]);
+    preferencesPanel = [[[bundle principalClass] alloc] init];
+  }
+  [preferencesPanel activatePanel];
 }
 
 - (void) newDocument: (id)sender {

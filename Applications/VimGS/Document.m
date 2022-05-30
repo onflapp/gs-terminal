@@ -30,9 +30,8 @@
   [NSBundle loadNibNamed:@"Document" owner:self];
   [window setFrameAutosaveName:@"document_window"];
 
-  Defaults* defs = [Defaults shared];
+  Defaults* defs = [[Defaults alloc]init];
   [defs setScrollBackEnabled:NO];
-  [defs setWindowBackgroundColor:[NSColor blackColor]];
 
   [terminalView updateColors:defs];
 
@@ -48,7 +47,6 @@
            name:TerminalViewBecameIdleNotification
          object:terminalView];
 
-  
 /*
   for (NSView* view in [[window contentView] subviews]) {
     if ([view isKindOfClass:[ChromeWebView class]]) {

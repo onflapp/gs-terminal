@@ -28,6 +28,7 @@ APP_NAME = VimGS
 VimGS_APPLICATION_ICON = 
 GNUSTEP_INSTALLATION_DOMAIN = LOCAL
 
+SUBPROJECTS = Preferences
 
 #
 # Libraries
@@ -38,6 +39,7 @@ VimGS_LIBRARIES_DEPEND_UPON += -lTerminalKit
 # Resource files
 #
 VimGS_RESOURCE_FILES = \
+Preferences/Preferences.bundle \
 Resources/vim.gorm \
 Resources/Document.gorm \
 Resources/vimview 

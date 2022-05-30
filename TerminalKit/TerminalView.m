@@ -1619,7 +1619,6 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 - (BOOL)becomeFirstResponder
 {
   focus_mode = 1;
-  [self blinkCursor];
   [self setNeedsDisplay:YES];
   return YES;
 }
@@ -2904,6 +2903,8 @@ static int handled_mask = (NSDragOperationCopy |
   [self updateColors:nil];
   [self setCursorStyle:[defaults cursorStyle]];
 
+  [self blinkCursor];
+
   return self;
 }
 
@@ -2925,6 +2926,9 @@ static int handled_mask = (NSDragOperationCopy |
 
 - (void)dealloc
 {
+  focus_mode = 0;
+  cursorBlinkingInterval = 0;
+
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 
   [self closeProgram];
