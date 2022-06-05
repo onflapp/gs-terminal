@@ -177,7 +177,7 @@
   [self ts_sendCString:[txt UTF8String]];
 }
 
-- (void)windowWillClose:(NSNotification *)n {
+- (void) windowWillClose:(NSNotification *)n {
   [self ts_sendCString:"\e\e:q!\r"];
 
   //[[NSApp delegate] closeTerminalWindow:self];

@@ -79,6 +79,8 @@
 
 - (void) newDocument: (id)sender {
   Document* doc = [[Document alloc] initWithFile:nil];
+  [[doc window] setFrameAutosaveName:@"document_window"];
+  [[doc window] makeKeyAndOrderFront:self];
 }
 
 - (void) openDocument: (id)sender {
@@ -89,6 +91,8 @@
   if ([panel runModalForTypes:nil] == NSOKButton) {
     NSString* fileName = [[panel filenames] firstObject];
     Document* doc = [[Document alloc] initWithFile:fileName];
+    [[doc window] setFrameAutosaveName:@"document_window"];
+    [[doc window] makeKeyAndOrderFront:self];
   }
 }
 

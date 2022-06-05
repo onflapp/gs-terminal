@@ -1,5 +1,5 @@
 /*
-   Project: WebBrowser
+   Project: VimGS
 
    Copyright (C) 2020 Free Software Foundation
 
@@ -28,9 +28,8 @@
 - (id) initWithFile:(NSString*) path {
   self = [super init];
   [NSBundle loadNibNamed:@"Document" owner:self];
-  [window setFrameAutosaveName:@"document_window"];
 
-  Defaults* defs = [[Defaults alloc]init];
+  Defaults* defs = [[Defaults alloc] init];
   [defs setScrollBackEnabled:NO];
 
   [terminalView updateColors:defs];
@@ -47,17 +46,6 @@
            name:TerminalViewBecameIdleNotification
          object:terminalView];
 
-/*
-  for (NSView* view in [[window contentView] subviews]) {
-    if ([view isKindOfClass:[ChromeWebView class]]) {
-      webView = view;
-      break;
-    }
-  }
-*/
-  [window makeFirstResponder:terminalView];
-  [window makeKeyAndOrderFront:self];
-
   [terminalView runVimWithFile:path];
 
   return self;
@@ -73,6 +61,10 @@
 
 - (void) viewBecameIdle:(NSNotification*) n {
   [window close];
+}
+
+- (NSWindow*) window {
+  return window;
 }
 
 - (void) updateTitleBar:(NSNotification*) n {

@@ -1,5 +1,5 @@
 /*
-   Project: WebBrowser
+   Project: VimGS
 
    Copyright (C) 2020 Free Software Foundation
 
@@ -35,6 +35,7 @@
 }
 
 - (id) initWithFile:(NSString*) path;
+- (NSWindow*) window;
 
 @end
 

@@ -3172,6 +3172,12 @@ static int handled_mask = (NSDragOperationCopy |
   return ttyName;
 }
 
+- (void) viewDidMoveToWindow {
+  if ([self window]) {
+    [self _resizeTerminalTo:[self frame].size];
+  }
+}
+
 - (void) windowResignedKey:(NSNotification*) not {
   focus_mode = 0;
   [self setNeedsDisplay:YES];

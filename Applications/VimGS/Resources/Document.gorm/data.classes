@@ -18,13 +18,13 @@
 	    "movePageUp:",
 	    "closeWindow:",
 	    "splitWindow:",
-	    "} - initWithPreferences:"
+	    "initWithPreferences:"
 	);
 	Super = NSObject;
     };
     TerminalView = {
 	Actions = (
-	    "} - initWithPreferences:"
+	    "initWithPreferences:"
 	);
 	Outlets = (
 	);
