@@ -35,8 +35,10 @@
   id normalTextColorBtn;
   id windowSelectionColorBtn;
   id window;
+  id fontField;
 
   id view;
 }
 - (void) setWindow: (id)sender;
+- (void) setFont:(id)sender;
 @end

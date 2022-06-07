@@ -52,6 +52,29 @@
   return view;
 }
 
+- (void)setFont:(id)sender
+{
+  NSFontManager *fm = [NSFontManager sharedFontManager];
+  NSFontPanel   *fp = [fm fontPanel:YES];
+  
+  [fm setSelectedFont:[fontField font] isMultiple:NO];
+  [fp setDelegate:self];
+  [fp orderFront:self];
+}
+
+- (void)changeFont:(id)sender // Font panel callback
+{
+  NSFont *f = [sender convertFont:[fontField font]];
+
+  if (!f) return;
+
+  [fontField setStringValue:[NSString stringWithFormat: @"%@ %0.1f pt.",
+                                      [f fontName], [f pointSize]]];
+  [fontField setFont:f];
+
+  return;
+}
+
 - (void)showCursorColorPanel:(id)sender
 {
   [[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
@@ -59,6 +82,12 @@
 
 - (void)_updateControls:(Defaults *)defs
 {
+  //Font
+  NSFont* font = [defs terminalFont];
+  [fontField setFont:font];
+  [fontField setStringValue:[NSString stringWithFormat:@"%@ %.1f pt.",
+                                      [font fontName], [font pointSize]]];
+
   //Window
   [windowBGColorBtn setColor:[defs windowBackgroundColor]];
   [windowSelectionColorBtn setColor:[defs windowSelectionColor]];
@@ -75,6 +104,12 @@
   [cursorBlinkingBtn setState: [defs isCursorBlinking]];
   [cursorColorBtn setColor:[defs cursorColor]];
   [cursorStyleMatrix selectCellWithTag:[defs cursorStyle]];
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:TerminalPreferencesDidChangeNotification
+                  object:[NSApp delegate]
+                userInfo:nil];
+
 }
   
 - (void)showWindow
@@ -111,7 +146,15 @@
   [prefs setTextInverseBackground:[inverseTextBGColorBtn color]];
   [prefs setTextInverseForeground:[inverseTextFGColor color]];
 
+  // Font
+  [prefs setTerminalFont:[fontField font]];
+
   [prefs synchronize];
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:TerminalPreferencesDidChangeNotification
+                  object:[NSApp delegate]
+                userInfo:nil];
 }
 
 @end

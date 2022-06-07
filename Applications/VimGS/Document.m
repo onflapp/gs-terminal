@@ -46,6 +46,12 @@
            name:TerminalViewBecameIdleNotification
          object:terminalView];
 
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(preferencesDidChange:)
+           name:TerminalPreferencesDidChangeNotification
+         object:[NSApp delegate]];
+
   [terminalView runVimWithFile:path];
 
   return self;
@@ -61,6 +67,24 @@
 
 - (void) viewBecameIdle:(NSNotification*) n {
   [window close];
+}
+
+- (void) preferencesDidChange:(NSNotification *)notif {
+  Defaults* prefs = [[Defaults alloc] init];
+
+  NSFont* font = [prefs terminalFont];
+  if (font) {
+    [terminalView setFont:font];
+    if ([prefs useBoldTerminalFont] == YES)
+      [terminalView setBoldFont:[Defaults boldTerminalFontForFont:font]];
+    else
+      [terminalView setBoldFont:font];
+  }
+  [terminalView setCursorStyle:[prefs cursorStyle]];
+  [terminalView updateColors:prefs];
+
+  [terminalView setNeedsDisplayInRect:[terminalView frame]];
+  [[terminalView superview] setFrame:[[terminalView superview] frame]];
 }
 
 - (NSWindow*) window {

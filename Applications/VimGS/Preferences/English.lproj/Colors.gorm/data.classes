@@ -5,7 +5,8 @@
 	    "setDefault:",
 	    "setWindow:",
 	    "showDefault:",
-	    "showCursorColorPanel:"
+	    "showCursorColorPanel:",
+	    "setFont:"
 	);
 	Outlets = (
 	    windowBGColorBtn,
@@ -21,15 +22,17 @@
 	    window,
 	    view,
 	    useBoldBtn,
-	    inverseTextLabel
+	    inverseTextLabel,
+	    fontField
 	);
 	Super = NSObject;
     };
     FirstResponder = {
 	Actions = (
-	    "showCursorColorPanel:",
+	    "setFont:",
 	    "setDefault:",
 	    "setWindow:",
+	    "showCursorColorPanel:",
 	    "showDefault:"
 	);
 	Super = NSObject;
