@@ -58,8 +58,10 @@
   NSFontPanel   *fp = [fm fontPanel:YES];
   
   [fm setSelectedFont:[fontField font] isMultiple:NO];
-  [fp setDelegate:self];
+  [[view window] setDelegate:self];
   [fp orderFront:self];
+
+ //[[self window] makeFirstResponder:fontField];
 }
 
 - (void)changeFont:(id)sender // Font panel callback
@@ -104,12 +106,6 @@
   [cursorBlinkingBtn setState: [defs isCursorBlinking]];
   [cursorColorBtn setColor:[defs cursorColor]];
   [cursorStyleMatrix selectCellWithTag:[defs cursorStyle]];
-
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:TerminalPreferencesDidChangeNotification
-                  object:[NSApp delegate]
-                userInfo:nil];
-
 }
   
 - (void)showWindow
