@@ -1,6 +1,6 @@
 imap <silent> <ESC>[1;0P~ <C-R>=GSHandlePaste()<CR>
-noremap <silent> <ESC>[1;0P~ "=GSHandlePaste()<CR>p
-vmap <silent> <ESC>[1;0P~ "=GSHandlePaste()<CR>p
+noremap <silent> <ESC>[1;0P~ :call GSHandlePaste()<CR>p
+vmap <silent> <ESC>[1;0P~    :call GSHandlePaste()<CR>p
 
 let g:last_vim_mode = '_'
 
@@ -21,21 +21,14 @@ endfunction
 
 function! GSHandlePaste()
   let pf = expand("$VIMGS_PASTE_FILE")
-  let txt = join(readfile(pf, "b"), "")
+  let txt = join(readfile(pf, "b"), "\n")
   let m = mode()
   set paste
 
-  call timer_start(1, "GSResetAfterPaste")
+  call timer_start(50, "GSResetAfterPaste")
   
-  if m == 'n'
-    return txt
-  endif
-  if m == 'i'
-    return txt
-  endif
-  if m == 'v'
-    return txt
-  endif
+  call setreg('"', txt)
+  return txt
 endfunction
 
 vnoremap <silent> <ESC>[1;0C~ y: call GSHandleCopy()<CR>

@@ -122,7 +122,7 @@
 }
 
 - (void) paste:(id) sender {
-  if (mode == 'v' || mode == 'i') {
+  if (mode == 'v' || mode == 'i' || mode == 'n') {
     NSPasteboard* pb = [NSPasteboard generalPasteboard];
     NSString* txt = [pb stringForType:NSStringPboardType];
     if (txt) {

@@ -98,4 +98,10 @@
   [window setTitle:title];
 }
 
+- (void) windowWillClose:(NSNotification *)notification {
+  NSWindow* window = [self window];
+  [window setDelegate: nil];
+  [self release];
+}
+
 @end
