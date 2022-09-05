@@ -1,6 +1,6 @@
-imap <silent> <ESC>[1;0P~ <C-R>=GSHandlePaste()<CR>
-noremap <silent> <ESC>[1;0P~ :call GSHandlePaste()<CR>p
-vmap <silent> <ESC>[1;0P~    :call GSHandlePaste()<CR>p
+imap <silent> <ESC>[1;0P~    <C-R>=GSHandlePaste()<CR>
+noremap <silent> <ESC>[1;0P~ :call GSHandlePaste()<CR>
+vmap <silent> <ESC>[1;0P~    :call GSHandlePaste()<CR>
 
 let g:last_vim_mode = '_'
 
@@ -15,20 +15,18 @@ if &term == "gsterm"
 	map! <Esc>[<65;1;1m <ScrollWheelDown>
 endif
 
-function! GSResetAfterPaste(x)
-  set nopaste
-endfunction
-
 function! GSHandlePaste()
   let pf = expand("$VIMGS_PASTE_FILE")
   let txt = join(readfile(pf, "b"), "\n")
   let m = mode()
   set paste
 
-  call timer_start(50, "GSResetAfterPaste")
-  
-  call setreg('"', txt)
-  return txt
+  if m == 'n' || m == 'v'
+    call setreg('"', txt)
+    normal gp
+  else
+    return txt
+  endif
 endfunction
 
 vnoremap <silent> <ESC>[1;0C~ y: call GSHandleCopy()<CR>
@@ -52,6 +50,7 @@ function! GSBufEnter()
 endfunction
 
 function! GSChangeMode()
+  set nopaste
   let m = mode()
   if (g:last_vim_mode != m)
     call writefile(["]X;MODE-".m.""], "/dev/stderr", "b")

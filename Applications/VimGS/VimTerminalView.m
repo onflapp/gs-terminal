@@ -140,7 +140,8 @@
 }
 
 - (void)ts_handleXOSC:(NSString *)new_cmd {
-  NSLog(@"[%@]", new_cmd);
+  //NSLog(@"[%@]", new_cmd);
+
   if ([new_cmd isEqualToString:@"COPY"]) {
     NSString* txt = [NSString stringWithContentsOfFile:copyDataFile];
     NSPasteboard* pb = [NSPasteboard generalPasteboard];
