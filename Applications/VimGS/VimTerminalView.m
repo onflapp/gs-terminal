@@ -118,6 +118,7 @@
   }
   else {
     [super copy:sender];
+    [self ts_sendCString:"\e"];
   }
 }
 
