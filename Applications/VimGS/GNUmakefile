@@ -41,6 +41,7 @@ VimGS_LIBRARIES_DEPEND_UPON += -lTerminalKit
 VimGS_RESOURCE_FILES = \
 Preferences/Preferences.bundle \
 Resources/vim.gorm \
+Resources/VimGS.tiff \
 Resources/Document.gorm \
 Resources/vimview 
 
