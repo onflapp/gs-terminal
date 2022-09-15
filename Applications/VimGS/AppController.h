@@ -12,7 +12,7 @@
 #define _PCAPPPROJ_APPCONTROLLER_H
 
 #import <AppKit/AppKit.h>
-#import "Preferences/Preferences.h"
+#import "Preferences.h"
 
 @interface AppController : NSObject
 {

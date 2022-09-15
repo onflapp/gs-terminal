@@ -20,63 +20,41 @@ endif
 include $(GNUSTEP_MAKEFILES)/common.make
 
 #
-# Application
+# Bundle
 #
 VERSION = 0.1
-PACKAGE_NAME = VimGS
-APP_NAME = VimGS
-VimGS_APPLICATION_ICON = VimGS.tiff
-GNUSTEP_INSTALLATION_DOMAIN = LOCAL
+PACKAGE_NAME = Preferences
+BUNDLE_NAME = Preferences
+Preferences_PRINCIPAL_CLASS = Preferences
+BUNDLE_EXTENSION = .bundle
 
-
-#
-# Libraries
-#
-VimGS_LIBRARIES_DEPEND_UPON += -lTerminalKit 
-
-#
-# Subprojects
-#
-SUBPROJECTS = \
-Preferences.subproj 
 
 #
 # Resource files
 #
-VimGS_RESOURCE_FILES = \
-Resources/vim.gorm \
-Resources/Document.gorm \
-Resources/VimGS.tiff \
-Resources/vimview \
-Resources/../Preferences.subproj/Preferences.bundle 
+Preferences_RESOURCE_FILES = \
+Resources/Colors.gorm \
+Resources/PreferencesPanel.gorm 
 
 
 #
 # Header files
 #
-VimGS_HEADER_FILES = \
-AppController.h \
-Document.h \
-VimTerminalView.h
+Preferences_HEADER_FILES = \
+Preferences.h \
+ColorsPrefs.h
 
 #
 # Objective-C Class files
 #
-VimGS_OBJC_FILES = \
-AppController.m \
-Document.m \
-VimTerminalView.m
-
-#
-# Other sources
-#
-VimGS_OBJC_FILES += \
-vim_main.m 
+Preferences_OBJC_FILES = \
+Preferences.m \
+ColorsPrefs.m
 
 #
 # Makefiles
 #
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make
-include $(GNUSTEP_MAKEFILES)/application.make
+include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble

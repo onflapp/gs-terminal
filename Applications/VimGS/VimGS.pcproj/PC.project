@@ -1,5 +1,5 @@
 {
-    APPLICATIONICON = "";
+    APPLICATIONICON = "VimGS.tiff";
     "APP_DOCUMENT_BASED" = NO;
     "APP_TYPE" = GORM;
     "BUILDER_TARGETS" = (
@@ -10,6 +10,7 @@
 	distclean,
 	dist
     );
+    "BUILDER_VERBOSE" = YES;
     "BUNDLE_IDENTIFIER" = "";
     "CLASS_FILES" = (
 	"AppController.m",
@@ -29,6 +30,7 @@
 	"VimTerminalView.h"
     );
     IMAGES = (
+	"VimGS.tiff"
     );
     INSTALLDIR = "$(HOME)/GNUstep";
     INSTALLDOMAIN = Local;
@@ -49,7 +51,8 @@
     MAKEFILEDIR = "$(GNUSTEP_MAKEFILES)";
     "OBJC_COMPILEROPTIONS" = "";
     "OTHER_RESOURCES" = (
-	vimview
+	vimview,
+	"../Preferences.subproj/Preferences.bundle"
     );
     "OTHER_SOURCES" = (
 	"vim_main.m"
@@ -76,11 +79,14 @@
     "PROJECT_TYPE" = Application;
     "PROJECT_URL" = "";
     "SEARCH_HEADER_DIRS" = (
+	"Preferences.subproj"
     );
     "SEARCH_LIB_DIRS" = (
-	"/Library/Frameworks"
+	"/Library/Frameworks",
+	"Preferences.subproj"
     );
     SUBPROJECTS = (
+	Preferences
     );
     "SUPPORTING_FILES" = (
 	"GNUmakefile.preamble",
