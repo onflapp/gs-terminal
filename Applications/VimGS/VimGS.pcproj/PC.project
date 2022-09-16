@@ -44,7 +44,7 @@
 	"gnustep-gui",
 	TerminalKit
     );
-    LINKEROPTIONS = "-lTerminalKit";
+    LINKEROPTIONS = "-lTerminalKit -lutil";
     "LOCALIZED_RESOURCES" = (
     );
     MAININTERFACE = "vim.gorm";

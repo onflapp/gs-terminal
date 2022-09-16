@@ -2381,6 +2381,12 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   write_buf=NULL;
   close(master_fd);
   master_fd=-1;
+
+  if (childPID > 0) {
+    waitpid(childPID, NULL, 0);
+    kill(childPID, 9);
+    childPID = -1;
+  }
 }
 
 - (int)runProgram:(NSString *)path
