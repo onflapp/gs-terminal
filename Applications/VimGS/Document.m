@@ -58,6 +58,9 @@
 }
 
 - (void) dealloc {
+  [[NSNotificationCenter defaultCenter]
+    removeObserver:self];
+
   [super dealloc];
 }
 
@@ -66,6 +69,7 @@
 }
 
 - (void) viewBecameIdle:(NSNotification*) n {
+  [terminalView closeProgram];
   [window close];
 }
 
@@ -100,6 +104,8 @@
 
 - (void) windowWillClose:(NSNotification *)notification {
   NSWindow* window = [self window];
+  [terminalView quit:self];
+
   [window setDelegate: nil];
   [self release];
 }

@@ -137,7 +137,9 @@
 }
 
 - (void) quit:(id) sender {
-  [self ts_sendCString:"\e\e:q\r"];
+  [self ts_sendCString:"\e\e:q!\r"];
+  //NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.1];
+  //[[NSRunLoop currentRunLoop] runUntilDate: limit];
 }
 
 - (void)ts_handleXOSC:(NSString *)new_cmd {
@@ -177,12 +179,6 @@
 - (void) goToLine:(NSInteger) line {
   NSString* txt = [NSString stringWithFormat:@"\e\e:%ld\r", line];
   [self ts_sendCString:[txt UTF8String]];
-}
-
-- (void) windowWillClose:(NSNotification *)n {
-  [self ts_sendCString:"\e\e:q!\r"];
-
-  //[[NSApp delegate] closeTerminalWindow:self];
 }
 
 - (void) dealloc {
