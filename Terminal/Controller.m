@@ -18,7 +18,6 @@
  
 #import <sys/wait.h>
 
-#import <DesktopKit/DesktopKit.h>
 #import <TerminalKit/TerminalKit.h>
 
 #import "Defaults.h"
@@ -123,7 +122,7 @@
 // Shell > Open...
 - (void)openSession:(id)sender
 {
-  NXTOpenPanel *panel = [NXTOpenPanel openPanel];
+  NSOpenPanel *panel = [NSOpenPanel openPanel];
   NSString     *sessionDir, *path;
   NSInteger    result;
 
@@ -228,14 +227,14 @@
 {
   TerminalWindowController *twc;
   NSString                 *fileName, *filePath;
-  NXTSavePanel             *panel;
+  NSSavePanel              *panel;
   NSString                 *sessionDir;
   Defaults                 *prefs;
 
   if ((sessionDir = [Defaults sessionsDirectory]) == nil)
     return;
   
-  panel = [NXTSavePanel savePanel];
+  panel = [NSSavePanel savePanel];
   [panel setTitle:@"Save As"];
   [panel setShowsHiddenFiles:NO];
 
@@ -476,7 +475,7 @@
 
   if (twc != nil) {
     [NSApp activateIgnoringOtherApps:YES];
-    alertChoice = NXTRunAlertPanel((@"Quit"),
+    alertChoice = NSRunAlertPanel((@"Quit"),
                                    (@"Some windows have running commands."),
                                    (@"Review"), (@"Quit Anyway"), (@"Cancel"));
 

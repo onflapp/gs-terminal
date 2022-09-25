@@ -9,7 +9,6 @@
 */
 
 #import <AppKit/AppKit.h>
-#import <DesktopKit/NXTAlert.h>
 #import <TerminalKit/TerminalKit.h>
 
 #import "TerminalServices.h"
@@ -28,7 +27,7 @@ static NSDictionary *servicesDictionary = nil;
   udServices = [[NSUserDefaults standardUserDefaults]
                              dictionaryForKey:@"TerminalServices"];
   if (udServices == nil && servicesDictionary == nil) { // no defs, no decision
-    if (NXTRunAlertPanel(@"Terminal Services",
+    if (NSRunAlertPanel(@"Terminal Services",
                          @"No services are define. "
                          @"Would you like to load a set of example services?",
                          @"Load Examples", @"Don't Load", nil) == NSOKButton) {
@@ -148,7 +147,7 @@ static NSDictionary *servicesDictionary = nil;
 
       if (![md objectForKey:@"NSSendTypes"] &&
           ![md objectForKey:@"NSReturnTypes"]) {
-        NXTRunAlertPanel(@"Terminal Services",
+        NSRunAlertPanel(@"Terminal Services",
                          @"Service with name '%@' has neither Send nor"
                          " Return values. Please specify '%%s' as command"
                          " parameter or 'Return Output' in 'Execution' block. "

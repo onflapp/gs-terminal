@@ -62,7 +62,7 @@ ADDITIONAL_OBJCFLAGS += -Wall -D$(subst -,_,$(GNUSTEP_HOST_OS)) -Wno-pointer-sig
 #	-Wmissing-prototypes -Wmissing-declarations \
 #	-Wnested-externs -Wno-unused-parameter
 
-Terminal_LDFLAGS = -lutil -lDesktopKit -lSystemKit -lTerminalKit
+Terminal_LDFLAGS = -lutil -lTerminalKit
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
 include $(GNUSTEP_MAKEFILES)/application.make
