@@ -29,6 +29,14 @@
 - (id) initWithFrame:(NSRect) frame {
   [super initWithFrame:frame];
 
+  Defaults* prefs = [[Defaults alloc] init];
+  [prefs setScrollBackEnabled:NO];
+  [prefs setWindowBackgroundColor:[NSColor controlBackgroundColor]];
+  [prefs setCursorColor:[NSColor controlBackgroundColor]];
+
+  [self setCursorStyle:[prefs cursorStyle]];
+  [self updateColors:prefs];
+
   return self;
 }
 
@@ -68,10 +76,24 @@
   [self ts_sendCString:"\e\ek"];
 }
 
-- (void) quit:(id) sender {
-  [self ts_sendCString:"\e\e:q!\r"];
-  //NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.1];
-  //[[NSRunLoop currentRunLoop] runUntilDate: limit];
+- (void) sortBy:(id) sender {
+  NSInteger tag = [[sender selectedItem] tag];
+  if (tag == 0) {
+    [self ts_sendCString:"N"];
+  }
+  else if (tag == 1) {
+    [self ts_sendCString:"P"];
+  }
+  else if (tag == 2) {
+    [self ts_sendCString:"M"];
+  }
+  else if (tag == 3) {
+    [self ts_sendCString:"T"];
+  }
+}
+
+- (void) pause:(id) sender {
+  [self ts_sendCString:"Z"];
 }
 
 - (void)ts_handleXOSC:(NSString *)new_cmd {

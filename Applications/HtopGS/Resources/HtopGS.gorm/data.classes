@@ -13,8 +13,10 @@
     FirstResponder = {
 	Actions = (
 	    "kill:",
-	    "setup:",
+	    "sortBy:",
 	    "orderFrontFontPanel:",
+	    "pause:",
+	    "setup:",
 	    "showPrefPanel:",
 	    "} - initWithPreferences:"
 	);
@@ -23,7 +25,9 @@
     HtopTerminalView = {
 	Actions = (
 	    "kill:",
-	    "setup:"
+	    "setup:",
+	    "sortBy:",
+	    "pause:"
 	);
 	Outlets = (
 	);

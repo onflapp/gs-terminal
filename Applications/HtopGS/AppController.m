@@ -71,6 +71,12 @@
   return NO;
 }
 
+- (void) windowWillClose:(id) not 
+{
+  [terminalView closeProgram];
+  [NSApp terminate:nil];
+}
+
 - (void) viewBecameIdle:(id) not 
 {
   [terminalView closeProgram];
