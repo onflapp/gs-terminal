@@ -1,0 +1,40 @@
+{
+    "## Comment" = "Do NOT change this file, Gorm maintains it";
+    AppController = {
+	Actions = (
+	    "showPrefPanel:"
+	);
+	Outlets = (
+	    window,
+	    terminalView
+	);
+	Super = NSObject;
+    };
+    FirstResponder = {
+	Actions = (
+	    "kill:",
+	    "setup:",
+	    "orderFrontFontPanel:",
+	    "showPrefPanel:",
+	    "} - initWithPreferences:"
+	);
+	Super = NSObject;
+    };
+    HtopTerminalView = {
+	Actions = (
+	    "kill:",
+	    "setup:"
+	);
+	Outlets = (
+	);
+	Super = TerminalView;
+    };
+    TerminalView = {
+	Actions = (
+	    "} - initWithPreferences:"
+	);
+	Outlets = (
+	);
+	Super = NSView;
+    };
+}
