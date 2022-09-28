@@ -1,5 +1,5 @@
 {
-    APPLICATIONICON = "";
+    APPLICATIONICON = "HTopGS.tiff";
     "APP_DOCUMENT_BASED" = NO;
     "APP_TYPE" = GORM;
     "BUILDER_TARGETS" = (
@@ -27,6 +27,7 @@
 	"HtopTerminalView.h"
     );
     IMAGES = (
+	"HTopGS.tiff"
     );
     INSTALLDIR = "$(HOME)/GNUstep";
     INTERFACES = (

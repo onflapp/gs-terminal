@@ -25,7 +25,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 VERSION = 0.1
 PACKAGE_NAME = HtopGS
 APP_NAME = HtopGS
-HtopGS_APPLICATION_ICON = 
+HtopGS_APPLICATION_ICON = HTopGS.tiff
 
 
 #
@@ -33,6 +33,7 @@ HtopGS_APPLICATION_ICON =
 #
 HtopGS_RESOURCE_FILES = \
 Resources/HtopGS.gorm \
+Resources/HTopGS.tiff \
 Resources/htopview 
 
 
