@@ -2859,7 +2859,8 @@ static int handled_mask = (NSDragOperationCopy |
 // ---
 - initWithFrame:(NSRect)frame
 {
-  defaults = [Defaults shared];
+  if (defaults == nil) defaults = [Defaults shared];
+
   sx = [defaults windowWidth];
   sy = [defaults windowHeight];
 
@@ -2906,7 +2907,7 @@ static int handled_mask = (NSDragOperationCopy |
 
   childTerminalName = nil;
 
-  [self updateColors:nil];
+  [self updateColors:defaults];
   [self setCursorStyle:[defaults cursorStyle]];
 
   [self blinkCursor];

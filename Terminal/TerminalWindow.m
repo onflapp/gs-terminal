@@ -555,7 +555,7 @@ NSString* const TerminalWindowSizeDidChangeNotification =
   if ([prefs objectForKey:CursorColorKey])
     {
       [tView setCursorStyle:[prefs cursorStyle]];
-      [tView updateColors:prefs]; // TODO
+      [tView updateColors:prefs];
       [tView setNeedsDisplayInRect:[tView frame]];
 
       // Update live preferences
