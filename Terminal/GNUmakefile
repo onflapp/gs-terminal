@@ -50,6 +50,7 @@ Terminal_RESOURCE_FILES = \
 	Preferences/Preferences.bundle \
 	Resources/ExampleServices.svcs \
 	Resources/Terminal.tiff \
+	Resources/TermFile.tiff \
 	Resources/ScrollingMach.tiff
 
 MAKE_STRINGS_OPTIONS = --aggressive-match --aggressive-remove
