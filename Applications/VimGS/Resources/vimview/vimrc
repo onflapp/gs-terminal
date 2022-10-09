@@ -2,6 +2,8 @@ imap <silent> <ESC>[1;0P~    <C-R>=GSHandlePaste()<CR>
 noremap <silent> <ESC>[1;0P~ :call GSHandlePaste()<CR>
 vmap <silent> <ESC>[1;0P~    :call GSHandlePaste()<CR>
 
+set title
+
 let g:last_vim_mode = '_'
 
 if &term == "gsterm"
