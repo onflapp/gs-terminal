@@ -2366,6 +2366,7 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 {
   if (master_fd == -1)
     return;
+
   NSDebugLLog(@"pty",@"closing master fd=%i\n",master_fd);
 
   [[NSRunLoop currentRunLoop] removeEvent:(void *)(intptr_t)master_fd
@@ -2382,9 +2383,11 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   close(master_fd);
   master_fd=-1;
 
+  NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.1];
+  [[NSRunLoop currentRunLoop] runUntilDate: limit];
+
   if (childPID > 0) {
-    waitpid(childPID, NULL, 0);
-    kill(childPID, 9);
+    waitpid(childPID, NULL, WNOHANG);
     childPID = -1;
   }
 }

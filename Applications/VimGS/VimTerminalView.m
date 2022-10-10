@@ -138,8 +138,8 @@
 
 - (void) quit:(id) sender {
   [self ts_sendCString:"\e\e:q!\r"];
-  //NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.1];
-  //[[NSRunLoop currentRunLoop] runUntilDate: limit];
+  NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.1];
+  [[NSRunLoop currentRunLoop] runUntilDate: limit];
 }
 
 - (void)ts_handleXOSC:(NSString *)new_cmd {
