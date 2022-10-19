@@ -1,0 +1,17 @@
+#!/usr/bin/php
+<?php
+system("stty -icanon");                                  // Enable shell input
+system("stty -echo");                                    // Disable characters printing
+echo "\e[?1000h";                                        // Mouse trap xterm
+function shutdown(){                                     // Cleaning before quiting
+    echo "\e[?1000l";                                    // Disable mouse trap
+    system("stty echo");                                 // Enable back characters printing
+    exit;                                                // Cleaned, quit
+}
+register_shutdown_function("shutdown");                  // Handle regular END of script
+declare(ticks = 1);                                      // Allow posix signal handling
+pcntl_signal(SIGINT,"shutdown");                         // Catch SIGINT (CTRL+C)   
+$KEY = "";
+while ($KEY = fread(STDIN,16)) {
+  echo "" . substr($KEY, 1) . "\n";
+}

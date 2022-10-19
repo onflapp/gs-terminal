@@ -68,7 +68,6 @@ function! GSHandleSelection()
   let txt = getreg("@*")
   call writefile([txt], cf, "b")
   call writefile(["]X;SELECTION"], "/dev/stderr", "b")
-  normal gv
 endfunction
 
 function! GSHandleCopy()

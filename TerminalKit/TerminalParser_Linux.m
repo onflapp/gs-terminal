@@ -536,7 +536,7 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       case 1000:
         NSDebugLLog(@"term",@"_set_mode 1000"); //mouse button, encode values
         report_mouse = on_off ? 1000 : 0;
-        [ts ts_setMouseTracking:NO];
+        [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       } else switch(par[i]) {		/* ANSI modes set/reset */
       case 3:			/* Monitor (display ctrls) */
@@ -1368,14 +1368,15 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
     }
   }
   else if (report_mouse == 1000) {
-    int st = 0;
-    px = px + 33;
-    py = py + 33;
+    int st = 32;
+    px = px + 32;
+    py = py + 32;
     if ([e type] == NSLeftMouseUp) {
-      data = [NSString stringWithFormat:@"\e[M%d%c%c", st, px, py];
+      data = [NSString stringWithFormat:@"\e[M%c%c%c", st, px, py];
     }
     else if ([e type] == NSLeftMouseDown) {
-      data = [NSString stringWithFormat:@"\e[M%d%c%c", st, px, py];
+      st += 3;
+      data = [NSString stringWithFormat:@"\e[M%c%c%c", st, px, py];
     }
   }
 
