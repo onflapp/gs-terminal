@@ -42,6 +42,8 @@
 }
 
 - (void) applicationDidFinishLaunching: (NSNotification *)aNotif {
+  NSArray* types = [NSArray arrayWithObjects:NSStringPboardType, nil];
+  [NSApp registerServicesMenuSendTypes:types returnTypes:nil];
 }
 
 - (BOOL) applicationShouldTerminate: (id)sender {

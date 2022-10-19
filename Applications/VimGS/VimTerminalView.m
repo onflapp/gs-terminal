@@ -152,6 +152,10 @@
     [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
     [pb setString:txt forType:NSStringPboardType];
   }
+  else if ([new_cmd isEqualToString:@"SELECTION"]) {
+    NSString* txt = [NSString stringWithContentsOfFile:copyDataFile];
+    ASSIGN(currentSelection, txt);
+  }
   else if ([new_cmd hasPrefix:@"MODE-"]) {
     if ([new_cmd isEqualToString:@"MODE-i"]) {
       mode = 'i';
@@ -181,11 +185,40 @@
   [self ts_sendCString:[txt UTF8String]];
 }
 
+- (id)validRequestorForSendType:(NSString *)st
+                     returnType:(NSString *)rt {
+  if (mode == 'v') {
+    if ([st isEqual:NSStringPboardType]) return self;
+  }
+  return nil;
+}
+
+- (BOOL)writeSelectionToPasteboard:(NSPasteboard *)pb
+                             types:(NSArray *)types {
+
+  ASSIGN(currentSelection, @"");
+  [self ts_sendCString:"\e[1;0S~"];
+
+  //we should probably loop instead
+  NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.5];
+  [[NSRunLoop currentRunLoop] runUntilDate: limit];
+
+  if ([currentSelection length]) {
+    [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
+    [pb setString:currentSelection forType:NSStringPboardType];
+    return YES;
+  }
+  else {
+    return NO;
+  }
+}
+
 - (void) dealloc {
   [self closeProgram];
 
   RELEASE(copyDataFile);
   RELEASE(pasteDataFile);
+  RELEASE(currentSelection);
 
   [super dealloc];
 }

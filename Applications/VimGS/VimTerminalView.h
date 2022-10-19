@@ -31,6 +31,7 @@
 @interface VimTerminalView : TerminalView {
   NSString* copyDataFile;
   NSString* pasteDataFile;
+  NSString* currentSelection;
 
   char mode;
 }

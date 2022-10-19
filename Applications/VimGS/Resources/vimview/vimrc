@@ -1,6 +1,6 @@
-imap <silent> <ESC>[1;0P~    <C-R>=GSHandlePaste()<CR>
-noremap <silent> <ESC>[1;0P~ :call GSHandlePaste()<CR>
-vmap <silent> <ESC>[1;0P~    :call GSHandlePaste()<CR>
+imap <silent> <ESC>[1;0P~    <C-R>=GSHandlePaste('i')<CR>
+noremap <silent> <ESC>[1;0P~ :call GSHandlePaste('n')<CR>
+vmap <silent> <ESC>[1;0P~    :call GSHandlePaste('v')<CR>
 
 set title
 
@@ -17,15 +17,17 @@ if &term == "gsterm"
 	map! <Esc>[<65;1;1m <ScrollWheelDown>
 endif
 
-function! GSHandlePaste()
+function! GSHandlePaste(m)
   let pf = expand("$VIMGS_PASTE_FILE")
   let txt = join(readfile(pf, "b"), "\n")
-  let m = mode()
   set paste
 
-  if m == 'n' || m == 'v'
+  if a:m == 'n' 
     call setreg('"', txt)
-    normal gp
+    normal gP
+  elseif a:m == 'v'
+    call setreg('"', txt)
+    normal gvp
   else
     return txt
   endif
@@ -33,6 +35,7 @@ endfunction
 
 vnoremap <silent> <ESC>[1;0C~ y: call GSHandleCopy()<CR>
 vnoremap <silent> <ESC>[1;0X~ d: call GSHandleCopy()<CR>
+vnoremap <silent> <ESC>[1;0S~ y: call GSHandleSelection()<CR>
 
 augroup vimgsevents
   au! SafeState * call GSChangeMode()
@@ -60,9 +63,18 @@ function! GSChangeMode()
   endif
 endfunction
 
+function! GSHandleSelection()
+  let cf = expand("$VIMGS_COPY_FILE")
+  let txt = getreg("@*")
+  call writefile([txt], cf, "b")
+  call writefile(["]X;SELECTION"], "/dev/stderr", "b")
+  normal gv
+endfunction
+
 function! GSHandleCopy()
   let cf = expand("$VIMGS_COPY_FILE")
   let txt = getreg("@*")
   call writefile([txt], cf, "b")
   call writefile(["]X;COPY"], "/dev/stderr", "b")
+  normal gv
 endfunction
