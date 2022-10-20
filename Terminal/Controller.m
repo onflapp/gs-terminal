@@ -393,6 +393,7 @@
 
   [NSApp setServicesProvider:[[TerminalServices alloc] init]];
 
+
   // Check for -autolaunch
   args = [[NSProcessInfo processInfo] arguments];
   index = [args indexOfObject:@"-autolaunch"];
@@ -402,19 +403,22 @@
     }
   }
 
-  switch ([[Defaults shared] startupAction])
-    {
-    case OnStartCreateShell:
-      twc = [self newWindowWithShell];
-      [twc showWindow:self];
-      break;
-    case OnStartOpenFile:
-      [self openStartupFile:[[Defaults shared] startupFile]];
-      break;
-    default:
-      // OnStartDoNothing == do nothing
-      break;
-    }
+  if (!isLaunchedFromFile) { // lauched with .term file, skip regular startup
+
+    switch ([[Defaults shared] startupAction])
+      {
+      case OnStartCreateShell:
+        twc = [self newWindowWithShell];
+        [twc showWindow:self];
+        break;
+      case OnStartOpenFile:
+        [self openStartupFile:[[Defaults shared] startupFile]];
+        break;
+      default:
+        // OnStartDoNothing == do nothing
+        break;
+      }
+  }
 
   // By default "-NXAutoLaunch YES" option resigns active state from
   // starting application.
@@ -498,6 +502,7 @@
 {
   if ([[filename pathExtension] isEqualToString:@"term"]) {
     [self openStartupFile:filename];
+    isLaunchedFromFile = YES;
   }
   return YES;
 }

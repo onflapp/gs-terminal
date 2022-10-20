@@ -32,6 +32,7 @@
   NSWindow            *mainWindow;
   NSTimer             *timer;
   BOOL                isAppAutoLaunched;
+  BOOL                isLaunchedFromFile;
   
   BOOL                quitPanelOpen;
 

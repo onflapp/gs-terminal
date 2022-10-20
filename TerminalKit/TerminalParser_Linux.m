@@ -146,7 +146,7 @@ static const unichar *_set_translate(int charset)
   G1_charset	= GRAF_MAP;
 
   charset	= 0;
-	report_mouse	= 0;
+  report_mouse	= 0;
   utf           = 0;
   utf_count     = 0;
 
@@ -159,7 +159,6 @@ static const unichar *_set_translate(int charset)
   deccm		= 1;
   decim		= 0;
 
-  report_mouse = 0;
   [ts ts_setMouseTracking:NO];
 
 #if 0
@@ -1372,17 +1371,17 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
     px = px + 32;
     py = py + 32;
     if ([e type] == NSLeftMouseUp) {
+      st += 3;
       data = [NSString stringWithFormat:@"\e[M%c%c%c", st, px, py];
     }
     else if ([e type] == NSLeftMouseDown) {
-      st += 3;
       data = [NSString stringWithFormat:@"\e[M%c%c%c", st, px, py];
     }
   }
 
   if (data) {
     const char* buf = [data cString];
-	  [ts ts_sendCString:buf];
+    [ts ts_sendCString:buf];
   }
 }
 
