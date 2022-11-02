@@ -24,6 +24,19 @@
 
 #import "VimTerminalView.h"
 
+@implementation NSMutableData (replaceNullChars)
+
+- (void) replaceNullChars {
+  char* buff = [self mutableBytes];
+  for (NSInteger i = 0; i < [self length];i++) {
+    if (*(buff+i) == '\0') {
+      *(buff+i) = '\n';
+    }
+  }
+}
+
+@end
+
 @implementation VimTerminalView
 
 - (id) initWithFrame:(NSRect) frame {
@@ -146,15 +159,24 @@
   //NSLog(@"[%@]", new_cmd);
 
   if ([new_cmd isEqualToString:@"COPY"]) {
-    NSString* txt = [NSString stringWithContentsOfFile:copyDataFile];
+    NSMutableData* data = [NSMutableData dataWithContentsOfFile:copyDataFile];
+    [data replaceNullChars];
+    NSString* txt = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
     NSPasteboard* pb = [NSPasteboard generalPasteboard];
 
     [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
     [pb setString:txt forType:NSStringPboardType];
+    [txt release];
   }
   else if ([new_cmd isEqualToString:@"SELECTION"]) {
-    NSString* txt = [NSString stringWithContentsOfFile:copyDataFile];
+    NSMutableData* data = [NSMutableData dataWithContentsOfFile:copyDataFile];
+    [data replaceNullChars];
+
+    NSString* txt = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
     ASSIGN(currentSelection, txt);
+    [txt release];
   }
   else if ([new_cmd hasPrefix:@"MODE-"]) {
     if ([new_cmd isEqualToString:@"MODE-i"]) {
