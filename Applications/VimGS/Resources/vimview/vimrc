@@ -33,21 +33,14 @@ function! GSHandlePaste(m)
   endif
 endfunction
 
-vnoremap <silent> <ESC>[1;0C~ y: call GSHandleCopy()<CR>
-vnoremap <silent> <ESC>[1;0X~ d: call GSHandleCopy()<CR>
-vnoremap <silent> <ESC>[1;0S~ y: call GSHandleSelection()<CR>
+vnoremap <silent> <ESC>[1;0C~ y: call GSHandleCopy('c')<CR>
+vnoremap <silent> <ESC>[1;0X~ d: call GSHandleCopy('x')<CR>
+vnoremap <silent> <ESC>[1;0S~ y: call GSHandleCopy('s')<CR>
 
 augroup vimgsevents
   au! SafeState * call GSChangeMode()
   au! BufEnter * call GSBufEnter()
 augroup END
-
-function! GSHandleSelection()
-  let cf = expand("$VIMGS_COPY_FILE")
-  let txt = getreg("@*")
-  call writefile([txt], cf, "b")
-  call writefile(["]X;SEL"], "/dev/stderr", "b")
-endfunction
 
 function! GSBufEnter()
   let p = expand("%:p")
@@ -63,17 +56,17 @@ function! GSChangeMode()
   endif
 endfunction
 
-function! GSHandleSelection()
+function! GSHandleCopy(m)
   let cf = expand("$VIMGS_COPY_FILE")
   let txt = getreg("@*")
   call writefile([txt], cf, "b")
-  call writefile(["]X;SELECTION"], "/dev/stderr", "b")
-endfunction
-
-function! GSHandleCopy()
-  let cf = expand("$VIMGS_COPY_FILE")
-  let txt = getreg("@*")
-  call writefile([txt], cf, "b")
-  call writefile(["]X;COPY"], "/dev/stderr", "b")
-  normal gv
+  if (a:m == 'c')
+    call writefile(["]X;COPY"], "/dev/stderr", "b")
+    normal gv
+  elseif (a:m == 's')
+    call writefile(["]X;SELECTION"], "/dev/stderr", "b")
+    normal gv
+  elseif (a:m == 'x')
+    call writefile(["]X;COPY"], "/dev/stderr", "b")
+  endif
 endfunction
