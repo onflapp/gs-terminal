@@ -31,7 +31,8 @@
 
   Defaults* prefs = [[Defaults alloc] init];
   [prefs setScrollBackEnabled:NO];
-  [prefs setWindowBackgroundColor:[NSColor controlBackgroundColor]];
+  [prefs setWindowBackgroundColor:[NSColor blackColor]];
+  [prefs setTextNormalColor:[NSColor grayColor]];
   [prefs setCursorColor:[NSColor controlBackgroundColor]];
 
   [self setCursorStyle:[prefs cursorStyle]];
