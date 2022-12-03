@@ -11,10 +11,10 @@ if &term == "gsterm"
   set t_fs=
   set ttymouse=sgr
 
-	map <Esc>[<64;1;1m  <ScrollWheelUp>
-	map! <Esc>[<64;1;1m <ScrollWheelUp>
-	map <Esc>[<65;1;1m  <ScrollWheelDown>
-	map! <Esc>[<65;1;1m <ScrollWheelDown>
+  map <Esc>[<64;1;1M  <ScrollWheelUp>
+  map! <Esc>[<64;1;1M <ScrollWheelUp>
+  map <Esc>[<65;1;1M  <ScrollWheelDown>
+  map! <Esc>[<65;1;1M <ScrollWheelDown>
 endif
 
 function! GSHandlePaste(m)

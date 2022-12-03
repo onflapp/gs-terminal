@@ -1346,10 +1346,10 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
   
   if ([e type] == NSScrollWheel) {
     if ([e buttonNumber] == 5) {
-      data = [NSString stringWithFormat:@"\e[<65;%d;%dm", px, py];
+      data = [NSString stringWithFormat:@"\e[<65;%d;%dM", px, py];
     }
     else if ([e buttonNumber] == 4) {
-      data = [NSString stringWithFormat:@"\e[<64;%d;%dm", px, py];
+      data = [NSString stringWithFormat:@"\e[<64;%d;%dM", px, py];
     } 
   }
   else if (report_mouse == 1006) {

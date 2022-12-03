@@ -32,13 +32,24 @@
   Defaults* prefs = [[Defaults alloc] init];
   [prefs setScrollBackEnabled:NO];
   [prefs setWindowBackgroundColor:[NSColor blackColor]];
+  [prefs setWindowBackgroundColor:[NSColor whiteColor]];
   [prefs setTextNormalColor:[NSColor grayColor]];
+  [prefs setTextNormalColor:[NSColor blackColor]];
   [prefs setCursorColor:[NSColor controlBackgroundColor]];
 
   [self setCursorStyle:[prefs cursorStyle]];
   [self updateColors:prefs];
 
   return self;
+}
+
+- (void) scrollWheel:(NSEvent *)e {
+  if ([e buttonNumber] == 4) {
+    [self moveLineUp:self];
+  }
+  if ([e buttonNumber] == 5) {
+    [self moveLineDown:self];
+  }
 }
 
 - (void) runHtop {
@@ -70,11 +81,11 @@
 }
 
 - (void) moveLineDown:(id) sender {
-  [self ts_sendCString:"\e\ej"];
+  [self ts_sendCString:"\eOB"];
 }
 
 - (void) moveLineUp:(id) sender {
-  [self ts_sendCString:"\e\ek"];
+  [self ts_sendCString:"\eOA"];
 }
 
 - (void) sortBy:(id) sender {
