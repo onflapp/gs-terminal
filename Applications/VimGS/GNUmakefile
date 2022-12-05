@@ -48,7 +48,9 @@ Resources/vim.gorm \
 Resources/Document.gorm \
 Resources/VimGS.tiff \
 Resources/vimview \
-Resources/../Preferences.subproj/Preferences.bundle 
+Resources/../Preferences.subproj/Preferences.bundle \
+Resources/ApplicationScripting.xlp \
+Resources/ScriptingInfo.plist 
 
 
 #
@@ -57,7 +59,8 @@ Resources/../Preferences.subproj/Preferences.bundle
 VimGS_HEADER_FILES = \
 AppController.h \
 Document.h \
-VimTerminalView.h
+VimTerminalView.h \
+STScriptingSupport.h
 
 #
 # Objective-C Class files
@@ -65,7 +68,8 @@ VimTerminalView.h
 VimGS_OBJC_FILES = \
 AppController.m \
 Document.m \
-VimTerminalView.m
+VimTerminalView.m \
+STScriptingSupport.m
 
 #
 # Other sources

@@ -20,6 +20,7 @@ SUBPROJECTS = Preferences
 Terminal_OBJC_FILES = \
 	main.m \
 	Controller.m \
+	STScriptingSupport.m \
 	\
 	Defaults.m\
 	\
@@ -29,6 +30,7 @@ Terminal_OBJC_FILES = \
 	TerminalServicesPanel.m \
 	\
 	TerminalWindow.m \
+	TerminalWindow+scripting.m \
 	TerminalView.m \
 	\
 	InfoPanel.m\
@@ -51,6 +53,8 @@ Terminal_RESOURCE_FILES = \
 	Resources/ExampleServices.svcs \
 	Resources/Terminal.tiff \
 	Resources/TermFile.tiff \
+	Resources/ApplicationScripting.xlp \
+	Resources/ScriptingInfo.plist \
 	Resources/ScrollingMach.tiff
 
 MAKE_STRINGS_OPTIONS = --aggressive-match --aggressive-remove

@@ -441,7 +441,8 @@ obj/VimGS.obj/AppController.m.o: AppController.m AppController.h \
   /Developer/Headers/TerminalKit/TerminalView.h \
   /Developer/Headers/TerminalKit/Terminal.h \
   /Developer/Headers/TerminalKit/TerminalParser_Linux.h \
-  /Developer/Headers/TerminalKit/Defaults.h VimTerminalView.h
+  /Developer/Headers/TerminalKit/Defaults.h VimTerminalView.h \
+  STScriptingSupport.h
 
 AppController.h:
 
@@ -1358,3 +1359,5 @@ Document.h:
 /Developer/Headers/TerminalKit/Defaults.h:
 
 VimTerminalView.h:
+
+STScriptingSupport.h:

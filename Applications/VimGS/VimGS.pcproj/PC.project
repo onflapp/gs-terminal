@@ -15,7 +15,8 @@
     "CLASS_FILES" = (
 	"AppController.m",
 	"Document.m",
-	"VimTerminalView.m"
+	"VimTerminalView.m",
+	"STScriptingSupport.m"
     );
     COMPILEROPTIONS = "";
     CPPOPTIONS = "";
@@ -27,7 +28,8 @@
     "HEADER_FILES" = (
 	"AppController.h",
 	"Document.h",
-	"VimTerminalView.h"
+	"VimTerminalView.h",
+	"STScriptingSupport.h"
     );
     IMAGES = (
 	"VimGS.tiff"
@@ -52,7 +54,9 @@
     "OBJC_COMPILEROPTIONS" = "";
     "OTHER_RESOURCES" = (
 	vimview,
-	"../Preferences.subproj/Preferences.bundle"
+	"../Preferences.subproj/Preferences.bundle",
+	"ApplicationScripting.xlp",
+	"ScriptingInfo.plist"
     );
     "OTHER_SOURCES" = (
 	"vim_main.m"

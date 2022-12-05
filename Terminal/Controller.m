@@ -26,6 +26,8 @@
 #import "TerminalWindow.h"
 #import "TerminalFinder.h"
 
+#import "STScriptingSupport.h"
+
 #import "Controller.h"
 
 //-----------------------------------------------------------------------------
@@ -382,7 +384,11 @@
     addObserver:self
        selector:@selector(mainWindowDidChange:)
            name:NSWindowDidBecomeMainNotification
-         object:nil];  
+         object:nil];
+
+  if([NSApp isScriptingSupported]) {
+    [NSApp initializeApplicationScripting];
+  }
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)n

@@ -11,6 +11,8 @@
 #import "AppController.h"
 #import "Document.h"
 
+#import "STScriptingSupport.h"
+
 @implementation AppController
 
 + (void) initialize {
@@ -44,6 +46,10 @@
 - (void) applicationDidFinishLaunching: (NSNotification *)aNotif {
   NSArray* types = [NSArray arrayWithObjects:NSStringPboardType, nil];
   [NSApp registerServicesMenuSendTypes:types returnTypes:nil];
+
+  if([NSApp isScriptingSupported]) {
+    [NSApp initializeApplicationScripting];
+  }
 }
 
 - (BOOL) applicationShouldTerminate: (id)sender {

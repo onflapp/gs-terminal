@@ -6,7 +6,7 @@ export TERM=screen
 
 if ! [ -f "$PREFDIR/htoprc" ];then
   mkdir -p "$PREFDIR" 2> /dev/null
-  cp ./htoprc "$PREFDIR"
+  cp "$DIR/htoprc" "$PREFDIR"
 fi
 
 export HTOPRC="$PREFDIR/htoprc"
