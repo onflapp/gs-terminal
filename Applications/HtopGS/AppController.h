@@ -18,6 +18,7 @@
 {
   IBOutlet NSWindow* window;
   IBOutlet HtopTerminalView* terminalView;
+  IBOutlet NSTextField* statusField;
 }
 
 + (void)  initialize;

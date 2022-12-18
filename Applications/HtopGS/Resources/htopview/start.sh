@@ -10,4 +10,13 @@ if ! [ -f "$PREFDIR/htoprc" ];then
 fi
 
 export HTOPRC="$PREFDIR/htoprc"
-exec /usr/bin/htop
+OPTS=""
+
+if [ "$1" == "user" ];then
+  OPTS="$OPTS -u"
+fi
+if [ -n "$2" ];then
+  OPTS="$OPTS -F $2"
+fi
+
+exec /usr/bin/htop $OPTS

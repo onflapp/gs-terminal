@@ -53,7 +53,19 @@
 }
 
 - (void) runHtop {
+  NSUserDefaults* config = [NSUserDefaults standardUserDefaults];
   NSMutableArray* args = [NSMutableArray new];
+  NSString* filter = [filterField stringValue];
+
+  if ([config integerForKey:@"user_processes"] == 1) {
+    [args addObject:@"user"];
+  }
+  else {
+    [args addObject:@"all"];
+  }
+  if ([filter length] > 0) {
+    [args addObject:filter];
+  }
 
   NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"htopview"];
   NSString* exec = [vp stringByAppendingPathComponent:@"start.sh"];
@@ -66,6 +78,23 @@
 
 - (void) kill:(id) sender {
  [self ts_sendCString:"k"];
+}
+
+- (void) filter:(id) sender {
+  NSUserDefaults* config = [NSUserDefaults standardUserDefaults];
+
+  if (sender == filterField) {
+    NSLog(@"xxx");
+    [self runHtop];
+  }
+  else if ([sender selectedTag] == 1) {
+    [config setInteger:1 forKey:@"user_processes"];
+    [self runHtop];
+  }
+  else {
+    [config setInteger:0 forKey:@"user_processes"];
+    [self runHtop];
+  }
 }
 
 - (void) setup:(id) sender {

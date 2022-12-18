@@ -13,11 +13,12 @@
     FirstResponder = {
 	Actions = (
 	    "kill:",
-	    "sortBy:",
+	    "filter:",
 	    "orderFrontFontPanel:",
 	    "pause:",
 	    "setup:",
 	    "showPrefPanel:",
+	    "sortBy:",
 	    "} - initWithPreferences:"
 	);
 	Super = NSObject;
@@ -27,9 +28,11 @@
 	    "kill:",
 	    "setup:",
 	    "sortBy:",
-	    "pause:"
+	    "pause:",
+	    "filter:"
 	);
 	Outlets = (
+	    filterField
 	);
 	Super = TerminalView;
     };

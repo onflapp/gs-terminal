@@ -29,6 +29,7 @@
 #import <TerminalKit/TerminalKit.h>
 
 @interface HtopTerminalView : TerminalView {
+  IBOutlet NSTextField* filterField;
 }
 
 - (void) runHtop;
