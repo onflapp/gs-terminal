@@ -33,6 +33,7 @@ Console_APPLICATION_ICON = Console.tiff
 #
 Console_RESOURCE_FILES = \
 Resources/Console.gorm \
+Resources/Find.gorm \
 Resources/Console.tiff \
 Resources/logview 
 
@@ -42,14 +43,16 @@ Resources/logview
 #
 Console_HEADER_FILES = \
 AppController.h \
-ConsoleTerminalView.h
+ConsoleTerminalView.h \
+TerminalFinder.h
 
 #
 # Objective-C Class files
 #
 Console_OBJC_FILES = \
 AppController.m \
-ConsoleTerminalView.m
+ConsoleTerminalView.m \
+TerminalFinder.m
 
 #
 # Other sources

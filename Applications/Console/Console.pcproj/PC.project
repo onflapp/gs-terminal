@@ -13,7 +13,8 @@
     "BUNDLE_IDENTIFIER" = "";
     "CLASS_FILES" = (
 	"AppController.m",
-	"ConsoleTerminalView.m"
+	"ConsoleTerminalView.m",
+	"TerminalFinder.m"
     );
     COMPILEROPTIONS = "";
     CPPOPTIONS = "";
@@ -24,14 +25,16 @@
     );
     "HEADER_FILES" = (
 	"AppController.h",
-	"ConsoleTerminalView.h"
+	"ConsoleTerminalView.h",
+	"TerminalFinder.h"
     );
     IMAGES = (
 	"Console.tiff"
     );
     INSTALLDIR = "$(HOME)/GNUstep";
     INTERFACES = (
-	"Console.gorm"
+	"Console.gorm",
+	"Find.gorm"
     );
     LANGUAGE = English;
     LIBRARIES = (

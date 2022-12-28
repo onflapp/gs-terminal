@@ -29,13 +29,17 @@
 - (id) initWithFrame:(NSRect) frame {
   [super initWithFrame:frame];
 
+  NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
+
   Defaults* prefs = [[Defaults alloc] init];
   [prefs setScrollBackEnabled:YES];
-  [prefs setWindowBackgroundColor:[NSColor blackColor]];
   [prefs setWindowBackgroundColor:[NSColor whiteColor]];
   [prefs setTextNormalColor:[NSColor grayColor]];
   [prefs setTextNormalColor:[NSColor blackColor]];
+  [prefs setTextBoldColor:[NSColor redColor]];
   [prefs setCursorColor:[NSColor controlBackgroundColor]];
+  [prefs setScrollBottomOnInput:NO];
+  [prefs setScrollBackLines:[cfg integerForKey:@"max_lines"]];
 
   [self setCursorStyle:[prefs cursorStyle]];
   [self updateColors:prefs];
@@ -44,9 +48,11 @@
 }
 
 - (void) runLogView {
-  NSUserDefaults* config = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
   NSMutableArray* args = [NSMutableArray new];
   NSString* filter = [filterField stringValue];
+
+  [args addObject:[[cfg objectForKey:@"max_lines"]description]];
 
   if ([filter length] > 0) {
     [args addObject:filter];
@@ -55,6 +61,8 @@
   NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"logview"];
   NSString* exec = [vp stringByAppendingPathComponent:@"start.sh"];
 
+  [self clearBuffer:self];
+
   [self runProgram:exec
      withArguments:args
       initialInput:nil];
@@ -62,7 +70,7 @@
 }
 
 - (void) filter:(id) sender {
-  NSUserDefaults* config = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
 
   if (sender == filterField) {
     [self runLogView];

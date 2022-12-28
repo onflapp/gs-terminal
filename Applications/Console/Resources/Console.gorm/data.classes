@@ -12,9 +12,11 @@
     };
     ConsoleTerminalView = {
 	Actions = (
+	    "filter:"
 	);
 	Outlets = (
-	    filterField
+	    filterField,
+	    scroller
 	);
 	Super = TerminalView;
     };

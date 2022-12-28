@@ -35,6 +35,7 @@
 
 - (void) showPrefPanel: (id)sender;
 
+- (ConsoleTerminalView*) terminalView;
 @end
 
 #endif

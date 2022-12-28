@@ -9,6 +9,7 @@
 */
 
 #import "AppController.h"
+#import "TerminalFinder.h"
 
 @implementation AppController
 
@@ -16,13 +17,7 @@
 {
   NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
 
-  /*
-   * Register your app's defaults here by adding objects to the
-   * dictionary, eg
-   *
-   * [defaults setObject:anObject forKey:keyForThatObject];
-   *
-   */
+  [defaults setObject:[NSNumber numberWithInteger:1000] forKey:@"max_lines"];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
   [[NSUserDefaults standardUserDefaults] synchronize];
@@ -71,6 +66,11 @@
   return NO;
 }
 
+- (ConsoleTerminalView*) terminalView
+{
+  return terminalView;
+}
+
 - (void) windowWillClose:(id) not 
 {
   [terminalView closeProgram];
@@ -87,5 +87,37 @@
 - (void) showPrefPanel: (id)sender
 {
 }
+
+// Edit > Find > Find Panel...
+- (void)openFindPanel:(id)sender
+{
+  [[TerminalFinder sharedInstance] orderFrontFindPanel:self];
+}
+- (void)findNext:(id)sender
+{
+  [[TerminalFinder sharedInstance] findNext:self];
+}
+- (void)findPrevious:(id)sender
+{
+  [[TerminalFinder sharedInstance] findPrevious:self];
+}
+- (void)enterSelection:(id)sender
+{
+  TerminalFinder *finder = [TerminalFinder sharedInstance];
+  NSString	 *string;
+  TerminalView   *tv;
+
+  tv = [self terminalView];
+  string = [[tv stringRepresentation] substringFromRange:[tv selectedRange]];
+  [finder setFindString:string];
+}
+- (void)jumpToSelection:(id)sender
+{
+  TerminalView *tv;
+
+  tv = [self terminalView];
+  [tv scrollRangeToVisible:[tv selectedRange]];
+}
+
 
 @end
