@@ -2,7 +2,9 @@
     "## Comment" = "Do NOT change this file, Gorm maintains it";
     AppController = {
 	Actions = (
-	    "showPrefPanel:"
+	    "showPrefPanel:",
+	    "orderFrontFontPanel:",
+	    "modifyFont:"
 	);
 	Outlets = (
 	    window,
@@ -22,8 +24,9 @@
     };
     FirstResponder = {
 	Actions = (
-	    "kill:",
 	    "filter:",
+	    "kill:",
+	    "modifyFont:",
 	    "orderFrontFontPanel:",
 	    "pause:",
 	    "setup:",

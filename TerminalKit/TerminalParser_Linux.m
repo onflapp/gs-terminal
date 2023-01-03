@@ -1420,7 +1420,7 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       else if (mask & NSShiftKeyMask)
         str = "\e[1;2A"; // xterm
       else
-        str = "\eOA";
+        str = "\e[A";
       break;
     case NSDownArrowFunctionKey:
       if (mask & NSControlKeyMask)
@@ -1428,7 +1428,7 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       else if (mask & NSShiftKeyMask)
         str ="\e[1;2B"; // xterm
       else
-        str = "\eOB";
+        str = "\e[B";
       break;
     case NSLeftArrowFunctionKey:
       if (mask & NSControlKeyMask)
@@ -1436,7 +1436,7 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       else if (mask & NSShiftKeyMask)
         str = "\e[1;2D"; // xterm
       else
-        str = "\eOD";
+        str = "\e[D";
       break;
     case NSRightArrowFunctionKey:
       if (mask & NSControlKeyMask)
@@ -1444,7 +1444,7 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       else if (mask & NSShiftKeyMask)
         str="\e[1;2C"; //xterm
       else
-        str="\eOC";
+        str="\e[C";
       break;
 
     case NSF1FunctionKey : str="\e[[A"; break;

@@ -36,6 +36,7 @@
 
 - (void) showPrefPanel: (id)sender;
 
+- (HtopTerminalView*) terminalView;
 @end
 
 #endif

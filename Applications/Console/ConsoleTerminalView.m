@@ -40,6 +40,7 @@
   [prefs setCursorColor:[NSColor controlBackgroundColor]];
   [prefs setScrollBottomOnInput:NO];
   [prefs setScrollBackLines:[cfg integerForKey:@"max_lines"]];
+  [prefs setUseBoldTerminalFont:NO];
 
   [self setCursorStyle:[prefs cursorStyle]];
   [self updateColors:prefs];

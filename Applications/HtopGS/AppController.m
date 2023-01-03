@@ -71,6 +71,51 @@
   return NO;
 }
 
+- (HtopTerminalView*) terminalView
+{
+  return terminalView;  
+}
+
+// "Font" menu
+- (void)orderFrontFontPanel:(id)sender
+{
+  NSFontManager *fm = [NSFontManager sharedFontManager];
+  TerminalView  *tv = [self terminalView];
+
+  Defaults *prefs = [tv preferences];
+  
+  [fm setSelectedFont:[prefs terminalFont] isMultiple:NO];
+  [fm orderFrontFontPanel:sender];
+}
+
+// Larger and Smaller
+- (void)modifyFont:(id)sender
+{
+  NSFontManager *fm = [NSFontManager sharedFontManager];
+  TerminalView  *tv = [self terminalView];
+
+  Defaults *prefs = [tv preferences];
+
+  [fm setSelectedFont:[prefs terminalFont] isMultiple:NO];
+  [fm modifyFont:sender];
+
+  [self changeFont:nil];
+}
+
+- (void)changeFont:(id)sender
+{
+  NSFontManager *fm = [NSFontManager sharedFontManager];
+  TerminalView  *tv = [self terminalView];
+
+  Defaults *prefs = [tv preferences];
+  NSFont *font = [fm convertFont:[fm selectedFont]];
+
+  [prefs setTerminalFont:font];
+  [tv setFont:font];
+  [tv setBoldFont:font];
+  [tv setNeedsDisplay:YES];
+}
+
 - (void) windowWillClose:(id) not 
 {
   [terminalView closeProgram];

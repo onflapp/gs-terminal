@@ -2,7 +2,7 @@
 
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
-export TERM=screen
+export TERM=linux
 
 if ! [ -f "$PREFDIR/htoprc" ];then
   mkdir -p "$PREFDIR" 2> /dev/null

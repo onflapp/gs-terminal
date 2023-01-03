@@ -32,7 +32,7 @@
   Defaults* prefs = [[Defaults alloc] init];
   [prefs setScrollBackEnabled:NO];
   [prefs setWindowBackgroundColor:[NSColor blackColor]];
-  [prefs setWindowBackgroundColor:[NSColor whiteColor]];
+  [prefs setWindowBackgroundColor:[NSColor controlBackgroundColor]];
   [prefs setTextNormalColor:[NSColor grayColor]];
   [prefs setTextNormalColor:[NSColor blackColor]];
   [prefs setCursorColor:[NSColor controlBackgroundColor]];
@@ -84,7 +84,6 @@
   NSUserDefaults* config = [NSUserDefaults standardUserDefaults];
 
   if (sender == filterField) {
-    NSLog(@"xxx");
     [self runHtop];
   }
   else if ([sender selectedTag] == 1) {
@@ -110,11 +109,11 @@
 }
 
 - (void) moveLineDown:(id) sender {
-  [self ts_sendCString:"\eOB"];
+  [self ts_sendCString:"\e[B"];
 }
 
 - (void) moveLineUp:(id) sender {
-  [self ts_sendCString:"\eOA"];
+  [self ts_sendCString:"\e[A"];
 }
 
 - (void) sortBy:(id) sender {
