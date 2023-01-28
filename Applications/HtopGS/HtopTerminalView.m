@@ -74,6 +74,7 @@
      withArguments:args
       initialInput:nil];
 
+  running = YES;
 }
 
 - (void) kill:(id) sender {
@@ -138,6 +139,17 @@
 
 - (void)ts_handleXOSC:(NSString *)new_cmd {
   NSLog(@"[%@]", new_cmd);
+}
+
+- (void) closeProgram {
+  if (![self isProgramClosed] && running) {
+    running = NO;
+    NSLog(@"closing");
+    [self ts_sendCString:"\e[21~\e[21~"];
+    NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.3];
+    [[NSRunLoop currentRunLoop] runUntilDate: limit];
+  }
+  [super closeProgram];
 }
 
 - (void) dealloc {

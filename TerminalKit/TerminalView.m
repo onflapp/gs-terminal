@@ -3203,6 +3203,10 @@ static int handled_mask = (NSDragOperationCopy |
   return (master_fd == -1) || (tcgetpgrp(master_fd) == childPID) ? NO : YES;
 }
 
+- (BOOL)isProgramClosed
+{
+  return (master_fd == -1);
+}
 
 - (void)setIgnoreResize:(BOOL)ignore
 {

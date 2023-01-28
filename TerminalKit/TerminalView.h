@@ -194,6 +194,7 @@ struct selection_range
 - (void)readData;
 
 - (void)closeProgram;
+- (BOOL)isProgramClosed;
 
 // Next 3 methods return PID of program
 - (int)runProgram:(NSString *)path

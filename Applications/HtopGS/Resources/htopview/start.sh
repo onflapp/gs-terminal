@@ -2,7 +2,10 @@
 
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
+
 export TERM=linux
+export LANG=en_US.UTF-8
+export LC_CTYPE="en_US.UTF-8"
 
 if ! [ -f "$PREFDIR/htoprc" ];then
   mkdir -p "$PREFDIR" 2> /dev/null
