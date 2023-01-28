@@ -533,8 +533,13 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       case 1000:
-        NSDebugLLog(@"term",@"_set_mode 1000"); //mouse button, encode values
+        NSDebugLLog(@"term",@"_set_mode 1000"); //mouse button, encode 7bit values
         report_mouse = on_off ? 1000 : 0;
+        [ts ts_setMouseTracking:on_off ? YES : NO];
+        break;
+      case 1005:
+        NSDebugLLog(@"term",@"_set_mode 1005"); //mouse button, encode UTF8 values
+        report_mouse = on_off ? 1005 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       } else switch(par[i]) {		/* ANSI modes set/reset */
@@ -1370,12 +1375,29 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
     int st = 32;
     px = px + 32;
     py = py + 32;
+
+    if (px > 127) px = 127;
+    if (py > 127) py = 127;
+
     if ([e type] == NSLeftMouseUp) {
       st += 3;
       data = [NSString stringWithFormat:@"\e[M%c%c%c", st, px, py];
     }
     else if ([e type] == NSLeftMouseDown) {
       data = [NSString stringWithFormat:@"\e[M%c%c%c", st, px, py];
+    }
+  }
+  else if (report_mouse == 1005) {
+    int st = 32;
+    px = px + 32;
+    py = py + 32;
+
+    if ([e type] == NSLeftMouseUp) {
+      st += 3;
+      data = [NSString stringWithFormat:@"\e[M%c%lc%lc", st, px, py];
+    }
+    else if ([e type] == NSLeftMouseDown) {
+      data = [NSString stringWithFormat:@"\e[M%c%lc%lc", st, px, py];
     }
   }
 

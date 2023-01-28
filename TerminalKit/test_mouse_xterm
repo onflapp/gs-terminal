@@ -13,5 +13,11 @@ declare(ticks = 1);                                      // Allow posix signal h
 pcntl_signal(SIGINT,"shutdown");                         // Catch SIGINT (CTRL+C)   
 $KEY = "";
 while ($KEY = fread(STDIN,16)) {
-  echo "" . substr($KEY, 1) . "\n";
+  $b = ord($KEY[3]) - 32;
+  $x = ord($KEY[4]) - 32;
+  $y = ord($KEY[5]) - 32;
+  $xs = $KEY[4];
+  $ys = $KEY[5];
+  //echo "" . substr($KEY, 1) . "-- $b,$x,$y\n";
+  echo "$b,$x,$y\n";
 }
