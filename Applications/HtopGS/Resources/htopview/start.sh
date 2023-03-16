@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
 
@@ -17,6 +19,9 @@ OPTS=""
 
 if [ "$1" == "user" ];then
   OPTS="$OPTS -u"
+fi
+if [ "$1" == "apps" ];then
+  OPTS="$OPTS -u --filter=.app/"
 fi
 if [ -n "$2" ];then
   OPTS="$OPTS -F $2"

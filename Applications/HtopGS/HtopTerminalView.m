@@ -31,9 +31,8 @@
 
   Defaults* prefs = [[Defaults alloc] init];
   [prefs setScrollBackEnabled:NO];
-  [prefs setWindowBackgroundColor:[NSColor blackColor]];
   [prefs setWindowBackgroundColor:[NSColor controlBackgroundColor]];
-  [prefs setTextNormalColor:[NSColor grayColor]];
+  [prefs setWindowBackgroundColor:[NSColor whiteColor]];
   [prefs setTextNormalColor:[NSColor blackColor]];
   [prefs setCursorColor:[NSColor controlBackgroundColor]];
 
@@ -59,6 +58,9 @@
 
   if ([config integerForKey:@"user_processes"] == 1) {
     [args addObject:@"user"];
+  }
+  else if ([config integerForKey:@"user_processes"] == 2) {
+    [args addObject:@"apps"];
   }
   else {
     [args addObject:@"all"];
@@ -89,6 +91,10 @@
   }
   else if ([sender selectedTag] == 1) {
     [config setInteger:1 forKey:@"user_processes"];
+    [self runHtop];
+  }
+  else if ([sender selectedTag] == 2) {
+    [config setInteger:2 forKey:@"user_processes"];
     [self runHtop];
   }
   else {

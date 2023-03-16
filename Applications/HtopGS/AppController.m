@@ -50,9 +50,15 @@
 
 - (void) applicationDidFinishLaunching: (NSNotification *)aNotif
 {
-  [window setFrameAutosaveName:@"terminal_window"];
-  [window makeKeyAndOrderFront:self];
-  [terminalView runHtop];
+}
+
+- (void) applicationDidBecomeActive: (id)sender
+{
+  if (![window isVisible]) {
+    [window setFrameAutosaveName:@"terminal_window"];
+    [window makeKeyAndOrderFront:self];
+    [terminalView runHtop];
+  }
 }
 
 - (BOOL) applicationShouldTerminate: (id)sender
@@ -119,14 +125,13 @@
 - (void) windowWillClose:(id) not 
 {
   [terminalView closeProgram];
-  [NSApp terminate:nil];
 }
 
 - (void) viewBecameIdle:(id) not 
 {
-  [terminalView closeProgram];
-  [window close];
-  [NSApp terminate:nil];
+  //[terminalView closeProgram];
+  //[window close];
+  //[NSApp terminate:nil];
 }
 
 - (void) showPrefPanel: (id)sender
