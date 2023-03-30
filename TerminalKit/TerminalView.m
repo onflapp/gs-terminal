@@ -1638,6 +1638,25 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 
 @implementation TerminalView (selection)
 
+- (NSString *)stringAtPoint:(NSPoint)point granularity:(int)g
+{
+  NSPoint p = point;
+  int ofs1;
+  
+  p.x = floor((p.x - border_x)/fx);
+  if (p.x < 0) p.x = 0;
+  if (p.x >= sx) p.x = sx - 1;
+  p.y = ceil((p.y - border_y)/fy);
+  if (p.y < -1) p.y = -1;
+  if (p.y > sy) p.y = sy;
+  p.y = sy - p.y + current_scroll;
+  ofs1 = ((int)p.x) + ((int)p.y) * sx;
+
+  struct selection_range r1 = [self _selectionRangeAt:ofs1 granularity:g];
+  selection = r1;
+  return [self _selectionAsString];
+}
+
 - (NSString *)_selectionAsString
 {
   int ofs = max_scrollback * sx;
@@ -2195,6 +2214,26 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   return nil;
 }
 
+- (void)printExitMessage
+{
+  NSString *msg;
+  int i,c;
+  unichar ch;
+
+  [tp processByte: '\n'];
+  [tp processByte: '\r'];
+  msg = _(@"[Process exited]");
+  c = [msg length];
+  for (i=0; i<c; i++)
+    {
+      ch = [msg characterAtIndex:i];
+      if (ch < 256) /* TODO */
+        [tp processByte:ch];
+    }
+  [tp processByte: '\n'];
+  [tp processByte: '\r'];
+}
+
 - (void)readData
 {
   char buf[256];
@@ -2221,24 +2260,9 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
       // TODO: get program exit code.
       if (size <= 0)
         {
-          NSString *msg;
-          int i,c;
-          unichar ch;
 
           [self closeProgram];
-
-          [tp processByte: '\n'];
-          [tp processByte: '\r'];
-          msg = _(@"[Process exited]");
-          c = [msg length];
-          for (i=0; i<c; i++)
-            {
-              ch = [msg characterAtIndex:i];
-              if (ch < 256) /* TODO */
-                [tp processByte:ch];
-            }
-          [tp processByte: '\n'];
-          [tp processByte: '\r'];
+          [self printExitMessage];
 
           // Sending this notification might cause us to be deallocated, in
           // which case we can't let the rest of code here run (and we'd rather

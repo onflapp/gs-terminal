@@ -1,4 +1,5 @@
 obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
+  /Developer/Headers/AppKit/AppKitDefines.h \
   /Developer/Headers/GNUstepBase/GSVersionMacros.h \
   /Developer/Headers/GNUstepBase/GSConfig.h \
   /System/include/objc/blocks_runtime.h \
@@ -199,7 +200,6 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
   /System/include/dispatch/io.h /Developer/Headers/AppKit/AppKitErrors.h \
   /Developer/Headers/AppKit/NSGraphics.h \
   /Developer/Headers/AppKit/NSGraphicsContext.h \
-  /Developer/Headers/AppKit/AppKitDefines.h \
   /Developer/Headers/GNUstepGUI/GSMethodTable.h \
   /Developer/Headers/AppKit/NSFont.h /Developer/Headers/AppKit/NSColor.h \
   /Developer/Headers/AppKit/NSAccessibility.h \
@@ -236,11 +236,11 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
   /Developer/Headers/AppKit/NSCollectionView.h \
   /Developer/Headers/AppKit/NSDragging.h \
   /Developer/Headers/AppKit/NSNibDeclarations.h \
+  /Developer/Headers/AppKit/NSUserInterfaceItemIdentification.h \
+  /Developer/Headers/AppKit/NSCollectionViewFlowLayout.h \
+  /Developer/Headers/AppKit/NSCollectionViewLayout.h \
+  /Developer/Headers/AppKit/NSCollectionViewGridLayout.h \
   /Developer/Headers/AppKit/NSCollectionViewItem.h \
-  /Developer/Headers/AppKit/NSImageView.h \
-  /Developer/Headers/AppKit/NSImageCell.h \
-  /Developer/Headers/AppKit/NSTextField.h \
-  /Developer/Headers/AppKit/NSTextFieldCell.h \
   /Developer/Headers/AppKit/NSViewController.h \
   /Developer/Headers/AppKit/NSSeguePerforming.h \
   /Developer/Headers/AppKit/NSStoryboardSegue.h \
@@ -261,11 +261,16 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
   /Developer/Headers/AppKit/NSEPSImageRep.h \
   /Developer/Headers/AppKit/NSEvent.h \
   /Developer/Headers/AppKit/NSFontPanel.h \
+  /Developer/Headers/AppKit/NSTextField.h \
+  /Developer/Headers/AppKit/NSTextFieldCell.h \
   /Developer/Headers/AppKit/NSForm.h \
   /Developer/Headers/AppKit/NSMatrix.h \
   /Developer/Headers/AppKit/NSFormCell.h \
   /Developer/Headers/AppKit/NSHelpPanel.h \
-  /Developer/Headers/AppKit/NSImage.h /Developer/Headers/AppKit/NSMenu.h \
+  /Developer/Headers/AppKit/NSImage.h \
+  /Developer/Headers/AppKit/NSImageCell.h \
+  /Developer/Headers/AppKit/NSImageView.h \
+  /Developer/Headers/AppKit/NSMenu.h \
   /Developer/Headers/AppKit/NSMenuItem.h \
   /Developer/Headers/AppKit/NSMenuItemCell.h \
   /Developer/Headers/AppKit/NSMenuView.h \
@@ -327,6 +332,7 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
   /Developer/Headers/AppKit/NSDockTile.h \
   /Developer/Headers/AppKit/NSDocument.h \
   /Developer/Headers/AppKit/NSDocumentController.h \
+  /Developer/Headers/AppKit/NSDictionaryController.h \
   /Developer/Headers/AppKit/NSDrawer.h \
   /Developer/Headers/AppKit/NSFileWrapperExtensions.h \
   /Developer/Headers/AppKit/NSFontAssetRequest.h \
@@ -344,7 +350,6 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
   /Developer/Headers/AppKit/NSLayoutAnchor.h \
   /Developer/Headers/AppKit/NSLayoutConstraint.h \
   /Developer/Headers/AppKit/NSLayoutGuide.h \
-  /Developer/Headers/AppKit/NSUserInterfaceItemIdentification.h \
   /Developer/Headers/AppKit/NSLayoutManager.h \
   /Developer/Headers/GNUstepGUI/GSLayoutManager.h \
   /Developer/Headers/AppKit/NSTextView.h \
@@ -437,6 +442,8 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
   /Developer/Headers/AppKit/DPSOperators.h
 
 /Developer/Headers/AppKit/AppKit.h:
+
+/Developer/Headers/AppKit/AppKitDefines.h:
 
 /Developer/Headers/GNUstepBase/GSVersionMacros.h:
 
@@ -856,8 +863,6 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
 
 /Developer/Headers/AppKit/NSGraphicsContext.h:
 
-/Developer/Headers/AppKit/AppKitDefines.h:
-
 /Developer/Headers/GNUstepGUI/GSMethodTable.h:
 
 /Developer/Headers/AppKit/NSFont.h:
@@ -934,15 +939,15 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
 
 /Developer/Headers/AppKit/NSNibDeclarations.h:
 
+/Developer/Headers/AppKit/NSUserInterfaceItemIdentification.h:
+
+/Developer/Headers/AppKit/NSCollectionViewFlowLayout.h:
+
+/Developer/Headers/AppKit/NSCollectionViewLayout.h:
+
+/Developer/Headers/AppKit/NSCollectionViewGridLayout.h:
+
 /Developer/Headers/AppKit/NSCollectionViewItem.h:
-
-/Developer/Headers/AppKit/NSImageView.h:
-
-/Developer/Headers/AppKit/NSImageCell.h:
-
-/Developer/Headers/AppKit/NSTextField.h:
-
-/Developer/Headers/AppKit/NSTextFieldCell.h:
 
 /Developer/Headers/AppKit/NSViewController.h:
 
@@ -984,6 +989,10 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
 
 /Developer/Headers/AppKit/NSFontPanel.h:
 
+/Developer/Headers/AppKit/NSTextField.h:
+
+/Developer/Headers/AppKit/NSTextFieldCell.h:
+
 /Developer/Headers/AppKit/NSForm.h:
 
 /Developer/Headers/AppKit/NSMatrix.h:
@@ -993,6 +1002,10 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
 /Developer/Headers/AppKit/NSHelpPanel.h:
 
 /Developer/Headers/AppKit/NSImage.h:
+
+/Developer/Headers/AppKit/NSImageCell.h:
+
+/Developer/Headers/AppKit/NSImageView.h:
 
 /Developer/Headers/AppKit/NSMenu.h:
 
@@ -1118,6 +1131,8 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
 
 /Developer/Headers/AppKit/NSDocumentController.h:
 
+/Developer/Headers/AppKit/NSDictionaryController.h:
+
 /Developer/Headers/AppKit/NSDrawer.h:
 
 /Developer/Headers/AppKit/NSFileWrapperExtensions.h:
@@ -1151,8 +1166,6 @@ obj/VimGS.obj/vim_main.m.o: vim_main.m /Developer/Headers/AppKit/AppKit.h \
 /Developer/Headers/AppKit/NSLayoutConstraint.h:
 
 /Developer/Headers/AppKit/NSLayoutGuide.h:
-
-/Developer/Headers/AppKit/NSUserInterfaceItemIdentification.h:
 
 /Developer/Headers/AppKit/NSLayoutManager.h:
 

@@ -51,7 +51,13 @@
   }
 }
 
+- (void) printExitMessage {
+
+}
+
 - (void) runHtop {
+  [statusField setStringValue:@""];
+
   NSUserDefaults* config = [NSUserDefaults standardUserDefaults];
   NSMutableArray* args = [NSMutableArray new];
   NSString* filter = [filterField stringValue];
@@ -77,6 +83,17 @@
       initialInput:nil];
 
   running = YES;
+}
+
+- (void) terminateHtop {
+  if (![self isProgramClosed] && running) {
+    running = NO;
+    NSLog(@"closing");
+    [self ts_sendCString:"\e[21~\e[21~"];
+    NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.3];
+    [[NSRunLoop currentRunLoop] runUntilDate: limit];
+  }
+  [super closeProgram];
 }
 
 - (void) kill:(id) sender {
@@ -123,6 +140,15 @@
   [self ts_sendCString:"\e[A"];
 }
 
+- (void)mouseUp:(NSEvent *)e {
+  [super mouseUp:e];
+  NSPoint p = [e locationInWindow];
+  p = [self convertPoint:p fromView:nil];
+
+  NSString* str = [self stringAtPoint:p granularity:3];
+  [statusField setStringValue:str];
+}
+
 - (void) sortBy:(id) sender {
   NSInteger tag = [[sender selectedItem] tag];
   if (tag == 0) {
@@ -145,17 +171,6 @@
 
 - (void)ts_handleXOSC:(NSString *)new_cmd {
   NSLog(@"[%@]", new_cmd);
-}
-
-- (void) closeProgram {
-  if (![self isProgramClosed] && running) {
-    running = NO;
-    NSLog(@"closing");
-    [self ts_sendCString:"\e[21~\e[21~"];
-    NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.3];
-    [[NSRunLoop currentRunLoop] runUntilDate: limit];
-  }
-  [super closeProgram];
 }
 
 - (void) dealloc {

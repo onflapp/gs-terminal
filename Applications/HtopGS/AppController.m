@@ -68,7 +68,7 @@
 
 - (void) applicationWillTerminate: (NSNotification *)aNotif
 {
-  [terminalView closeProgram];
+  [terminalView terminateHtop];
 }
 
 - (BOOL) application: (NSApplication *)application
@@ -124,7 +124,7 @@
 
 - (void) windowWillClose:(id) not 
 {
-  [terminalView closeProgram];
+  [terminalView terminateHtop];
 }
 
 - (void) viewBecameIdle:(id) not 

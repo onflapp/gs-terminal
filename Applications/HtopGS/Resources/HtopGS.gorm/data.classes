@@ -36,7 +36,8 @@
 	    "filter:"
 	);
 	Outlets = (
-	    filterField
+	    filterField,
+	    statusField
 	);
 	Super = TerminalView;
     };

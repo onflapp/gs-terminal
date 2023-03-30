@@ -30,10 +30,12 @@
 
 @interface HtopTerminalView : TerminalView {
   IBOutlet NSTextField* filterField;
+  IBOutlet NSTextField* statusField;
   BOOL running;
 }
 
 - (void) runHtop;
+- (void) terminateHtop;
 @end
 
 #endif // _HTOPTERMINALVIEW_H_
