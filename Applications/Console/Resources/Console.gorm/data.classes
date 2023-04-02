@@ -18,7 +18,9 @@
 	);
 	Outlets = (
 	    filterField,
-	    scroller
+	    scroller,
+	    pauseButton,
+	    wrapLines
 	);
 	Super = TerminalView;
     };

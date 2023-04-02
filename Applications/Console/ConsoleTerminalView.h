@@ -30,6 +30,8 @@
 
 @interface ConsoleTerminalView : TerminalView {
   IBOutlet NSTextField* filterField;
+  IBOutlet NSButton* wrapLines;
+  IBOutlet NSButton* pauseButton;
 }
 
 - (void) runLogView;

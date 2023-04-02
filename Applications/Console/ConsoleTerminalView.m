@@ -32,7 +32,7 @@
   NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
 
   Defaults* prefs = [[Defaults alloc] init];
-  [prefs setScrollBackEnabled:YES];
+  [prefs setScrollBackEnabled:NO];
   [prefs setWindowBackgroundColor:[NSColor whiteColor]];
   [prefs setTextNormalColor:[NSColor grayColor]];
   [prefs setTextNormalColor:[NSColor blackColor]];
@@ -54,13 +54,16 @@
   NSString* filter = [filterField stringValue];
 
   [args addObject:[[cfg objectForKey:@"max_lines"]description]];
+  
+  if ([cfg integerForKey:@"wrap_lines"] == 1) [args addObject:@"1"];
+  else [args addObject:@"0"];
 
   if ([filter length] > 0) {
     [args addObject:filter];
   }
 
   NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"logview"];
-  NSString* exec = [vp stringByAppendingPathComponent:@"start.sh"];
+  NSString* exec = [vp stringByAppendingPathComponent:@"start_less.sh"];
 
   [self clearBuffer:self];
 
@@ -73,9 +76,10 @@
 - (void) filter:(id) sender {
   NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
 
-  if (sender == filterField) {
-    [self runLogView];
+  if (sender == wrapLines) {
   }
+
+  [self runLogView];
 }
 
 - (void)ts_handleXOSC:(NSString *)new_cmd {

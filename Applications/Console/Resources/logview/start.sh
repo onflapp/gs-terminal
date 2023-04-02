@@ -1,26 +1,39 @@
-#!/bin/bash
+#!/bin/bash -x
 
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
-CF=/tmp/console-$$.cf
+LF=/tmp/console-$$.log
 MAXLINES="$1"
+WRAPLINES="$2"
 
 trap cleanup EXIT
 
-if [ -n "$2" ];then
-  GS="--grep=$2"
+if [ -n "$3" ];then
+  GS="--grep=$3"
+fi
+if [ "$2" == "1" ];then
+  WL="S"
 fi
 
 function cleanup {
-  rm $CF 2>/dev/null
+  rm $LF 2>/dev/null
 }
 
-function readjournal {
-  while [ 1 ];do
-    /usr/bin/journalctl -n $MAXLINES -qeb --no-pager --cursor-file $CF $GS
-    sleep 2
+function highlight {
+  while read -r line ;do
+    #if [[ "$line" =~ ^(.*?):(.*?)$ ]];then
+    #printf '%s::\n' ${BASH_REMATCH[1]}
+    echo $line
   done
 }
 
-clear
-readjournal
+function readjournal {
+  export SYSTEMD_LOG_COLOR="1"
+  export SYSTEMD_COLORS="16"
+  /usr/bin/journalctl -n $MAXLINES -qeb --no-pager $GS | highlight >> $LF
+}
+
+touch $LF
+readjournal &
+sleep 0.3
+less -sRqf$WL +GF $LF
