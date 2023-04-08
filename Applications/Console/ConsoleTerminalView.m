@@ -35,7 +35,6 @@
   [prefs setScrollBackEnabled:NO];
   [prefs setWindowBackgroundColor:[NSColor whiteColor]];
   [prefs setTextNormalColor:[NSColor blackColor]];
-  [prefs setTextNormalColor:[NSColor darkGrayColor]];
   [prefs setTextBoldColor:[NSColor greenColor]];
   [prefs setCursorColor:[NSColor controlBackgroundColor]];
   [prefs setScrollBottomOnInput:NO];
@@ -85,7 +84,7 @@
   }
   else if (sender == pauseButton) {
     if ([self isWaitingForData]) {
-      [self ts_sendCString:""];
+      [self ts_sendCString:""];
       [pauseButton setTitle:@"Follow"];
   
       [[self window] makeFirstResponder:self];
@@ -108,7 +107,7 @@
 
 - (void) keyDown:(NSEvent *)e {
   if ([self isWaitingForData]) {
-    [self ts_sendCString:""];
+    [self ts_sendCString:""];
     [pauseButton setTitle:@"Follow"];
   }
 
