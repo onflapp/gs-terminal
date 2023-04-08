@@ -34,16 +34,17 @@
   Defaults* prefs = [[Defaults alloc] init];
   [prefs setScrollBackEnabled:NO];
   [prefs setWindowBackgroundColor:[NSColor whiteColor]];
-  [prefs setTextNormalColor:[NSColor grayColor]];
   [prefs setTextNormalColor:[NSColor blackColor]];
-  [prefs setTextBoldColor:[NSColor redColor]];
+  [prefs setTextNormalColor:[NSColor darkGrayColor]];
+  [prefs setTextBoldColor:[NSColor greenColor]];
   [prefs setCursorColor:[NSColor controlBackgroundColor]];
   [prefs setScrollBottomOnInput:NO];
-  [prefs setScrollBackLines:[cfg integerForKey:@"max_lines"]];
   [prefs setUseBoldTerminalFont:NO];
 
   [self setCursorStyle:[prefs cursorStyle]];
   [self updateColors:prefs];
+
+  [wrapLines setState:[cfg integerForKey:@"wrap_lines"]];
 
   return self;
 }
@@ -63,9 +64,11 @@
   }
 
   NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"logview"];
-  NSString* exec = [vp stringByAppendingPathComponent:@"start_less.sh"];
+  NSString* exec = [vp stringByAppendingPathComponent:@"start_console.sh"];
 
   [self clearBuffer:self];
+
+  [pauseButton setTitle:@"Pause"];
 
   [self runProgram:exec
      withArguments:args
@@ -77,12 +80,42 @@
   NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
 
   if (sender == wrapLines) {
+    [cfg setInteger:[sender state] forKey:@"wrap_lines"];
+    [self runLogView];
   }
-
-  [self runLogView];
+  else if (sender == pauseButton) {
+    if ([self isWaitingForData]) {
+      [self ts_sendCString:""];
+      [pauseButton setTitle:@"Follow"];
+  
+      [[self window] makeFirstResponder:self];
+    }
+    else {
+      [self ts_sendCString:"F"];
+      [pauseButton setTitle:@"Pause"];
+    }
+  }
+  else if (sender == filterField) {
+    [self runLogView];
+  }
 }
 
-- (void)ts_handleXOSC:(NSString *)new_cmd {
+- (BOOL) isWaitingForData {
+  NSString* status = [self stringAtPoint:NSMakePoint(5,5) granularity:3];
+  if ([status hasPrefix:@"Waiting for data... (interrupt to abort)"]) return YES;
+  else return NO;
+}
+
+- (void) keyDown:(NSEvent *)e {
+  if ([self isWaitingForData]) {
+    [self ts_sendCString:""];
+    [pauseButton setTitle:@"Follow"];
+  }
+
+  [super keyDown:e];
+}
+
+- (void) ts_handleXOSC:(NSString *)new_cmd {
   NSLog(@"[%@]", new_cmd);
 }
 

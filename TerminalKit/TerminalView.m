@@ -390,8 +390,9 @@ NSString *TerminalViewSizeDidChangeNotification=@"TerminalViewSizeDidChange";
 
 static int total_draw = 0;
 
-static const float col_h[8]={  0, 240, 120, 180,   0, 300,  30,   0};
-static const float col_s[8]={0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0};
+static float col_h[8]={  0, 240, 120, 180,   0, 300,  30,   0};
+static float col_s[8]={0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0};
+static float col_b[8]={0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6};
 // color values:
 // 	0 - black		"\e[30"
 // 	1 - blue		"\e[34"
@@ -421,7 +422,7 @@ static void set_background(NSGraphicsContext *gc,
   if (bg == 0)
     bb = blackOnWhite ? 1.0 : 0.0;
   else
-    bb = 0.6;
+    bb = col_b[bg];
   
   bs = col_s[bg];
   bh = col_h[bg] / 360.0;
@@ -476,6 +477,28 @@ static void set_foreground(NSGraphicsContext *gc,
     s *= 0.5;
   
   DPSsethsbcolor(gc, h, s, b);
+}
+
+// color index:
+// 	0 - black		"\e[30"
+// 	1 - blue		"\e[34"
+// 	2 - green		"\e[32"
+// 	3 - cyan		"\e[36"
+// 	4 - red			"\e[31"
+// 	5 - magenta		"\e[35"
+// 	6 - yellow		"\e[33"
+// 	7 - lightgray		"\e[37"
+
+- (void)overrideTermColor:(NSInteger)index color:(NSColor*) color
+{
+  if (index >= 0 && index <= 7) {
+    float hue = [color hueComponent];
+    float sat = [color saturationComponent];
+    float bri = [color brightnessComponent];
+    col_h[index] = hue * 360;
+    col_s[index] = sat;
+    col_b[index] = bri;
+  }
 }
 
 - (void)updateColors:(Defaults *)prefs

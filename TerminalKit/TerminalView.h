@@ -181,6 +181,7 @@ struct selection_range
 @end
 
 @interface TerminalView (display) <TerminalScreen>
+- (void)overrideTermColor:(NSInteger)index color:(NSColor*) color;
 - (void)updateColors:(Defaults *)prefs;
 - (void)setNeedsLazyDisplayInRect:(NSRect)r;
 @end

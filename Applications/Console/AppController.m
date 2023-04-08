@@ -9,7 +9,6 @@
 */
 
 #import "AppController.h"
-#import "TerminalFinder.h"
 
 @implementation AppController
 
@@ -79,9 +78,6 @@
 
 - (void) viewBecameIdle:(id) not 
 {
-  [terminalView closeProgram];
-  [window close];
-  [NSApp terminate:nil];
 }
 
 - (void) showPrefPanel: (id)sender
@@ -127,37 +123,5 @@
   [tv setBoldFont:font];
   [tv setNeedsDisplay:YES];
 }
-
-// Edit > Find > Find Panel...
-- (void)openFindPanel:(id)sender
-{
-  [[TerminalFinder sharedInstance] orderFrontFindPanel:self];
-}
-- (void)findNext:(id)sender
-{
-  [[TerminalFinder sharedInstance] findNext:self];
-}
-- (void)findPrevious:(id)sender
-{
-  [[TerminalFinder sharedInstance] findPrevious:self];
-}
-- (void)enterSelection:(id)sender
-{
-  TerminalFinder *finder = [TerminalFinder sharedInstance];
-  NSString	 *string;
-  TerminalView   *tv;
-
-  tv = [self terminalView];
-  string = [[tv stringRepresentation] substringFromRange:[tv selectedRange]];
-  [finder setFindString:string];
-}
-- (void)jumpToSelection:(id)sender
-{
-  TerminalView *tv;
-
-  tv = [self terminalView];
-  [tv scrollRangeToVisible:[tv selectedRange]];
-}
-
 
 @end
