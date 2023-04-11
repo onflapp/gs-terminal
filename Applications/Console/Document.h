@@ -1,11 +1,11 @@
 /*
-   Project: Console
+   Project: VimGS
 
-   Copyright (C) 2022 Free Software Foundation
+   Copyright (C) 2020 Free Software Foundation
 
    Author: onflapp
 
-   Created: 2022-04-19 08:52:45 +0200 by onflapp
+   Created: 2020-07-22 12:41:08 +0300 by root
 
    This application is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
@@ -22,26 +22,27 @@
    Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 */
 
-#ifndef _CONSOLETERMINALVIEW_H_
-#define _CONSOLETERMINALVIEW_H_
+#ifndef _DOCUMENT_H_
+#define _DOCUMENT_H_
 
 #import <AppKit/AppKit.h>
 #import <TerminalKit/TerminalKit.h>
+#import "ConsoleTerminalView.h"
 
-#define SYSTEMLOG @"SYSTEMLOG"
-#define DESKTOPLOG @"DESKTOPLOG"
+@interface Document : NSObject {
+  IBOutlet NSWindow *window;
+  IBOutlet ConsoleTerminalView *terminalView;
 
-@interface ConsoleTerminalView : TerminalView {
-  IBOutlet NSTextField* filterField;
-  IBOutlet NSButton* wrapLines;
-  IBOutlet NSButton* pauseButton;
-
-  NSString* logPath;
+  NSString* _filePath;
 }
 
-- (void) setLogPath:(NSString*) path;
-- (void) runLogView;
++ (id) documentForFile:(NSString*) path;
+
+- (id) initWithFile:(NSString*) path;
+- (NSWindow*) window;
+- (NSString*) filePath;
+
 @end
 
-#endif // _CONSOLETERMINALVIEW_H_
+#endif // _DOCUMENT_H_
 

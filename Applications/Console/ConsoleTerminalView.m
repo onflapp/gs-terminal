@@ -48,22 +48,39 @@
   return self;
 }
 
+- (void) setLogPath:(NSString*) path {
+  [logPath release];
+  logPath = [path retain];
+}
+
 - (void) runLogView {
   NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
   NSMutableArray* args = [NSMutableArray new];
   NSString* filter = [filterField stringValue];
 
-  [args addObject:[[cfg objectForKey:@"max_lines"]description]];
   
   if ([cfg integerForKey:@"wrap_lines"] == 1) [args addObject:@"1"];
   else [args addObject:@"0"];
+  
+  [args addObject:[[cfg objectForKey:@"max_lines"]description]];
 
   if ([filter length] > 0) {
     [args addObject:filter];
   }
 
   NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"logview"];
-  NSString* exec = [vp stringByAppendingPathComponent:@"start_console.sh"];
+  NSString* exec = nil;
+  
+  if ([logPath isEqualToString:DESKTOPLOG]) {
+    exec = [vp stringByAppendingPathComponent:@"start_desktoplog.sh"];
+  }
+  else if ([logPath isEqualToString:SYSTEMLOG]) {
+    exec = [vp stringByAppendingPathComponent:@"start_systemlog.sh"];
+  }
+  else if (logPath) {
+    exec = [vp stringByAppendingPathComponent:@"start_less.sh"];
+    [args addObject:logPath];
+  }
 
   [self clearBuffer:self];
 
@@ -119,6 +136,7 @@
 }
 
 - (void) dealloc {
+  [logPath release];
   [self closeProgram];
 
   [super dealloc];

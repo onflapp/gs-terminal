@@ -3,10 +3,12 @@
     AppController = {
 	Actions = (
 	    "showPrefPanel:",
-	    "openDesktopLog:",
-	    "openSystemLog:"
+	    "orderFrontFontPanel:",
+	    "modifyFont:"
 	);
 	Outlets = (
+	    window,
+	    terminalView
 	);
 	Super = NSObject;
     };
@@ -22,12 +24,21 @@
 	);
 	Super = TerminalView;
     };
+    Document = {
+	Actions = (
+	);
+	Outlets = (
+	    window,
+	    terminalView
+	);
+	Super = NSObject;
+    };
     FirstResponder = {
 	Actions = (
 	    "filter:",
 	    "kill:",
-	    "openDesktopLog:",
-	    "openSystemLog:",
+	    "modifyFont:",
+	    "orderFrontFontPanel:",
 	    "pause:",
 	    "setup:",
 	    "showPrefPanel:",

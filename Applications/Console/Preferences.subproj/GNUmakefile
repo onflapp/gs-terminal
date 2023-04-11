@@ -20,56 +20,41 @@ endif
 include $(GNUSTEP_MAKEFILES)/common.make
 
 #
-# Application
+# Bundle
 #
 VERSION = 0.1
-PACKAGE_NAME = Console
-APP_NAME = Console
-Console_APPLICATION_ICON = Console.tiff
+PACKAGE_NAME = Preferences
+BUNDLE_NAME = Preferences
+Preferences_PRINCIPAL_CLASS = Preferences
+BUNDLE_EXTENSION = .bundle
 
-
-#
-# Subprojects
-#
-SUBPROJECTS = \
-Preferences.subproj 
 
 #
 # Resource files
 #
-Console_RESOURCE_FILES = \
-Resources/Console.gorm \
-Resources/Document.gorm \
-Resources/Console.tiff \
-Resources/logview 
+Preferences_RESOURCE_FILES = \
+Resources/Colors.gorm \
+Resources/PreferencesPanel.gorm 
 
 
 #
 # Header files
 #
-Console_HEADER_FILES = \
-AppController.h \
-ConsoleTerminalView.h \
-Document.h
+Preferences_HEADER_FILES = \
+Preferences.h \
+ColorsPrefs.h
 
 #
 # Objective-C Class files
 #
-Console_OBJC_FILES = \
-AppController.m \
-ConsoleTerminalView.m \
-Document.m
-
-#
-# Other sources
-#
-Console_OBJC_FILES += \
-Console_main.m 
+Preferences_OBJC_FILES = \
+Preferences.m \
+ColorsPrefs.m
 
 #
 # Makefiles
 #
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make
-include $(GNUSTEP_MAKEFILES)/application.make
+include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble

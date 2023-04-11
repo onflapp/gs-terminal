@@ -1,9 +1,9 @@
 /* 
-   Project: Console
+   Project: vim
 
    Author: Ondrej Florian,,,
 
-   Created: 2022-09-27 11:42:32 +0200 by oflorian
+   Created: 2022-04-16 19:27:41 +0200 by oflorian
    
    Application Controller
 */
@@ -12,12 +12,11 @@
 #define _PCAPPPROJ_APPCONTROLLER_H
 
 #import <AppKit/AppKit.h>
-#import "ConsoleTerminalView.h"
+#import "Preferences.h"
 
 @interface AppController : NSObject
 {
-  IBOutlet NSWindow* window;
-  IBOutlet ConsoleTerminalView* terminalView;
+  Preferences           *preferencesPanel;
 }
 
 + (void)  initialize;
@@ -30,12 +29,15 @@
 - (void) applicationDidFinishLaunching: (NSNotification *)aNotif;
 - (BOOL) applicationShouldTerminate: (id)sender;
 - (void) applicationWillTerminate: (NSNotification *)aNotif;
-- (BOOL) application: (NSApplication *)application
-	    openFile: (NSString *)fileName;
+- (BOOL) application: (NSApplication *)application 
+            openFile: (NSString *)fileName;
 
 - (void) showPrefPanel: (id)sender;
 
-- (ConsoleTerminalView*) terminalView;
+- (void) openDocument: (id)sender;
+- (void) openSystemLog: (id)sender;
+- (void) openDesktopLog: (id)sender;
+
 @end
 
 #endif

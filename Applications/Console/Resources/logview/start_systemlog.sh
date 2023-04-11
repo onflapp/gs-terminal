@@ -3,15 +3,15 @@
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
 LF=/tmp/console-$$.log
-MAXLINES="$1"
-WRAPLINES="$2"
+WRAPLINES="$1"
+MAXLINES="$2"
 
 trap cleanup EXIT
 
 if [ -n "$3" ];then
   GS="--grep=$3"
 fi
-if [ "$2" -ne "1" ];then
+if [ "$WRAPLINES" -ne "1" ];then
   WL="S"
 fi
 

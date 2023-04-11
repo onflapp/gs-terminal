@@ -1,127 +1,95 @@
 /* 
-   Project: Console
+   Project: vim
 
    Author: Ondrej Florian,,,
 
-   Created: 2022-09-27 11:42:32 +0200 by oflorian
+   Created: 2022-04-16 19:27:41 +0200 by oflorian
    
    Application Controller
 */
 
 #import "AppController.h"
+#import "Document.h"
 
 @implementation AppController
 
-+ (void) initialize
-{
++ (void) initialize {
   NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
 
-  [defaults setObject:[NSNumber numberWithInteger:1000] forKey:@"max_lines"];
+  [defaults setObject:[NSNumber numberWithInt:4000] forKey:@"max_lines"];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (id) init
-{
+- (id) init {
   if ((self = [super init])) {
   }
   return self;
 }
 
-- (void) dealloc 
-{
+- (void) dealloc {
   [super dealloc];
 }
 
-- (void) awakeFromNib
-{
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(viewBecameIdle:)
-                                               name:TerminalViewBecameIdleNotification
-                                             object:terminalView];
+- (void) awakeFromNib {
 }
 
-- (void) applicationDidFinishLaunching: (NSNotification *)aNotif
-{
-  [window setFrameAutosaveName:@"console_window"];
-  [window makeKeyAndOrderFront:self];
-  [terminalView runLogView];
+- (void) applicationDidFinishLaunching: (NSNotification *)aNotif {
 }
 
-- (BOOL) applicationShouldTerminate: (id)sender
-{
+- (BOOL) applicationShouldTerminate: (id)sender {
   return YES;
 }
 
-- (void) applicationWillTerminate: (NSNotification *)aNotif
-{
-  [terminalView closeProgram];
+- (void) applicationWillTerminate: (NSNotification *)aNotif {
 }
 
-- (BOOL) application: (NSApplication *)application
-	    openFile: (NSString *)fileName
-{
+- (BOOL) application: (NSApplication *)application openFile: (NSString *)fileName {
+  Document* doc = [[Document alloc] initWithFile:fileName];
+  [[doc window] setFrameAutosaveName:@"document_window"];
+  [[doc window] makeKeyAndOrderFront:self];
   return NO;
 }
 
-- (ConsoleTerminalView*) terminalView
-{
-  return terminalView;
+- (void) showPrefPanel: (id)sender {
+  if (preferencesPanel == nil) {
+    NSString *bundlePath;
+    NSBundle *bundle;
+
+    bundlePath = [[[NSBundle mainBundle] resourcePath]
+                     stringByAppendingPathComponent:@"Preferences.bundle"];
+
+    bundle = [[NSBundle alloc] initWithPath:bundlePath];
+
+    preferencesPanel = [[[bundle principalClass] alloc] init];
+  }
+  [preferencesPanel activatePanel];
 }
 
-- (void) windowWillClose:(id) not 
-{
-  [terminalView closeProgram];
-  [NSApp terminate:nil];
+- (void) openDocument: (id)sender {
+  NSOpenPanel* panel = [NSOpenPanel openPanel];
+  [panel setAllowsMultipleSelection: NO];
+  [panel setCanChooseDirectories: NO];
+
+  if ([panel runModalForTypes:nil] == NSOKButton) {
+    NSString* fileName = [[panel filenames] firstObject];
+    Document* doc = [Document documentForFile:fileName];
+    [[doc window] setFrameAutosaveName:@"document_window"];
+    [[doc window] makeKeyAndOrderFront:self];
+  }
 }
 
-- (void) viewBecameIdle:(id) not 
-{
+- (void) openSystemLog: (id)sender {
+  Document* doc = [Document documentForFile:SYSTEMLOG];
+  [[doc window] setFrameAutosaveName:@"systemlog_window"];
+  [[doc window] makeKeyAndOrderFront:self];
 }
 
-- (void) showPrefPanel: (id)sender
-{
-}
-
-// "Font" menu
-- (void)orderFrontFontPanel:(id)sender
-{
-  NSFontManager *fm = [NSFontManager sharedFontManager];
-  TerminalView  *tv = [self terminalView];
-
-  Defaults *prefs = [tv preferences];
-  
-  [fm setSelectedFont:[prefs terminalFont] isMultiple:NO];
-  [fm orderFrontFontPanel:sender];
-}
-
-// Larger and Smaller
-- (void)modifyFont:(id)sender
-{
-  NSFontManager *fm = [NSFontManager sharedFontManager];
-  TerminalView  *tv = [self terminalView];
-
-  Defaults *prefs = [tv preferences];
-
-  [fm setSelectedFont:[prefs terminalFont] isMultiple:NO];
-  [fm modifyFont:sender];
-
-  [self changeFont:nil];
-}
-
-- (void)changeFont:(id)sender
-{
-  NSFontManager *fm = [NSFontManager sharedFontManager];
-  TerminalView  *tv = [self terminalView];
-
-  Defaults *prefs = [tv preferences];
-  NSFont *font = [fm convertFont:[fm selectedFont]];
-
-  [prefs setTerminalFont:font];
-  [tv setFont:font];
-  [tv setBoldFont:font];
-  [tv setNeedsDisplay:YES];
+- (void) openDesktopLog: (id)sender {
+  Document* doc = [Document documentForFile:DESKTOPLOG];
+  [[doc window] setFrameAutosaveName:@"desktoplog_window"];
+  [[doc window] makeKeyAndOrderFront:self];
 }
 
 @end
