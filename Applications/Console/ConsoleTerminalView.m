@@ -90,6 +90,14 @@
      withArguments:args
       initialInput:nil];
 
+  [self performSelector:@selector(checkStatus) withObject:nil afterDelay:1.0];
+}
+
+- (void) checkStatus {
+  if ([pauseButton intValue] && [self isWaitingForData]) {
+    [pauseButton setState:0];
+  }
+  [self performSelector:@selector(checkStatus) withObject:nil afterDelay:1.0];
 }
 
 - (void) filter:(id) sender {
@@ -101,14 +109,14 @@
   }
   else if (sender == pauseButton) {
     if ([self isWaitingForData]) {
-      [self ts_sendCString:""];
-      [pauseButton setTitle:@"Follow"];
+      [self ts_sendCString:""];
+      [pauseButton setState:1];
   
       [[self window] makeFirstResponder:self];
     }
     else {
       [self ts_sendCString:"F"];
-      [pauseButton setTitle:@"Pause"];
+      [pauseButton setState:0];
     }
   }
   else if (sender == filterField) {
@@ -124,8 +132,8 @@
 
 - (void) keyDown:(NSEvent *)e {
   if ([self isWaitingForData]) {
-    [self ts_sendCString:""];
-    [pauseButton setTitle:@"Follow"];
+    [self ts_sendCString:""];
+    [pauseButton setState:1];
   }
 
   [super keyDown:e];

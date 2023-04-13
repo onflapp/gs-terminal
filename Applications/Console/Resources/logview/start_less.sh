@@ -10,4 +10,4 @@ if [ "$WRAPLINES" -ne "1" ];then
   WL="S"
 fi
 
-less -sqf$WL +GF "$LF"
+less -sQf$WL +GF "$LF"

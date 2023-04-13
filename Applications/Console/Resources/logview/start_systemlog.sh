@@ -38,4 +38,4 @@ export LANG=C
 touch $LF
 readjournal &
 sleep 0.3
-less -sRqf$WL +GF $LF
+less -sRQf$WL +GF $LF

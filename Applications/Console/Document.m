@@ -121,7 +121,6 @@ static NSMutableArray* _documents = nil;
 }
 
 - (void) windowWillClose:(NSNotification *)notification {
-  NSLog(@"CLOSE1!!");
   [_documents removeObject:self];
 
   [terminalView closeProgram];
