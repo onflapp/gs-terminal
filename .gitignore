@@ -4,4 +4,5 @@ obj
 *.bundle
 *.app
 *.o
+*.m.d
 tags

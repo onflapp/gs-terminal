@@ -313,7 +313,7 @@ static NSDictionary *servicesDictionary = nil;
     // No Shell/Default shell
     if (shell) {
       program = [[Defaults shared] shell];
-      program = [program stringByAppendingFormat:@" -c %@", cmdline];
+      program = [program stringByAppendingFormat:@" -c \"%@\"", cmdline];
       NSLog(@"Command line with default shell: %@", program);
       
       arguments = [program componentsSeparatedByString:@" "];
