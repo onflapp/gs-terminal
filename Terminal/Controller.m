@@ -769,12 +769,23 @@
 {
   [controller setDocumentEdited:YES];
   
-  if ([[windows allValues] count] > 0) {
+  NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+  NSInteger x = [defs integerForKey:@"WindowDefaultX"];
+  NSInteger y = [defs integerForKey:@"WindowDefaultY"];
+  
+  if ([NSApp mainWindow] == [controller window]) {
+    //ignore
+  }
+  else if ([[windows allValues] count] > 0 && [NSApp mainWindow]) {
     NSRect  mwFrame = [[NSApp mainWindow] frame];
     NSPoint wOrigin = mwFrame.origin;
 
     wOrigin.x += [NSScroller scrollerWidth] + 3;
     wOrigin.y -= 24;
+    [[controller window] setFrameOrigin:wOrigin];
+  }
+  else if (x > 0 && y > 0) {
+    NSPoint wOrigin = NSMakePoint(x, y);
     [[controller window] setFrameOrigin:wOrigin];
   }
   else {

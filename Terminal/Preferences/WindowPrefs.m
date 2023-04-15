@@ -124,6 +124,16 @@
   [prefs setTerminalFont:[fontField font]];
 
   [prefs synchronize];
+
+  // use main window's location as default
+  NSRect mwFrame = [[NSApp mainWindow] frame];
+  NSPoint wOrigin = mwFrame.origin;
+
+  if (wOrigin.x > 0 && wOrigin.y > 0) {
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    [defs setInteger:(NSInteger)wOrigin.x forKey:@"WindowDefaultX"];
+    [defs setInteger:(NSInteger)wOrigin.y forKey:@"WindowDefaultY"];
+  }
 }
 - (void)showDefault:(id)sender
 {
