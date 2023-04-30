@@ -41,7 +41,8 @@ Console_RESOURCE_FILES = \
 Resources/Console.gorm \
 Resources/Document.gorm \
 Resources/Console.tiff \
-Resources/logview 
+Resources/logview \
+Resources/../Preferences.subproj/Preferences.bundle 
 
 
 #

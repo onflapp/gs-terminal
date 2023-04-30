@@ -48,7 +48,8 @@
     MAKEFILEDIR = "$(GNUSTEP_MAKEFILES)";
     "OBJC_COMPILEROPTIONS" = "";
     "OTHER_RESOURCES" = (
-	logview
+	logview,
+	"../Preferences.subproj/Preferences.bundle"
     );
     "OTHER_SOURCES" = (
 	"Console_main.m"

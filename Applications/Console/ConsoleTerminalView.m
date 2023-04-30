@@ -33,13 +33,13 @@
 
   Defaults* prefs = [[Defaults alloc] init];
   [prefs setScrollBackEnabled:NO];
-  [prefs setWindowBackgroundColor:[NSColor whiteColor]];
-  [prefs setTextNormalColor:[NSColor blackColor]];
-  [prefs setTextBoldColor:[NSColor greenColor]];
-  [prefs setCursorColor:[NSColor controlBackgroundColor]];
+  //[prefs setWindowBackgroundColor:[NSColor whiteColor]];
+  //[prefs setTextNormalColor:[NSColor blackColor]];
+  //[prefs setTextBoldColor:[NSColor greenColor]];
+  //[prefs setCursorColor:[NSColor controlBackgroundColor]];
+  //[prefs setUseBoldTerminalFont:NO];
   [prefs setScrollBottomOnInput:NO];
-  [prefs setUseBoldTerminalFont:NO];
-
+  
   [self setCursorStyle:[prefs cursorStyle]];
   [self updateColors:prefs];
 
