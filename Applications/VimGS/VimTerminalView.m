@@ -178,6 +178,15 @@
     ASSIGN(currentSelection, txt);
     [txt release];
   }
+  else if ([new_cmd hasPrefix:@"PATH-"]) {
+    NSString* p = [new_cmd substringFromIndex:5];
+    NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:p, @"path", nil];
+
+    [[NSNotificationCenter defaultCenter]
+		  postNotificationName:@"TerminalFileNameNotification"
+                    object:self
+                  userInfo:info];
+  }
   else if ([new_cmd hasPrefix:@"MODE-"]) {
     if ([new_cmd isEqualToString:@"MODE-i"]) {
       mode = 'i';

@@ -60,9 +60,24 @@
 }
 
 - (BOOL) application: (NSApplication *)application openFile: (NSString *)fileName {
-  Document* doc = [[Document alloc] initWithFile:fileName];
-  [[doc window] setFrameAutosaveName:@"document_window"];
-  [[doc window] makeKeyAndOrderFront:self];
+  NSRange r = [fileName rangeOfString:@":"];
+  if (r.location != NSNotFound) {
+    NSString* path = [fileName substringToIndex:r.location];
+    NSString* line = [fileName substringFromIndex:r.location+1];
+
+    Document* doc = [self documentForFile:path];
+    if ([[doc window] isVisible]) {
+      [doc showWindow];
+      [doc goToLine:[line integerValue]];
+    }
+    else {
+      [doc showWindow];
+    }
+  }
+  else {
+    Document* doc = [self documentForFile:fileName];
+    [doc showWindow];
+  }
   return NO;
 }
 
@@ -81,10 +96,25 @@
   [preferencesPanel activatePanel];
 }
 
+- (Document*) documentForFile:(NSString*) file {
+  Document* doc = nil;
+
+  for (NSWindow* win in [NSApp windows]) {
+    if ([[win delegate] isKindOfClass:[Document class]]) {
+      doc = (Document*) [win delegate];
+      if ([[doc fileName] isEqualToString: file]) {
+        return doc;
+      }
+    }
+  }
+
+  doc = [[Document alloc] initWithFile:file];
+  return doc;
+}
+
 - (void) newDocument: (id)sender {
   Document* doc = [[Document alloc] initWithFile:nil];
-  [[doc window] setFrameAutosaveName:@"document_window"];
-  [[doc window] makeKeyAndOrderFront:self];
+  [doc showWindow];
 }
 
 - (void) openDocument: (id)sender {
@@ -94,9 +124,8 @@
 
   if ([panel runModalForTypes:nil] == NSOKButton) {
     NSString* fileName = [[panel filenames] firstObject];
-    Document* doc = [[Document alloc] initWithFile:fileName];
-    [[doc window] setFrameAutosaveName:@"document_window"];
-    [[doc window] makeKeyAndOrderFront:self];
+    Document* doc = [self documentForFile:fileName];
+    [doc showWindow];
   }
 }
 

@@ -18,9 +18,19 @@ The mouse support is compatible with XTerm
 Great for vim!
 cursor blinking
 
-# Escape codes for communication with your wrapper
+# Special escape codes for inter-process communication
 
-Send commands back to your GNUstep wrapper
+Send commands back to your GNUstep wrapper.
+
+The wrapped program can print special escape sequence in form of `^[]X;<CMD>^G`
+where `<CMD>` is a string.
+
+This will cause `- (void)ts_handleXOSC:(NSString *)cmd` to be called on your TerminalView.
+
+Similar approach can be used to communicate the other way around where GNUstep wrapper sends
+escape codes (either real or made up ones) to trigger functionality in the wrapped program.
+
+Good example how this could works in practice is VimGS project, `vimrc` file in particular.
 
 # terminfo file
 

@@ -32,10 +32,16 @@
 @interface Document : NSObject {
   IBOutlet NSWindow *window;
   IBOutlet VimTerminalView *terminalView;
+
+  NSString *fileName;
 }
 
 - (id) initWithFile:(NSString*) path;
 - (NSWindow*) window;
+- (void) showWindow;
+
+- (NSString*) fileName;
+- (void) goToLine:(NSInteger) line;
 
 @end
 

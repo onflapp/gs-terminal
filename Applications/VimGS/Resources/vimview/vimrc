@@ -40,6 +40,7 @@ vnoremap <silent> <ESC>[1;0S~ y: call GSHandleCopy('s')<CR>
 augroup vimgsevents
   au! SafeState * call GSChangeMode()
   au! BufEnter * call GSBufEnter()
+  au! VimEnter * call GSBufEnter()
 augroup END
 
 function! GSBufEnter()

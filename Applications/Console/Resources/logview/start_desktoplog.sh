@@ -5,6 +5,7 @@ PREFDIR="$HOME/Library/Preferences"
 LF=/tmp/console-$$.log
 WRAPLINES="$1"
 MAXLINES="$2"
+MYPID="$$"
 
 trap cleanup EXIT
 
@@ -20,10 +21,13 @@ function cleanup {
 }
 
 function readjournal {
+  ## ignore SIGINT, this will be handled by less
+  trap '' SIGINT
+
   if [ -n "$GREP" ];then
-    tail -f -n $MAXLINES "$GS_DESKTOP_LOG" | grep "$GREP" >> $LF
+    tail --pid $MYPID -f -n $MAXLINES "$GS_DESKTOP_LOG" | grep "$GREP" >> $LF
   else
-    tail -f -n $MAXLINES "$GS_DESKTOP_LOG" >> $LF
+    tail --pid $MYPID -f -n $MAXLINES "$GS_DESKTOP_LOG" >> $LF
   fi
 }
 

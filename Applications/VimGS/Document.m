@@ -24,7 +24,10 @@
 
 #import "Document.h"
 
+static NSWindow* _lastMainWindow;
+
 @implementation Document
+
 - (id) initWithFile:(NSString*) path {
   self = [super init];
   [NSBundle loadNibNamed:@"Document" owner:self];
@@ -52,6 +55,12 @@
            name:TerminalPreferencesDidChangeNotification
          object:[NSApp delegate]];
 
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(updateFileName:)
+           name:@"TerminalFileNameNotification"
+         object:terminalView];
+
   [terminalView runVimWithFile:path];
 
   return self;
@@ -61,7 +70,32 @@
   [[NSNotificationCenter defaultCenter]
     removeObserver:self];
 
+  RELEASE(fileName);
+
   [super dealloc];
+}
+
+- (NSString*) fileName {
+  return fileName;
+}
+
+- (void) showWindow {
+  if ([window isVisible]) {
+    [window makeKeyAndOrderFront:self];
+  }
+  else {
+    [window setFrameAutosaveName:@"document_window"];
+    [window makeFirstResponder:terminalView];
+
+    if (_lastMainWindow) {
+      NSRect r = [_lastMainWindow frame];
+      r.origin.x += 24;
+
+      [window setFrame:r display:YES];
+    }
+
+    [window makeKeyAndOrderFront:self];
+  }
 }
 
 - (void) goToLine:(NSInteger) line {
@@ -102,11 +136,25 @@
   [window setTitle:title];
 }
 
+- (void) updateFileName:(NSNotification*) n {
+  NSString* fn = [[n userInfo] valueForKey:@"path"];
+  if ([fn length] == 0) fn = nil;
+
+  ASSIGN(fileName, fn);
+}
+
+- (void) windowDidBecomeMain:(NSNotification *)notification {
+  _lastMainWindow = [self window];
+}
+
 - (void) windowWillClose:(NSNotification *)notification {
-  NSWindow* window = [self window];
+  NSWindow* win = [self window];
   [terminalView quit:self];
 
-  [window setDelegate: nil];
+  if (_lastMainWindow == win) _lastMainWindow = nil;
+
+  ASSIGN(fileName, nil);
+  [win setDelegate: nil];
   [self release];
 }
 
