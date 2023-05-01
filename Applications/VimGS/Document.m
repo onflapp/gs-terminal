@@ -95,7 +95,7 @@ static NSWindow* _lastMainWindow;
       NSRect r = [_lastMainWindow frame];
       r.origin.x += 24;
 
-      [window setFrame:r display:YES];
+      [window setFrame:r display:NO];
     }
     else {
       [window setFrameAutosaveName:@"document_window"];
@@ -115,6 +115,7 @@ static NSWindow* _lastMainWindow;
 }
 
 - (void) preferencesDidChange:(NSNotification *)notif {
+  NSLog(@"PPPPPPPPPP");
   Defaults* prefs = [[Defaults alloc] init];
 
   NSFont* font = [prefs terminalFont];
