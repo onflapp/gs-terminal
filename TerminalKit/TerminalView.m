@@ -3146,6 +3146,19 @@ static int handled_mask = (NSDragOperationCopy |
   draw_all = 2;
 }
 
+- (BOOL)writeScrollBufferToFile:(NSString*) path
+{
+  if (!path) return NO;
+
+  [self selectAll:nil];
+  NSString* str = [self _selectionAsString];
+  [self _clearSelection];
+
+  [str writeToFile:path atomically:NO];
+
+  return YES;
+}
+
 - (int)scrollBufferLength
 {
   return sb_length;

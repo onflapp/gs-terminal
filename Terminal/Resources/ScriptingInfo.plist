@@ -1,11 +1,11 @@
 {
   Classes =
   (
-    MediaDocument,
-    AppController
+    TerminalWindowController,
+    Controller
   );
   Objects =
   {
-    currentDocument = "currentDocument";
+    currentTerminal = "currentTerminal";
   };
 }

@@ -178,6 +178,8 @@ struct selection_range
   
 - (BOOL)isUserProgramRunning;
 
+- (BOOL)writeScrollBufferToFile:(NSString*) path;
+
 @end
 
 @interface TerminalView (display) <TerminalScreen>

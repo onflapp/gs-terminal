@@ -69,7 +69,8 @@ VimGS_OBJC_FILES = \
 AppController.m \
 Document.m \
 VimTerminalView.m \
-STScriptingSupport.m
+STScriptingSupport.m \
+Document+scripting.m
 
 #
 # Other sources

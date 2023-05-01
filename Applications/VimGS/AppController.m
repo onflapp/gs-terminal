@@ -62,10 +62,9 @@
 - (BOOL) application: (NSApplication *)application openFile: (NSString *)fileName {
   NSRange r = [fileName rangeOfString:@":"];
   if (r.location != NSNotFound) {
-    NSString* path = [fileName substringToIndex:r.location];
     NSString* line = [fileName substringFromIndex:r.location+1];
 
-    Document* doc = [self documentForFile:path];
+    Document* doc = [self documentForFile:fileName];
     if ([[doc window] isVisible]) {
       [doc showWindow];
       [doc goToLine:[line integerValue]];
@@ -79,6 +78,10 @@
     [doc showWindow];
   }
   return NO;
+}
+
+- (Document*) currentDocument {
+  return [Document lastActiveDocument];
 }
 
 - (void) showPrefPanel: (id)sender {
@@ -96,19 +99,25 @@
   [preferencesPanel activatePanel];
 }
 
-- (Document*) documentForFile:(NSString*) file {
+- (Document*) documentForFile:(NSString*) fileName {
   Document* doc = nil;
+  NSString* path = fileName;
+
+  NSRange r = [fileName rangeOfString:@":"];
+  if (r.location != NSNotFound) {
+    path = [fileName substringToIndex:r.location];
+  }
 
   for (NSWindow* win in [NSApp windows]) {
     if ([[win delegate] isKindOfClass:[Document class]]) {
       doc = (Document*) [win delegate];
-      if ([[doc fileName] isEqualToString: file]) {
+      if ([[doc fileName] isEqualToString: path]) {
         return doc;
       }
     }
   }
 
-  doc = [[Document alloc] initWithFile:file];
+  doc = [[Document alloc] initWithFile:fileName];
   return doc;
 }
 

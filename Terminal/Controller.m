@@ -50,6 +50,8 @@
 // }  
 //-----------------------------------------------------------------------------
 
+static TerminalWindowController* _last_active_twc = nil;
+
 @implementation Controller
 
 - init
@@ -544,16 +546,22 @@
 
 - (void)mainWindowDidChange:(NSNotification *)notif
 {
+  mainWindow = [notif object];
+  TerminalWindowController *twc = [self terminalWindowForWindow:mainWindow];
+  if (twc == nil) {
+    return;
+  }
+
+  _last_active_twc = twc;
+ 
   NSFontManager *fm = [NSFontManager sharedFontManager];
   NSFontPanel   *fp = [fm fontPanel:NO];
   Defaults      *defs;
-
-  mainWindow = [notif object];
-  
+ 
   if (fp == nil) {
     return;
   }
-  
+
   if ((defs = [self preferencesForWindow:mainWindow live:YES]) == nil) {
     if ((defs = [self preferencesForWindow:mainWindow live:NO]) == nil) {
       // this is not terminal window
@@ -703,6 +711,10 @@
       
     [windows removeObjectForKey:[NSString stringWithFormat:@"%i", pid]];
   }
+
+  if (_last_active_twc == twc) {
+    _last_active_twc = nil;
+  }
    
   [[NSApp delegate] checkActiveTerminalWindows];
 }
@@ -791,6 +803,11 @@
   else {
     [[controller window] center];
   }
+}
+
+- (TerminalWindowController *)currentTerminal
+{
+  return _last_active_twc;
 }
 
 - (TerminalWindowController *)newWindow

@@ -16,7 +16,8 @@
 	"AppController.m",
 	"Document.m",
 	"VimTerminalView.m",
-	"STScriptingSupport.m"
+	"STScriptingSupport.m",
+	"Document+scripting.m"
     );
     COMPILEROPTIONS = "";
     CPPOPTIONS = "";

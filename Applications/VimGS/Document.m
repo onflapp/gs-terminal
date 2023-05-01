@@ -28,6 +28,10 @@ static NSWindow* _lastMainWindow;
 
 @implementation Document
 
++ (Document*) lastActiveDocument {
+  return (Document*)[_lastMainWindow delegate];
+}
+
 - (id) initWithFile:(NSString*) path {
   self = [super init];
   [NSBundle loadNibNamed:@"Document" owner:self];
@@ -84,14 +88,17 @@ static NSWindow* _lastMainWindow;
     [window makeKeyAndOrderFront:self];
   }
   else {
-    [window setFrameAutosaveName:@"document_window"];
     [window makeFirstResponder:terminalView];
 
+    if (!_lastMainWindow) _lastMainWindow = [[NSApp orderedWindows] lastObject];
     if (_lastMainWindow) {
       NSRect r = [_lastMainWindow frame];
       r.origin.x += 24;
 
       [window setFrame:r display:YES];
+    }
+    else {
+      [window setFrameAutosaveName:@"document_window"];
     }
 
     [window makeKeyAndOrderFront:self];

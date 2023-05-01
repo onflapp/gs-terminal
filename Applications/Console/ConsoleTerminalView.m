@@ -130,6 +130,24 @@
   else return NO;
 }
 
+- (void) scrollWheel: (NSEvent *)e {
+  if ([self isWaitingForData]) {
+    [self ts_sendCString:""];
+    [pauseButton setState:1];
+  }
+
+  NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
+  int i = (int)[cfg integerForKey:@"GSMouseScrollMultiplier"];
+  if (i == 0) i = 1;
+
+  if ([e buttonNumber] == 4) {
+    [self ts_sendCString:"k" repeat:i];
+  }
+  else if ([e buttonNumber] == 5) {
+    [self ts_sendCString:"j" repeat:i];
+  }
+}  
+
 - (void) keyDown:(NSEvent *)e {
   if ([self isWaitingForData]) {
     [self ts_sendCString:""];
@@ -137,6 +155,12 @@
   }
 
   [super keyDown:e];
+}
+
+- (void) ts_sendCString:(const char *)msg repeat:(int) r {
+  for (int x = 0; x < r; x++) {
+    [self ts_sendCString:msg];
+  }
 }
 
 - (void) ts_handleXOSC:(NSString *)new_cmd {

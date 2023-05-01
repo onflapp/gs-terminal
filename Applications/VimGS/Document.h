@@ -35,6 +35,7 @@
 
   NSString *fileName;
 }
++ (Document*) lastActiveDocument;
 
 - (id) initWithFile:(NSString*) path;
 - (NSWindow*) window;

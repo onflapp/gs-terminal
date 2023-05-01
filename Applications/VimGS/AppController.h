@@ -12,6 +12,7 @@
 #define _PCAPPPROJ_APPCONTROLLER_H
 
 #import <AppKit/AppKit.h>
+#import "Document.h"
 #import "Preferences.h"
 
 @interface AppController : NSObject
@@ -35,6 +36,8 @@
 - (void) showPrefPanel: (id)sender;
 - (void) newDocument: (id)sender;
 - (void) openDocument: (id)sender;
+
+- (Document*) currentDocument;
 
 @end
 

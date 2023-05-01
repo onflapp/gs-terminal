@@ -1,7 +1,6 @@
-- currentDocument -> MediaDocument
+- currentDocument -> Document
 - documents -> array
 
-MediaDocument
-- isPlaying
-- stop
-- play
+Document
+- fileName
+- sendCommand:cmd
