@@ -37,6 +37,7 @@
   IBOutlet NSButton* pauseButton;
 
   NSString* logPath;
+  NSInteger mode;
 }
 
 - (void) setLogPath:(NSString*) path;

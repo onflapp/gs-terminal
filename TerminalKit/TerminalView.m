@@ -1677,7 +1677,10 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 
   struct selection_range r1 = [self _selectionRangeAt:ofs1 granularity:g];
   selection = r1;
-  return [self _selectionAsString];
+  NSString *val = [self _selectionAsString];
+  [self _clearSelection];
+  
+  return val;
 }
 
 - (NSString *)_selectionAsString

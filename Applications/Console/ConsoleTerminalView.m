@@ -89,15 +89,6 @@
   [self runProgram:exec
      withArguments:args
       initialInput:nil];
-
-  [self performSelector:@selector(checkStatus) withObject:nil afterDelay:1.0];
-}
-
-- (void) checkStatus {
-  if ([pauseButton intValue] && [self isWaitingForData]) {
-    [pauseButton setState:0];
-  }
-  [self performSelector:@selector(checkStatus) withObject:nil afterDelay:1.0];
 }
 
 - (void) filter:(id) sender {
@@ -125,8 +116,7 @@
 }
 
 - (BOOL) isWaitingForData {
-  NSString* status = [self stringAtPoint:NSMakePoint(5,5) granularity:3];
-  if ([status hasPrefix:@"Waiting for data... (interrupt to abort)"]) return YES;
+  if (mode == 1) return YES;
   else return NO;
 }
 
@@ -163,8 +153,15 @@
   }
 }
 
-- (void) ts_handleXOSC:(NSString *)new_cmd {
-  NSLog(@"[%@]", new_cmd);
+- (void) ts_handleXOSC:(NSString *)cmd {
+  if ([cmd isEqualToString:@"F"]) {
+    mode = 1;
+    [pauseButton setState:0];
+  }
+  else {
+    mode = 0;
+    [pauseButton setState:1];
+  }
 }
 
 - (void) dealloc {

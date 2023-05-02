@@ -10,4 +10,7 @@ if [ "$WRAPLINES" -ne "1" ];then
   WL="S"
 fi
 
-less -sQf$WL +GF "$LF"
+PF="]X;F"
+PN="]X;N"
+
+less m -Pm$PN -Pw$PF -sQf$WL +GF "$LF"

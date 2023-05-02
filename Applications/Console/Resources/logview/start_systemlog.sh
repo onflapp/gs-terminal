@@ -34,8 +34,10 @@ function readjournal {
 }
 
 export LANG=C
+PF="]X;F"
+PN="]X;N"
 
 touch $LF
 readjournal &
 sleep 0.3
-less -sRQf$WL +GF $LF
+less -m -Pm$PN -Pw$PF -sRQf$WL +GF $LF
