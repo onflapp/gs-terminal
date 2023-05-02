@@ -157,8 +157,6 @@ static NSWindow* _lastMainWindow;
 
 - (void) windowWillClose:(NSNotification *)notification {
   NSWindow* win = [self window];
-  [win setFrameAutosaveName:nil];
-
   [terminalView quit:self];
 
   if (_lastMainWindow == win) _lastMainWindow = nil;
