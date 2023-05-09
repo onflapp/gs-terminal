@@ -20,6 +20,7 @@ SUBPROJECTS = Preferences
 Terminal_OBJC_FILES = \
 	main.m \
 	Controller.m \
+	Controller+scripting.m \
 	STScriptingSupport.m \
 	\
 	Defaults.m\

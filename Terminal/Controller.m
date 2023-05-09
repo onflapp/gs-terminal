@@ -684,6 +684,11 @@ static TerminalWindowController* _last_active_twc = nil;
   return [idleList containsObject:twc];
 }
 
+- (TerminalWindowController *)currentTerminal
+{
+  return _last_active_twc;
+}
+
 - (TerminalWindowController *)idleTerminalWindow
 {
   NSDebugLLog(@"idle",@"get idle window from idle list: %@",idleList);
@@ -803,11 +808,6 @@ static TerminalWindowController* _last_active_twc = nil;
   else {
     [[controller window] center];
   }
-}
-
-- (TerminalWindowController *)currentTerminal
-{
-  return _last_active_twc;
 }
 
 - (TerminalWindowController *)newWindow

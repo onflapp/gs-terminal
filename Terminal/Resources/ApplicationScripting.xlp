@@ -1,7 +1,7 @@
-- currentDocument -> MediaDocument
-- documents -> array
+- currentTerminal -> TerminalWindowController
+- newTerminal -> TerminalWindowController
+- newTerminalWithCommand -> TerminalWindowController
 
-MediaDocument
-- isPlaying
-- stop
-- play
+TerminalWindowController
+- sendCommandKeys:
+- dumpScreenBuffer:
