@@ -1,7 +1,8 @@
 - currentTerminal -> TerminalWindowController
 - newTerminal -> TerminalWindowController
-- newTerminalWithCommand -> TerminalWindowController
+- runCommand: -> TerminalWindowController
 
 TerminalWindowController
 - sendCommandKeys:
+- runCommand:
 - dumpScreenBuffer:
