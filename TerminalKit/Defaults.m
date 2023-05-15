@@ -29,8 +29,6 @@
 #import <AppKit/NSFont.h>
 #import <AppKit/NSGraphics.h>
 
-#import <DesktopKit/NXTAlert.h>
-
 #import "Terminal.h"
 #import "Defaults.h"
 
