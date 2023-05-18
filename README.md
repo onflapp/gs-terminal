@@ -6,9 +6,9 @@ Terminal's code originally comes from NEXTSPACE's [Terminal.app](https://github.
 
 ### Notable changes and features:
 
-#### The terminal view as a framework
+#### terminal view as a framework
 
-It makes it really easy to embed terminal application in a GNUstep app or create a wrapper (e.g. see VimGS as an example). This approach is used by many GNUstep Desktop apps.
+It makes it really easy to embed terminal application in a GNUstep app or create a wrapper (e.g. see [VimGS](https://github.com/onflapp/gs-terminal/tree/main/Applications/VimGS) as an example). This approach is used by many GNUstep Desktop apps.
 
 #### mouse support
 
@@ -33,12 +33,16 @@ This will cause `- (void)ts_handleXOSC:(NSString *)cmd` to be called on your Ter
 Similar approach can be used to communicate the other way around where GNUstep wrapper sends
 an escape code (either real or made up) to trigger functionality in the wrapped program.
 
-Good example how this could works in practice is VimGS project, `vimrc` file in particular.
+Good example how this could works in practice is [VimGS project](https://github.com/onflapp/gs-terminal/tree/main/Applications/VimGS), `vimrc` file in particular.
 
 #### terminfo file
 
-Although the Terminal is originally based on Linux console terminal, it now includes support for codes used by Xterm and other terminals.
+Although Terminal is originally based on Linux console terminal, it now includes support for codes used by Xterm and other terminals.
 
 To make sure command line tools knows about all of its functions, Terminal comes with its own terminfo file which needs to be installed for things to work properly.
 
 You can then refer to it as `TERM=gsterm`
+
+#### scripting support
+
+Terminal supports [StepTalk](https://github.com/onflapp/libs-steptalk) support.
