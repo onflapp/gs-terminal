@@ -1,5 +1,8 @@
-# gs-terminal
-GNUStep Terminal
+# Terminal
+
+Terminal is the main terminal app for [GNUstep Desktop](https://github.com/onflapp/gs-desktop) but also great way to make a command line utility into GNUstep app.
+
+Terminal's code originally comes from NEXTSPACE's [Terminal.app](https://github.com/trunkmaster/nextspace/tree/master/Applications/Terminal), which in turn comes from [GAP project](https://github.com/gnustep/gap/blob/master/system-apps/Terminal/README) created by Alexander Malmberg.
 
 Notable changes and features:
 
