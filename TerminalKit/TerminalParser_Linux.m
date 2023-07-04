@@ -146,7 +146,9 @@ static const unichar *_set_translate(int charset)
   G1_charset	= GRAF_MAP;
 
   charset	= 0;
-  report_mouse	= 0;
+  report_mouse_1000 = 0;
+  report_mouse_1005 = 0;
+  report_mouse_1006 = 0;
   utf           = 0;
   utf_count     = 0;
 
@@ -529,17 +531,17 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       case 1015:
       case 1006:
         NSDebugLLog(@"term",@"_set_mode 1006"); //mouse button, report decimal values
-        report_mouse = on_off ? 1006 : 0;
+        report_mouse_1006 = on_off ? 1006 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       case 1000:
         NSDebugLLog(@"term",@"_set_mode 1000"); //mouse button, encode 7bit values
-        report_mouse = on_off ? 1000 : 0;
+        report_mouse_1000 = on_off ? 1000 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       case 1005:
         NSDebugLLog(@"term",@"_set_mode 1005"); //mouse button, encode UTF8 values
-        report_mouse = on_off ? 1005 : 0;
+        report_mouse_1005 = on_off ? 1005 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       } else switch(par[i]) {		/* ANSI modes set/reset */
@@ -1343,7 +1345,9 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
 
 - (void)handleMouseEvent:(NSEvent*)e atLocation:(NSPoint) p
 {
-  if (report_mouse == 0) return;
+  if (report_mouse_1000 == 0 \
+      && report_mouse_1005 == 0 \
+      && report_mouse_1006 == 0) return;
 
   NSString* data = nil;
   int px = (int)(p.x);
@@ -1357,7 +1361,7 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       data = [NSString stringWithFormat:@"\e[<64;%d;%dM", px, py];
     } 
   }
-  else if (report_mouse == 1006) {
+  else if (report_mouse_1006) {
     if ([e type] == NSLeftMouseUp) {
       data = [NSString stringWithFormat:@"\e[<0;%d;%dm", px, py];
     }
@@ -1371,7 +1375,7 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       data = [NSString stringWithFormat:@"\e[<32;%d;%dM", (int)p.x, (int)p.y];
     }
   }
-  else if (report_mouse == 1000) {
+  else if (report_mouse_1000) {
     int st = 32;
     px = px + 32;
     py = py + 32;
@@ -1387,7 +1391,7 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       data = [NSString stringWithFormat:@"\e[M%c%c%c", st, px, py];
     }
   }
-  else if (report_mouse == 1005) {
+  else if (report_mouse_1005) {
     int st = 32;
     px = px + 32;
     py = py + 32;

@@ -27,7 +27,9 @@
   int x,y;
 
   int top,bottom;
-  int report_mouse;
+  int report_mouse_1000;
+  int report_mouse_1005;
+  int report_mouse_1006;
   int focus_mode;
 
   unsigned int unich;
