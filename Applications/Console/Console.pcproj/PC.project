@@ -29,7 +29,8 @@
 	"Document.h"
     );
     IMAGES = (
-	"Console.tiff"
+	"Console.tiff",
+	"log.tiff"
     );
     INSTALLDIR = "$(HOME)/GNUstep";
     INTERFACES = (
@@ -62,6 +63,12 @@
     "PROJECT_CREATOR" = "Ondrej Florian,,,";
     "PROJECT_DESCRIPTION" = "No description avaliable!";
     "PROJECT_DOCUMENTTYPES" = (
+	{
+	    NSIcon = "log.tiff";
+	    NSUnixExtensions = (
+		log
+	    );
+	}
     );
     "PROJECT_GROUP" = "No group avaliable!";
     "PROJECT_MAINTAINER" = "Ondrej Florian,,,";

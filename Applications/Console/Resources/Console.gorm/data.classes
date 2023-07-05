@@ -26,6 +26,7 @@
 	Actions = (
 	    "filter:",
 	    "kill:",
+	    "openXServerLog:",
 	    "openDesktopLog:",
 	    "openSystemLog:",
 	    "pause:",

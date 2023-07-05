@@ -12,4 +12,12 @@
     NSMainNibFile = "Console.gorm";
     NSPrincipalClass = NSApplication;
     NSRole = Application;
+    NSTypes = (
+	{
+	    NSIcon = "log.tiff";
+	    NSUnixExtensions = (
+		log
+	    );
+	}
+    );
 }

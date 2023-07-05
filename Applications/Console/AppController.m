@@ -92,4 +92,10 @@
   [[doc window] makeKeyAndOrderFront:self];
 }
 
+- (void) openXServerLog: (id)sender {
+  Document* doc = [Document documentForFile:XSERVERLOG];
+  [[doc window] setFrameAutosaveName:@"xserverlog_window"];
+  [[doc window] makeKeyAndOrderFront:self];
+}
+
 @end

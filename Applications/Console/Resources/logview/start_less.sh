@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
@@ -13,4 +13,4 @@ fi
 PF="]X;F"
 PN="]X;N"
 
-less m -Pm$PN -Pw$PF -sQf$WL +GF "$LF"
+less -m -Pm$PN -Pw$PF -sQf$WL +GF "$LF"
