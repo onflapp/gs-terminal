@@ -10,6 +10,7 @@ if &term == "gsterm"
   set t_ts=]0;
   set t_fs=
   set ttymouse=sgr
+  set mouse=a
 
   map <Esc>[<64;1;1M  <ScrollWheelUp>
   map! <Esc>[<64;1;1M <ScrollWheelUp>

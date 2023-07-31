@@ -5,7 +5,7 @@ clear
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
 
-export TERM=gsterm
+export TERM=linux
 export LANG=en_US.UTF-8
 export LC_CTYPE="en_US.UTF-8"
 

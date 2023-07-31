@@ -30,7 +30,6 @@
 
 #define SYSTEMLOG @"SYSTEMLOG"
 #define DESKTOPLOG @"DESKTOPLOG"
-#define XSERVERLOG @"/var/log/Xorg.0.log"
 
 @interface ConsoleTerminalView : TerminalView {
   IBOutlet NSTextField* filterField;

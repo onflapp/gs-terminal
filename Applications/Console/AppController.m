@@ -93,9 +93,21 @@
 }
 
 - (void) openXServerLog: (id)sender {
-  Document* doc = [Document documentForFile:XSERVERLOG];
-  [[doc window] setFrameAutosaveName:@"xserverlog_window"];
-  [[doc window] makeKeyAndOrderFront:self];
+  NSString* logfileA = @"/var/log/Xorg.0.log";
+  NSString* logfileB = [@"~/.local/share/xorg/Xorg.0.log" stringByStandardizingPath];
+  Document* doc = nil;
+
+  if ([[NSFileManager defaultManager] fileExistsAtPath:logfileA]) {
+    doc = [Document documentForFile:logfileA];
+  }
+  else if ([[NSFileManager defaultManager] fileExistsAtPath:logfileB]) {
+    doc = [Document documentForFile:logfileB];
+  }
+
+  if (doc) {
+    [[doc window] setFrameAutosaveName:@"xserverlog_window"];
+    [[doc window] makeKeyAndOrderFront:self];
+  }
 }
 
 @end
