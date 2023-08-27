@@ -10,7 +10,13 @@ if [ "$WRAPLINES" -ne "1" ];then
   WL="S"
 fi
 
+export LANG=C
 PF="]X;F"
 PN="]X;N"
 
-less -m -Pm$PN -Pw$PF -sQf$WL +GF "$LF"
+touch $LF
+readjournal &
+sleep 0.3
+less -m -Pm$PN -Pw$PF -srQf$WL +GF $LF
+
+less -m -Pm$PN "-Pw$PF" -srQf$WL +GF "$LF"

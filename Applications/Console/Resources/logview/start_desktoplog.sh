@@ -38,4 +38,4 @@ PN="]X;N"
 touch $LF
 readjournal &
 sleep 0.3
-less -m -Pm$PN -Pw$PF -sRQf$WL +GF $LF
+less -m -Pm$PN -Pw$PF -srQf$WL +GF $LF
