@@ -530,17 +530,17 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       case 1003:
       case 1015:
       case 1006:
-        NSDebugLLog(@"term",@"_set_mode 1006"); //mouse button, report decimal values
+        NSDebugLLog(@"term",@"_set_mode 1006 %d", on_off); //mouse button, report decimal values
         report_mouse_1006 = on_off ? 1006 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       case 1000:
-        NSDebugLLog(@"term",@"_set_mode 1000"); //mouse button, encode 7bit values
+        NSDebugLLog(@"term",@"_set_mode 1000 %d", on_off); //mouse button, encode 7bit values
         report_mouse_1000 = on_off ? 1000 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
       case 1005:
-        NSDebugLLog(@"term",@"_set_mode 1005"); //mouse button, encode UTF8 values
+        NSDebugLLog(@"term",@"_set_mode 1005 %d", on_off); //mouse button, encode UTF8 values
         report_mouse_1005 = on_off ? 1005 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
