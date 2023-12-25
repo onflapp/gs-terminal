@@ -4,17 +4,18 @@ clear
 
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
+PREFFILE="$PREFDIR/htoprc2"
 
-export TERM=linux
+export TERM=gsterm
 export LANG=en_US.UTF-8
 export LC_CTYPE="en_US.UTF-8"
 
-if ! [ -f "$PREFDIR/htoprc" ];then
+if ! [ -f "$PREFFILE" ];then
   mkdir -p "$PREFDIR" 2> /dev/null
-  cp "$DIR/htoprc" "$PREFDIR"
+  cp "$DIR/htoprc" "$PREFFILE"
 fi
 
-export HTOPRC="$PREFDIR/htoprc"
+export HTOPRC="$PREFFILE"
 OPTS=""
 
 if [ "$1" == "user" ];then
