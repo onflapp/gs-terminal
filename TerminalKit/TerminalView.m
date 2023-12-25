@@ -945,6 +945,12 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
                             DPSsethsbcolor(cur,
                                            TEXT_NORM_H,TEXT_NORM_S,TEXT_NORM_B);
                           }
+                        else if (color == 0 && WIN_BG_H == 0 && WIN_BG_S == 0 && WIN_BG_B == 0 && (ch->color>>4) == 15)
+                          {
+                            //foreground and background are black
+                            DPSsethsbcolor(cur,
+                                           TEXT_NORM_H,TEXT_NORM_S, 0.3);
+                          }
                         else
                           {
                             set_foreground(cur, l_color, l_attr & 0x03, NO);
@@ -1529,19 +1535,28 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 
 - (void)scrollWheel:(NSEvent *)e
 {
-  float delta = [e deltaY]; // with multiplier applied in XGServerEvent.m
-  float shift;
-  int   new_scroll;
+  if (mouse_tracking && ([e buttonNumber] == 4 || [e buttonNumber] == 5)) {
+    NSPoint c;
+    c.x = 1;
+    c.y = 1;
 
-  if ([e modifierFlags] & NSShiftKeyMask)
-    shift = delta < 0 ? -1 : 1;		// one line
-  else if ([e modifierFlags] & NSControlKeyMask)
-    shift = delta < 0 ? -sy : sy;	// one page
-  else
-    shift = delta;			// as specified by backend
+    [tp handleMouseEvent:e atLocation:c];
+  }
+  else {
+    float delta = [e deltaY]; // with multiplier applied in XGServerEvent.m
+    float shift;
+    int   new_scroll;
 
-  new_scroll = current_scroll - shift;
-  [self _scrollTo:new_scroll update:YES];
+    if ([e modifierFlags] & NSShiftKeyMask)
+      shift = delta < 0 ? -1 : 1;		// one line
+    else if ([e modifierFlags] & NSControlKeyMask)
+      shift = delta < 0 ? -sy : sy;	// one page
+    else
+      shift = delta;			// as specified by backend
+
+    new_scroll = current_scroll - shift;
+    [self _scrollTo:new_scroll update:YES];
+  }
 }
 
 - (void)_updateScroll:(id)sender
@@ -2032,20 +2047,6 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   s.length = 0;
 
   return s;
-}
-
-- (void)scrollWheel:(NSEvent *)e
-{
-  if (mouse_tracking && ([e buttonNumber] == 4 || [e buttonNumber] == 5)) {
-    NSPoint c;
-    c.x = 1;
-    c.y = 1;
-
-    [tp handleMouseEvent:e atLocation:c];
-  }
-  else {
-    [super scrollWheel:e];
-  }
 }
 
 - (void)mouseDragged:(NSEvent *)e

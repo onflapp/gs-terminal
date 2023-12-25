@@ -347,13 +347,17 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
     case 27:	// reverse video off
       reverse = 0;
       break;
-    case 38:	// set underscore on, set default foreground color
-      color = (def_color & 0x0f) | foreground;
-      underline = 1;
+    case 38:	// 256 colors, ignore for now
+      [self _default_attr];
+      return;
       break;
     case 39:	// set underscore off, set default foreground color
       color = (def_color & 0x0f) | background;
       underline = 0;
+      break;
+    case 48:	// 256 colors, ignore for now
+      [self _default_attr];
+      return;
       break;
     case 49:	// set default background color
       color = (def_color & 0xf0) | foreground;
