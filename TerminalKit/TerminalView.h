@@ -36,6 +36,7 @@ struct selection_range
   NSString	*xtermTitle;
   NSString	*xtermIconTitle;
   
+  NSString  *termProgram;
   NSString	*programPath;
   NSString	*childTerminalName;
   int		childPID;
@@ -169,6 +170,7 @@ struct selection_range
 - (void)setUseMulticellGlyphs:(BOOL)multicellGlyphs;
 - (void)setDoubleEscape:(BOOL)doubleEscape;
 - (void)setAlternateAsMeta:(BOOL)altAsMeta;
+- (void)setTermProgram:(NSString *) term;
 
 - (NSString *)xtermTitle;
 - (NSString *)xtermIconTitle;

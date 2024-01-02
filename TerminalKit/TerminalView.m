@@ -2455,10 +2455,18 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   const char *cpath;
   const char *cargs[[args count]+2];
   const char *cdirectory;
+  const char *termenv;
   char *tty_name;
   int i;
   int pipefd[2];
   int flags;
+
+  if (termProgram) {
+    termenv = [[NSString stringWithFormat:@"TERM_PROGRAM=%@", termProgram] cString];
+  }
+  else {
+    termenv = "TERM_PROGRAM=GNUstep_Terminal";
+  }
 
   NSDebugLLog(@"pty",@"-runProgram: %@ withArguments: %@ initialInput: %@",
               path,args,d);
@@ -2514,7 +2522,7 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
           fprintf(stderr, "Unable do set directory: %s\n", cdirectory);
 
       putenv("TERM=gsterm");
-      putenv("TERM_PROGRAM=GNUstep_Terminal");
+      putenv(termenv);
 
       // fprintf(stderr, "Child process terminal: %s\n", ttyname(0));
 
@@ -3013,6 +3021,7 @@ static int handled_mask = (NSDragOperationCopy |
   DESTROY(xtermIconTitle);
 
   DESTROY(programPath);
+  DESTROY(termProgram);
 
   [super dealloc];
 }
@@ -3115,6 +3124,10 @@ static int handled_mask = (NSDragOperationCopy |
 - (void)setAdditionalWordCharacters:(NSString*)str
 {
   ASSIGN(additionalWordCharacters, str);
+}
+
+- (void)setTermProgram:(NSString *) term {
+  ASSIGN(termProgram, term);
 }
 
 - (void)setFont:(NSFont *)aFont
