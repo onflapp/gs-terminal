@@ -30,6 +30,7 @@ function highlight {
 function readjournal {
   export SYSTEMD_LOG_COLOR="1"
   export SYSTEMD_COLORS="16"
+  export SYSTEMD_COLORS=true
   /usr/bin/journalctl -n $MAXLINES -qeb -f --no-pager $GS | highlight >> $LF
 }
 
