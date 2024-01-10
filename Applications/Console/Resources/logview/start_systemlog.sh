@@ -19,6 +19,19 @@ function cleanup {
   rm $LF 2>/dev/null
 }
 
+function waitforready {
+  LSZ="0"
+  while [ 1 ];do
+    sleep 0.1
+    NSZ=`stat -c %s $LF`
+    if [ "$NSZ" == "$LSZ" ];then
+      return
+    fi
+    echo -n "."
+    LSZ="$NSZ"
+  done
+}
+
 function highlight {
   while read -r line ;do
     #if [[ "$line" =~ ^(.*?):(.*?)$ ]];then
@@ -39,6 +52,8 @@ PF="]X;F"
 PN="]X;N"
 
 touch $LF
+
 readjournal &
-sleep 0.3
+waitforready
+
 less -m -Pm$PN -Pw$PF -srQf$WL +GF $LF
