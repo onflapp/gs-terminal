@@ -10,7 +10,14 @@
     };
     FirstResponder = {
 	Actions = (
+	    "copyImage:",
+	    "edit:",
+	    "help:",
+	    "load:",
+	    "exportImage:",
 	    "orderFrontFontPanel:",
+	    "pasteData:",
+	    "reload:",
 	    "showPrefPanel:"
 	);
 	Super = NSObject;

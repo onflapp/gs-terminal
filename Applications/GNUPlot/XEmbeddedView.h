@@ -27,6 +27,7 @@
 
 #import <AppKit/AppKit.h>
 #include <X11/Xlib.h>
+#include <X11/keysym.h>
 
 @interface XEmbeddedView : NSView
 {
@@ -45,6 +46,7 @@
 - (void) destroyXWindow;
 - (void) activateXWindow;
 - (void) deactivateXWindow:(NSNotification*) note;
+- (void) sendKey:(int)keyCode modifier:(int)keyMod;
 
 - (Window) embededXWindowID;
 

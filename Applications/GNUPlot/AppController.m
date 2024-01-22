@@ -13,58 +13,76 @@
 
 @implementation AppController
 
-+ (void) initialize
-{
++ (void) initialize {
   NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
 
-  /*
-   * Register your app's defaults here by adding objects to the
-   * dictionary, eg
-   *
-   * [defaults setObject:anObject forKey:keyForThatObject];
-   *
-   */
-  
   [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (id) init
-{
-  if ((self = [super init]))
-    {
-    }
+- (id) init {
+  if ((self = [super init])) {
+  }
   return self;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
   [super dealloc];
 }
 
-- (void) awakeFromNib
-{
+- (void) awakeFromNib {
 }
 
-- (void) applicationDidFinishLaunching: (NSNotification *)aNotif
-{
-// Uncomment if your application is Renaissance-based
-//  [NSBundle loadGSMarkupNamed: @"Main" owner: self];
+- (void) applicationDidFinishLaunching: (NSNotification *)aNotif {
+  if([NSApp isScriptingSupported]) {
+    [NSApp initializeApplicationScripting];
+  }
+
+  [NSApp setServicesProvider:self];
 }
 
-- (BOOL) applicationShouldTerminate: (id)sender
-{
+- (BOOL) applicationShouldTerminate: (id)sender {
   return YES;
 }
 
-- (void) applicationWillTerminate: (NSNotification *)aNotif
-{
+- (void) applicationWillTerminate: (NSNotification *)aNotif {
 }
 
 - (BOOL) application: (NSApplication *)application openFile: (NSString *)fileName {
   Document* doc = [self documentForFile:fileName];
   [doc showWindow];
   return NO;
+}
+
+- (void) plotSelectionService:(NSPasteboard *)pboard
+                       userData:(NSString *)userData
+                          error:(NSString **)error {
+  NSString *text = [pboard stringForType:NSStringPboardType];
+  if (!text) return;
+
+  [NSApp activateIgnoringOtherApps:YES];
+  Document* doc = [self currentDocument];
+  if (!doc) {
+    doc = [[Document alloc] initWithFile:nil];
+    [doc showWindow];
+  }
+  [doc performSelector:@selector(plotData:) withObject:text afterDelay:0.3];
+}
+
+- (void) evalSelectionService:(NSPasteboard *)pboard
+                     userData:(NSString *)userData
+                        error:(NSString **)error {
+  NSString *text = [pboard stringForType:NSStringPboardType];
+  if (!text) return;
+
+  [NSApp activateIgnoringOtherApps:YES];
+  Document* doc = [self currentDocument];
+  if (!doc) {
+    doc = [[Document alloc] initWithFile:nil];
+    [doc showWindow];
+  }
+
+  [doc performSelector:@selector(evaluateScript:) withObject:text afterDelay:0.5];
 }
 
 - (Document*) currentDocument {
@@ -74,11 +92,6 @@
 - (Document*) documentForFile:(NSString*) fileName {
   Document* doc = nil;
   NSString* path = fileName;
-
-  NSRange r = [fileName rangeOfString:@":"];
-  if (r.location != NSNotFound) {
-    path = [fileName substringToIndex:r.location];
-  }
 
   for (NSWindow* win in [NSApp windows]) {
     if ([[win delegate] isKindOfClass:[Document class]]) {
@@ -110,8 +123,7 @@
   }
 }
 
-- (void) showPrefPanel: (id)sender
-{
+- (void) showPrefPanel: (id)sender {
 }
 
 @end

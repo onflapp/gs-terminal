@@ -46,6 +46,7 @@
 - (void) showWindow;
 
 - (NSString*) fileName;
+- (void) evaluateScript:(NSString*) script;
 
 @end
 

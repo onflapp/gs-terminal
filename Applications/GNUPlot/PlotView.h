@@ -32,6 +32,7 @@
 {
 }
 - (NSString*) createPlotWindow;
+- (void) syncCommands;
 @end
 
 #endif // _PLOTVIEW_H_

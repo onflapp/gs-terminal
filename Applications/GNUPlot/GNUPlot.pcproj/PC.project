@@ -1,5 +1,5 @@
 {
-    APPLICATIONICON = "";
+    APPLICATIONICON = "GNUPlot.tiff";
     "APP_DOCUMENT_BASED" = NO;
     "APP_TYPE" = GORM;
     "BUILDER_TARGETS" = (
@@ -16,7 +16,8 @@
 	"PlotView.m",
 	"XEmbeddedView.m",
 	"Document.m",
-	"CommandView.m"
+	"CommandView.m",
+	"STScriptingSupport.m"
     );
     COMPILEROPTIONS = "";
     CPPOPTIONS = "";
@@ -30,9 +31,11 @@
 	"PlotView.h",
 	"XEmbeddedView.h",
 	"Document.h",
-	"CommandView.h"
+	"CommandView.h",
+	"STScriptingSupport.h"
     );
     IMAGES = (
+	"GNUPlot.tiff"
     );
     INSTALLDIR = "$(HOME)/GNUstep";
     INTERFACES = (
@@ -51,7 +54,9 @@
     MAKEFILEDIR = "$(GNUSTEP_MAKEFILES)";
     "OBJC_COMPILEROPTIONS" = "";
     "OTHER_RESOURCES" = (
-	plotview
+	plotview,
+	"ScriptingInfo.plist",
+	"ApplicationScripting.xlp"
     );
     "OTHER_SOURCES" = (
 	"GNUPlot_main.m"
@@ -64,6 +69,13 @@
     "PROJECT_CREATOR" = ",,,";
     "PROJECT_DESCRIPTION" = "No description avaliable!";
     "PROJECT_DOCUMENTTYPES" = (
+	{
+	    NSUnixExtensions = (
+		gnu,
+		gp,
+		gnuplot
+	    );
+	}
     );
     "PROJECT_GROUP" = "No group avaliable!";
     "PROJECT_MAINTAINER" = ",,,";

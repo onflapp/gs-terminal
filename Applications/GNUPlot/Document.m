@@ -148,8 +148,10 @@ static NSWindow* _lastMainWindow;
 }
 
 - (void) updateTitleBar:(NSNotification*) n {
-  NSString* title = [terminalView xtermTitle];
-  if (!title) title = @"untitled";
+  NSString* title = nil;//[terminalView xtermTitle];
+
+  if (!fileName) title = @"untitled";
+  else title = [fileName lastPathComponent];
 
   [window setTitle:title];
 }
@@ -176,7 +178,119 @@ static NSWindow* _lastMainWindow;
   [self release];
 }
 
-- (void) saveDocument:(id) sender {
+- (void) toggle: (id)sender {
+  if ([sender tag] == 10) {
+    [plotView sendKey:XK_g modifier:0];
+  }
 }
+
+- (void) zoom: (id)sender {
+  if ([sender tag] > 0) {
+    [plotView sendKey:XK_plus modifier:0];
+  }
+  else if ([sender tag] < 0) {
+    [plotView sendKey:XK_minus modifier:0];
+  }
+  else {
+    [plotView sendKey:XK_u modifier:0];
+  }
+}
+
+- (void) plotData:(NSString*) data {
+  NSLog(@"plot data");
+  NSString* td = NSTemporaryDirectory();
+  NSString* cf = [NSString stringWithFormat:@"%@/gnuplot-%lx.tmp", td, [self hash]];
+  NSString* df = [NSString stringWithFormat:@"%@/gnuplot-%lx.data", td, [self hash]];
+
+  [data writeToFile:df atomically:NO];
+
+  NSString* script = [NSString stringWithFormat:@"plot \"%@\"", df];
+  [script writeToFile:cf atomically:NO];
+
+  [terminalView sendCommand:[NSString stringWithFormat:@"L:%@\n", cf]];
+  [plotView syncCommands];
+}
+
+- (void) evaluateScript:(NSString*) script {
+  NSLog(@"eval script");
+  NSString* td = NSTemporaryDirectory();
+  NSString* cf = [NSString stringWithFormat:@"%@/gnuplot-%lx.tmp", td, [self hash]];
+
+  [script writeToFile:cf atomically:NO];
+
+  [terminalView sendCommand:[NSString stringWithFormat:@"L:%@\n", cf]];
+  [plotView syncCommands];
+}
+
+- (void) reload: (id)sender {
+  if (fileName) {
+    [terminalView sendCommand:[NSString stringWithFormat:@"L:%@\n", fileName]];
+    [plotView syncCommands];
+  }
+}
+
+- (void) edit: (id)sender {
+  if (fileName) {
+    [[NSWorkspace sharedWorkspace] openFile:fileName];
+  }
+}
+
+- (void) load: (id)sender {
+  NSOpenPanel* panel = [NSOpenPanel openPanel];
+  [panel setAllowsMultipleSelection: NO];
+  [panel setCanChooseDirectories: NO];
+
+  if ([panel runModalForTypes:nil] == NSOKButton) {
+    NSString* path = [[panel filenames] firstObject];
+    [terminalView sendCommand:[NSString stringWithFormat:@"L:%@\n", path]];
+    [plotView syncCommands];
+  }
+}
+
+- (void) saveDocument:(id) sender {
+  if (fileName) {
+    [terminalView sendCommand:[NSString stringWithFormat:@"S:%@\n", fileName]];
+    [plotView syncCommands];
+  }
+  else {
+    [self saveDocumentAs:sender];
+  }
+}
+
+- (void) saveDocumentAs:(id) sender {
+  NSSavePanel* panel = [NSSavePanel savePanel];
+
+  if ([panel runModal] == NSOKButton) {
+    NSString* path = [panel filename];
+    [terminalView sendCommand:[NSString stringWithFormat:@"S:%@\n", path]];
+    [plotView syncCommands];
+
+    ASSIGN(fileName, path);
+    [self updateTitleBar:nil];
+  }
+}
+
+- (void) exportImage:(id) sender {
+  NSSavePanel* panel = [NSSavePanel savePanel];
+
+  if ([panel runModal] == NSOKButton) {
+    NSString* path = [panel filename];
+    [terminalView sendCommand:[NSString stringWithFormat:@"X:%@\n", path]];
+    [plotView syncCommands];
+  }
+}
+
+- (void) copyImage:(id) sender {
+  NSString* type = @"png";
+  [terminalView sendCommand:[NSString stringWithFormat:@"O:%@\n", type]];
+  [plotView syncCommands];
+}
+
+- (void) help:(id) sender {
+  [terminalView sendCommand:@"C:help\n"];
+  [plotView syncCommands];
+}
+
+
 
 @end

@@ -19,4 +19,8 @@
   return [NSString stringWithFormat:@"%lx", xwindowid];
 }
 
+- (void) syncCommands {
+  [self sendKey:XK_j modifier:0];
+}
+
 @end

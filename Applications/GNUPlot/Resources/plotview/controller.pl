@@ -4,6 +4,11 @@ $CI=$ENV{'CMD_IN'};
 $CO=$ENV{'CMD_OUT'};
 $BASE_DIR=$ENV{'BASE_DIR'};
 
+sub cmd_exec {
+  my ($s) = @_;
+  print("eval \"$s\"\n");
+}
+
 sub cmd_print {
   my ($s) = @_;
   print("print \"$s\"\n");
@@ -24,7 +29,7 @@ sub cmd_export {
   $t = "jpeg" if ($s =~ /\.jpg$/);
 
   print("set term $t;set output \"$s\";replot; set term GNUTERM\n");
-  cmd_print("export done $s");
+  #cmd_print("export done $s");
 }
 
 sub cmd_copy {
@@ -37,7 +42,7 @@ sub cmd_copy {
 
 sub cmd_load {
   my ($s) = @_;
-  cmd_print("loading from $s");
+  #cmd_print("loading from $s");
   open(LIN, $s);
   while(<LIN>) {
     print($_);
@@ -47,7 +52,7 @@ sub cmd_load {
 
 sub cmd_save {
   my ($s) = @_;
-  cmd_print("saving to $s");
+  #cmd_print("saving to $s");
   print("save \"| $BASE_DIR/sanitize.pl > $s\"\n");
 }
 

@@ -1,3 +1,4 @@
 E="load '< `echo $BASE_DIR`/controller.pl'"
-bind "r" @E
+CLIPBOARD='<nxpasteboard --paste'
+bind j @E
 @E

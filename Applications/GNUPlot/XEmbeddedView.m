@@ -27,6 +27,30 @@
 #include "X11/Xutil.h"
 #include "X11/keysymdef.h"
 
+XKeyEvent mk_xevent(Display *display, Window win,
+                         int press, int keycode, int modifiers) {
+  XKeyEvent event;
+  Window winRoot = XDefaultRootWindow(display);
+
+  event.display     = display;
+  event.window      = win;
+  event.root        = winRoot;
+  event.subwindow   = None;
+  event.time        = CurrentTime;
+  event.x           = 1;
+  event.y           = 1;
+  event.x_root      = 1;
+  event.y_root      = 1;
+  event.same_screen = True;
+  event.keycode     = XKeysymToKeycode(display, keycode);
+  event.state       = modifiers;
+
+  if (press) event.type = KeyPress;
+  else event.type = KeyRelease;
+
+  return event;
+}
+
 @implementation XEmbeddedView
 
 - (id) initWithFrame:(NSRect)r {
@@ -252,6 +276,19 @@
   [self performSelectorInBackground:@selector(processXWindowsEvents:) withObject:self];
   
   [self setNeedsDisplay:YES];
+}
+
+// /usr/include/X11/keysymdef.h
+
+- (void) sendKey:(int)keyCode modifier:(int)keyMod {
+  XKeyEvent event = mk_xevent(xdisplay, xwindowid, 1, keyCode, keyMod);
+  XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent *)&event);
+
+  event = mk_xevent(xdisplay, xwindowid, 0, keyCode, keyMod);
+  XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent *)&event);
+
+  NSLog(@"send key %lx %lx", xdisplay, xwindowid);
+  XSync(xdisplay, True);
 }
 
 - (void) processXWindowsEvents:(id) sender {

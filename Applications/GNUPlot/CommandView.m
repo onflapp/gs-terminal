@@ -35,29 +35,28 @@
 - (void) runWithFile:(NSString*) path windowID:(NSString*) xid {
   NSMutableArray* args = [NSMutableArray new];
   NSString* td = NSTemporaryDirectory();
-  NSString* cf = [NSString stringWitFormat:@"%@/%@.cmd", td, xid];
+  NSString* cf = [NSString stringWithFormat:@"%@/gnuplot-%@.cmd", td, xid];
 
   ASSIGN(cmdfile, cf);
 
   [args addObject:xid];
   [args addObject:cf];
-  if (path) [args addObject:path];
 
   NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"plotview"];
   NSString* exec = [vp stringByAppendingPathComponent:@"start.sh"];
+
+  if (path) {
+    [self sendCommand:[NSString stringWithFormat:@"L:%@\n", path]];
+  }
+  else {
+    [self sendCommand:@""];
+  }
 
   NSLog(@">>>%@ %@", exec, args);
   
   [self runProgram:exec
      withArguments:args
       initialInput:nil];
-}
-
-- (void) help:(id) sender {
-  [self sendCommand:@"help"];
-}
-
-- (void) saveDocument:(id) sender {
 }
 
 - (void) quit:(id) sender {
@@ -68,6 +67,27 @@
 
 - (void) sendCommand:(NSString*) cmd {
   [cmd writeToFile:cmdfile atomically:NO];
+}
+
+- (void)ts_handleXOSC:(NSString *)new_cmd {
+  NSLog(@"[%@]", new_cmd);
+
+  if ([new_cmd isEqualToString:@"COPY"]) {
+    NSString* path = [NSString stringWithFormat:@"%@-data.png", cmdfile];
+    NSLog(@">%@", path);
+    NSImage* img = [[NSImage alloc] initWithContentsOfFile:path];
+    NSLog(@">%@", img);
+      
+    if (img) {
+      NSPasteboard* pb = [NSPasteboard generalPasteboard];
+
+      [pb declareTypes:[NSArray arrayWithObject:NSTIFFPboardType] owner:nil];
+      [pb setData:[img TIFFRepresentation] forType:NSTIFFPboardType];
+      [img release];
+    }
+  }
+  else if ([new_cmd isEqualToString:@"SELECTION"]) {
+  }
 }
 
 - (void) dealloc {

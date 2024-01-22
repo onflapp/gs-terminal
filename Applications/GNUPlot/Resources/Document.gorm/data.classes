@@ -10,6 +10,10 @@
     };
     Document = {
 	Actions = (
+	    "edit:",
+	    "reload:",
+	    "zoom:",
+	    "toggle:"
 	);
 	Outlets = (
 	    window,
@@ -20,6 +24,9 @@
     };
     FirstResponder = {
 	Actions = (
+	    "edit:",
+	    "newAction:",
+	    "reload:",
 	    "} - initWithPreferences:"
 	);
 	Super = NSObject;

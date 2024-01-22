@@ -33,7 +33,7 @@
 }
 
 - (void) runWithFile:(NSString*) path windowID:(NSString*) xid;
-- (void) saveDocument:(id) sender;
+- (void) sendCommand:(NSString*) cmd;
 @end
 
 #endif // _COMMANDVIEW_H_

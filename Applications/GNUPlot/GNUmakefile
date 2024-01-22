@@ -25,7 +25,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 VERSION = 0.1
 PACKAGE_NAME = GNUPlot
 APP_NAME = GNUPlot
-GNUPlot_APPLICATION_ICON = 
+GNUPlot_APPLICATION_ICON = GNUPlot.tiff
 
 
 #
@@ -34,7 +34,10 @@ GNUPlot_APPLICATION_ICON =
 GNUPlot_RESOURCE_FILES = \
 Resources/GNUPlot.gorm \
 Resources/Document.gorm \
-Resources/plotview 
+Resources/GNUPlot.tiff \
+Resources/plotview \
+Resources/ScriptingInfo.plist \
+Resources/ApplicationScripting.xlp 
 
 
 #
@@ -45,7 +48,8 @@ AppController.h \
 PlotView.h \
 XEmbeddedView.h \
 Document.h \
-CommandView.h
+CommandView.h \
+STScriptingSupport.h
 
 #
 # Objective-C Class files
@@ -55,7 +59,8 @@ AppController.m \
 PlotView.m \
 XEmbeddedView.m \
 Document.m \
-CommandView.m
+CommandView.m \
+STScriptingSupport.m
 
 #
 # Other sources
