@@ -1,0 +1,5 @@
+- currentDocument -> Document
+- documents -> array
+
+Document
+- fileName

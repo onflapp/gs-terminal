@@ -1,0 +1,3 @@
+E="load '< `echo $BASE_DIR`/controller.pl'"
+bind "r" @E
+@E
