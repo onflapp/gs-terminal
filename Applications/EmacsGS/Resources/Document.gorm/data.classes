@@ -1,0 +1,66 @@
+{
+    "## Comment" = "Do NOT change this file, Gorm maintains it";
+    Document = {
+	Actions = (
+	);
+	Outlets = (
+	    window,
+	    terminalView
+	);
+	Super = NSObject;
+    };
+    EmacsTerminalView = {
+	Actions = (
+	    "help:",
+	    "saveDocument:",
+	    "closeWindow:",
+	    "editAlternative:",
+	    "moveLineDown:",
+	    "moveLineUp:",
+	    "splitWindow:",
+	    "movePageUp:",
+	    "movePageDown:"
+	);
+	Outlets = (
+	);
+	Super = TerminalView;
+    };
+    FirstResponder = {
+	Actions = (
+	    "closeWindow:",
+	    "editAlternative:",
+	    "editAlternave:",
+	    "help:",
+	    "initWithPreferences:",
+	    "moveLineDown:",
+	    "moveLineUp:",
+	    "movePageDown:",
+	    "movePageUp:",
+	    "newAction:",
+	    "splitWindow:"
+	);
+	Super = NSObject;
+    };
+    TerminalView = {
+	Actions = (
+	    "initWithPreferences:"
+	);
+	Outlets = (
+	);
+	Super = NSView;
+    };
+    VimTerminalView = {
+	Actions = (
+	    "moveLineDown:",
+	    "moveLineUp:",
+	    "movePageDown:",
+	    "movePageUp:",
+	    "editAlternative:",
+	    "closeWindow:",
+	    "splitWindow:"
+	);
+	Outlets = (
+	);
+	Super = TerminalView;
+    };
+}

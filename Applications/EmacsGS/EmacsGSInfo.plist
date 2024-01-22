@@ -1,0 +1,21 @@
+{
+    ApplicationDescription = "No description avaliable!";
+    ApplicationIcon = "EmacsGS.tiff";
+    ApplicationName = EmacsGS;
+    ApplicationRelease = "0.1";
+    Copyright = "Copyright (C) 200x";
+    CopyrightDescription = "Released under ...";
+    FullVersionID = "0.1";
+    NSExecutable = EmacsGS;
+    NSIcon = "EmacsGS.tiff";
+    NSMainNibFile = "emacs.gorm";
+    NSPrincipalClass = NSApplication;
+    NSRole = Application;
+    NSTypes = (
+	{
+	    NSUnixExtensions = (
+		txt
+	    );
+	}
+    );
+}
