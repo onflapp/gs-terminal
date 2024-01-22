@@ -21,7 +21,7 @@ sub cmd_cb {
 
 sub cmd_export {
   my ($s) = @_;
-  my $t = "png";
+  my $t = "pngcairo";
 
   $t = "postscript" if ($s =~ /\.ps$/);
   $t = "dumb" if ($s =~ /\.txt$/);
@@ -36,7 +36,7 @@ sub cmd_copy {
   my ($s) = @_;
 
   my $i = "$CO.png";
-  print("set term png;set output \"$i\";replot; set term GNUTERM\n");
+  print("set term pngcairo;set output \"$i\";replot; set term GNUTERM\n");
   cmd_cb("COPY");
 }
 
