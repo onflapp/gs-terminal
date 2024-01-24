@@ -110,6 +110,10 @@ static NSWindow* _lastMainWindow;
   [terminalView goToLine:line];
 }
 
+- (void) insertText:(NSString*) text {
+  [terminalView insertText:text];
+}
+
 - (void) viewBecameIdle:(NSNotification*) n {
   [terminalView closeProgram];
   [window close];

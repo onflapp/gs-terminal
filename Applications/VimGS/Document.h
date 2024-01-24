@@ -43,6 +43,7 @@
 
 - (NSString*) fileName;
 - (void) goToLine:(NSInteger) line;
+- (void) insertText:(NSString*) text;
 
 @end
 

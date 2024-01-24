@@ -45,7 +45,9 @@
 
 - (void) applicationDidFinishLaunching: (NSNotification *)aNotif {
   NSArray* types = [NSArray arrayWithObjects:NSStringPboardType, nil];
+
   [NSApp registerServicesMenuSendTypes:types returnTypes:nil];
+  [NSApp setServicesProvider:self];
 
   if([NSApp isScriptingSupported]) {
     [NSApp initializeApplicationScripting];
@@ -78,6 +80,36 @@
     [doc showWindow];
   }
   return NO;
+}
+
+- (void) editSelectionService:(NSPasteboard *)pboard
+                     userData:(NSString *)userData
+                        error:(NSString **)error {
+  NSString *text = [pboard stringForType:NSStringPboardType];
+  if (!text) return;
+
+  [NSApp activateIgnoringOtherApps:YES];
+  Document* doc = [[Document alloc] initWithFile:nil];
+  [doc showWindow];
+
+  [doc performSelector:@selector(insertText:) withObject:text afterDelay:0.3];
+}
+
+- (void) openSelectionService:(NSPasteboard *)pboard
+                     userData:(NSString *)userData
+                        error:(NSString **)error {
+  NSString *text = [[pboard stringForType:NSStringPboardType] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\r"]];
+  NSArray *files = [pboard propertyListForType: NSFilenamesPboardType];
+
+  if ([files count]) {
+    [self application:NSApp openFile:[files firstObject]];
+    return;
+  }
+
+  if (text && [text hasPrefix:@"/"]) {
+    [self application:NSApp openFile:text];
+    return;
+  }
 }
 
 - (Document*) currentDocument {

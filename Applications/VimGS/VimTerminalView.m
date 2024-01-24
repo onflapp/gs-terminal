@@ -211,6 +211,15 @@
   }
 }
 
+- (void) insertText:(NSString*) text {
+  if (mode == 'v' || mode == 'i' || mode == 'n') {
+    if (text) {
+      [text writeToFile:pasteDataFile atomically:NO];
+      [self ts_sendCString:"\e[1;0P~"];
+    }
+  }
+}
+
 - (void) goToLine:(NSInteger) line {
   NSString* txt = [NSString stringWithFormat:@"\e\e:%ld\r", line];
   [self ts_sendCString:[txt UTF8String]];

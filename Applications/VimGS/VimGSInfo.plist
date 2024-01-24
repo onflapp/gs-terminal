@@ -11,10 +11,47 @@
     NSMainNibFile = "vim.gorm";
     NSPrincipalClass = NSApplication;
     NSRole = Application;
+    NSServices = (
+	{
+	    NSKeyEquivalent = {
+		default = "";
+	    };
+	    NSMenuItem = {
+		default = "VimGS/Edit Selection";
+	    };
+	    NSMessage = editSelectionService;
+	    NSPortName = VimGS;
+	    NSSendTypes = (
+		NSStringPboardType
+	    );
+	},
+	{
+	    NSKeyEquivalent = {
+		default = "";
+	    };
+	    NSMenuItem = {
+		default = "VimGS/Open Selected File";
+	    };
+	    NSMessage = openSelectionService;
+	    NSPortName = VimGS;
+	    NSSendTypes = (
+		NSStringPboardType,
+		NSFilenamesPboardType
+	    );
+	}
+    );
     NSTypes = (
 	{
 	    NSUnixExtensions = (
-		txt
+		c,
+		h,
+		m,
+		el,
+		pl,
+		py,
+		java,
+		js,
+		st
 	    );
 	}
     );

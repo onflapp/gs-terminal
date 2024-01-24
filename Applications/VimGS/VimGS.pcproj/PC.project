@@ -72,7 +72,15 @@
     "PROJECT_DOCUMENTTYPES" = (
 	{
 	    NSUnixExtensions = (
-		txt
+		c,
+		h,
+		m,
+		el,
+		pl,
+		py,
+		java,
+		js,
+		st
 	    );
 	}
     );

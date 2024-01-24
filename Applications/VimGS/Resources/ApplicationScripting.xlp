@@ -4,3 +4,4 @@
 Document
 - fileName
 - sendCommand:cmd
+- insertText:txt
