@@ -68,6 +68,8 @@
 - (TerminalWindowController *)newWindowWithShell;
 - (TerminalWindowController *)newWindowWithPreferences:(id)defs
                                            startupFile:(NSString *)path;
+
+- (void)openStartupURL:(NSURL*) url;
 - (void)openStartupFile:(NSString *)filePath;
 - (TerminalWindowController *)newWindowWithProgram:(NSString *)program
                                          arguments:(NSArray *)args

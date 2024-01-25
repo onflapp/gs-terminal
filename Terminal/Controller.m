@@ -50,6 +50,23 @@
 // }  
 //-----------------------------------------------------------------------------
 
+NSDictionary* url_query (NSURL *url) 
+{
+  NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+  NSArray* ls = [[url query]componentsSeparatedByString:@"&"];
+
+  for (NSString* it in ls) {
+    NSRange r = [it rangeOfString:@"="];
+    if (r.location != NSNotFound) {
+      NSString* name = [it substringToIndex:r.location];
+      NSString* value = [[it substringFromIndex:r.location+1]stringByRemovingPercentEncoding];
+      [dict setValue:value forKey:name];
+    }
+  }
+
+  return dict;
+}
+
 static TerminalWindowController* _last_active_twc = nil;
 
 @implementation Controller
@@ -506,13 +523,37 @@ static TerminalWindowController* _last_active_twc = nil;
 }
 
 - (BOOL)application:(NSApplication *)sender
+ 	   openURL:(NSURL *)url 
+{
+  [self openStartupURL:url];
+  isLaunchedFromFile = YES;
+  return YES;
+}
+
+- (BOOL)application:(NSApplication *)sender
  	   openFile:(NSString *)filename
 {
+  NSURL* url = [NSURL URLWithString:filename];
+  if ([filename hasPrefix:@"term:/"] && url) {
+    [self application:sender openURL:url];
+    return YES;
+  }
+
   if ([[filename pathExtension] isEqualToString:@"term"]) {
     [self openStartupFile:filename];
     isLaunchedFromFile = YES;
   }
   return YES;
+}
+
+- (void)openURL:(NSPasteboard *)pboard
+       userData:(NSString *)userData
+          error:(NSString **)error  {
+  NSString *path = [[pboard stringForType:NSStringPboardType] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\r"]];
+
+  if (path) {
+    [self application:NSApp openFile:path];
+  }
 }
 
 @end
@@ -864,6 +905,15 @@ static TerminalWindowController* _last_active_twc = nil;
 - (TerminalWindowController *)newWindowWithPreferences:(id)defs
                                            startupFile:(NSString *)path
 {
+  return [self newWindowWithPreferences:defs startupFile:path shellArgs:nil];
+}
+
+// Create window, and run shell.
+// Add window to 'windows' array.
+- (TerminalWindowController *)newWindowWithPreferences:(id)defs
+                                           startupFile:(NSString *)path
+                                             shellArgs:(NSString *)shellArgs
+{
   TerminalWindowController *twc;
   NSString                 *shell;
   NSArray                  *args;
@@ -873,7 +923,13 @@ static TerminalWindowController* _last_active_twc = nil;
                                                   startupFile:path];
   [self setupTerminalWindow:twc];
   
-  args = [[[twc preferences] shell] componentsSeparatedByString:@" "];
+  if (shellArgs) {
+    args = [shellArgs componentsSeparatedByString:@" "];
+  }
+  else {
+    args = [[[twc preferences] shell] componentsSeparatedByString:@" "];
+  }
+
   shell = [[args objectAtIndex:0] copy];
   if ([args count] > 1) {
     args = [args subarrayWithRange:NSMakeRange(1,[args count]-1)];
@@ -891,6 +947,36 @@ static TerminalWindowController* _last_active_twc = nil;
   [shell release];
 
   return twc;
+}
+
+- (void)openStartupURL:(NSURL*) url
+{
+  NSString                 *filePath;
+  NSString                 *cmd;
+  NSString                 *title;
+  NSDictionary             *defs;
+  NSDictionary             *query;
+  TerminalWindowController *twc;
+  NSRect                   wFrame;
+  
+  filePath = [url path];
+  query = url_query(url);
+  cmd = [query valueForKey:@"cmd"];
+  title = [query valueForKey:@"title"];
+
+  NSLog(@"open %@, cmd=%@", filePath, cmd);
+
+  defs = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+  twc = [self newWindowWithPreferences:defs
+                           startupFile:filePath
+                             shellArgs:cmd];
+
+  wFrame = NSRectFromString([defs objectForKey:@"WindowFrame"]);
+  [[twc window] setFrameOrigin:wFrame.origin];
+  [defs release];
+  [twc showWindow:self];
+
+  if ([title length]) [[twc window] setTitle:title];
 }
 
 - (void)openStartupFile:(NSString *)filePath

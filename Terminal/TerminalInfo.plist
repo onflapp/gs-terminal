@@ -12,6 +12,12 @@
     CopyrightDescription = "Released under the GNU GPL. See COPYING for details.";
     FullVersionID = "0.9.8";
     NSRole = Application;
+    CFBundleURLTypes = (
+	{
+	    CFBundleURLName = "term";
+	    CFBundleURLSchemes = ( term );
+	}
+    );
     NSTypes = (
       {
           NSIcon = "TermFile.tiff";
