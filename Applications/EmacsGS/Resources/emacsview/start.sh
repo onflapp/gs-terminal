@@ -3,8 +3,8 @@
 DIR="${0%/*}"
 CFG="$DIR/init.el"
 
-export VIMGS_COPY_FILE="$1"
-export VIMGS_PASTE_FILE="$2"
+export EMACSGS_COPY_FILE="$1"
+export EMACSGS_PASTE_FILE="$2"
 
 shift
 shift

@@ -74,6 +74,10 @@
       initialInput:nil];
 }
 
+- (void) showMenuBar:(id) sender {
+  [self ts_sendCString:"\exmenu-bar-open\r"];
+}
+
 - (void) help:(id) sender {
   [self ts_sendCString:"t"];
 }
@@ -119,23 +123,24 @@
 }
 
 - (void) cut:(id) sender {
+  [self ts_sendCString:"\e[1;0C~"];
   [self ts_sendCString:""];
 }
 
 - (void) copy:(id) sender {
+  [self ts_sendCString:"\e[1;0C~"];
   [self ts_sendCString:"w"];
 }
 
 - (void) paste:(id) sender {
-  [self ts_sendCString:""];
-  /*
-    NSPasteboard* pb = [NSPasteboard generalPasteboard];
-    NSString* txt = [pb stringForType:NSStringPboardType];
-    if (txt) {
-      [txt writeToFile:pasteDataFile atomically:NO];
-      [self ts_sendCString:"\e[1;0P~"];
-    }
-    */
+  //[self ts_sendCString:""];
+
+  NSPasteboard* pb = [NSPasteboard generalPasteboard];
+  NSString* txt = [pb stringForType:NSStringPboardType];
+  if (txt) {
+    [txt writeToFile:pasteDataFile atomically:NO];
+    [self ts_sendCString:"\e[1;0P~"];
+  }
 }
 
 - (void) quit:(id) sender {
@@ -198,7 +203,7 @@
 
 - (id)validRequestorForSendType:(NSString *)st
                      returnType:(NSString *)rt {
-  //if ([st isEqual:NSStringPboardType]) return self;
+  if ([st isEqual:NSStringPboardType]) return self;
   return nil;
 }
 

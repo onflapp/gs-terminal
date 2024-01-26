@@ -19,7 +19,8 @@
 	    "moveLineUp:",
 	    "splitWindow:",
 	    "movePageUp:",
-	    "movePageDown:"
+	    "movePageDown:",
+	    "showMenuBar:"
 	);
 	Outlets = (
 	);
@@ -36,7 +37,7 @@
 	    "moveLineUp:",
 	    "movePageDown:",
 	    "movePageUp:",
-	    "newAction:",
+	    "showMenuBar:",
 	    "splitWindow:"
 	);
 	Super = NSObject;

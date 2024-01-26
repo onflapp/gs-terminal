@@ -88,8 +88,6 @@ static NSWindow* _lastMainWindow;
     [window makeKeyAndOrderFront:self];
   }
   else {
-    [window makeFirstResponder:terminalView];
-
     if (!_lastMainWindow) _lastMainWindow = [[NSApp orderedWindows] lastObject];
     if (_lastMainWindow) {
       NSRect r = [_lastMainWindow frame];
@@ -147,7 +145,6 @@ static NSWindow* _lastMainWindow;
 - (void) updateFileName:(NSNotification*) n {
   NSString* fn = [[n userInfo] valueForKey:@"path"];
   if ([fn length] == 0) fn = nil;
-
   ASSIGN(fileName, fn);
 }
 
