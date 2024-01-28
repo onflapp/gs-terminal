@@ -26,9 +26,14 @@
 
 @implementation Document
 
+static NSWindow* _lastMainWindow;
 static NSMutableArray* _documents = nil;
 + (void) initialize {
   _documents = [[NSMutableArray alloc] init];
+}
+
++ (Document*) lastActiveDocument {
+  return (Document*)[_lastMainWindow delegate];
 }
 
 + (id) documentForFile:(NSString*) path {
@@ -68,7 +73,7 @@ static NSMutableArray* _documents = nil;
     [window setTitle:@"Desktop Log - Console"];
   }
   else {
-    [window setTitle:@"file - Console"];
+    [window setTitle:[NSString stringWithFormat:@"%@ - Console", path]];
   }
   
   _filePath = [path retain];
@@ -120,10 +125,16 @@ static NSMutableArray* _documents = nil;
   return _filePath;
 }
 
+- (void) windowDidBecomeMain:(NSNotification *)notification {
+  _lastMainWindow = [self window];
+}
+
 - (void) windowWillClose:(NSNotification *)notification {
   [_documents removeObject:self];
 
   [terminalView closeProgram];
+
+  if (_lastMainWindow == window) _lastMainWindow = nil;
 
   [window setDelegate: nil];
   [self release];

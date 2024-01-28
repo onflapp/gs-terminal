@@ -38,8 +38,11 @@
 
   NSString* logPath;
   NSInteger mode;
+  NSInteger markcount;
 }
 
+- (void) mark:(id) sender;
+- (void) clear:(id) sender;
 - (void) setLogPath:(NSString*) path;
 - (void) runLogView;
 @end

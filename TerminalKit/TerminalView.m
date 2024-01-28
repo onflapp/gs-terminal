@@ -2412,6 +2412,14 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
     [self readData];
 }
 
+- (void)sendSignal:(int)sig
+{
+  if (childPID > 0)
+  {
+    NSLog(@"send signal %d to %d", sig, childPID);
+    kill(childPID, sig);
+  }
+}
 
 - (void)closeProgram
 {
@@ -3244,6 +3252,11 @@ static int handled_mask = (NSDragOperationCopy |
 - (NSString *)programPath
 {
   return programPath;
+}
+
+- (int)programPID
+{
+  return childPID;
 }
 
 - (NSString *)deviceName

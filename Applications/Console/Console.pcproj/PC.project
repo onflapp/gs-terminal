@@ -14,7 +14,9 @@
     "CLASS_FILES" = (
 	"AppController.m",
 	"ConsoleTerminalView.m",
-	"Document.m"
+	"Document.m",
+	"STScriptingSupport.m",
+	"Document+scripting.m"
     );
     COMPILEROPTIONS = "";
     CPPOPTIONS = "";
@@ -26,7 +28,8 @@
     "HEADER_FILES" = (
 	"AppController.h",
 	"ConsoleTerminalView.h",
-	"Document.h"
+	"Document.h",
+	"STScriptingSupport.h"
     );
     IMAGES = (
 	"Console.tiff",
@@ -50,7 +53,9 @@
     "OBJC_COMPILEROPTIONS" = "";
     "OTHER_RESOURCES" = (
 	logview,
-	"../Preferences.subproj/Preferences.bundle"
+	"../Preferences.subproj/Preferences.bundle",
+	"ApplicationScripting.xlp",
+	"ScriptingInfo.plist"
     );
     "OTHER_SOURCES" = (
 	"Console_main.m"

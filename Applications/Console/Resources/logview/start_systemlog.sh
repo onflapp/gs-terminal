@@ -56,4 +56,4 @@ touch $LF
 readjournal &
 waitforready
 
-less -m -Pm$PN -Pw$PF -srQf$WL +GF $LF
+less -m --follow-name -Pm$PN -Pw$PF -srQf$WL +GF $LF

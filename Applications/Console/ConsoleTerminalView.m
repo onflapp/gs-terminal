@@ -23,6 +23,15 @@
 */
 
 #import "ConsoleTerminalView.h"
+#include <stdio.h>
+
+void file_write(NSString* path, NSString* txt, BOOL append) {
+  FILE* f = fopen([path fileSystemRepresentation], (append?"a":"w"));
+  const char *buff = [txt cString];
+  int sz = strlen(buff);
+  fwrite(buff, 1, sz, f);
+  fclose(f);
+}
 
 @implementation ConsoleTerminalView
 
@@ -53,6 +62,11 @@
   logPath = [path retain];
 }
 
+- (NSString*) liveConsolePath {
+  NSString* lf = [NSString stringWithFormat:@"/tmp/console-%d.log", [self programPID]];
+  return lf;
+}
+
 - (void) runLogView {
   NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
   NSMutableArray* args = [NSMutableArray new];
@@ -66,6 +80,9 @@
 
   if ([filter length] > 0) {
     [args addObject:filter];
+  }
+  else {
+    [args addObject:@""];
   }
 
   NSString* vp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"logview"];
@@ -89,6 +106,28 @@
   [self runProgram:exec
      withArguments:args
       initialInput:nil];
+}
+
+- (void) appendToTiveConsole:(NSString*) txt {
+  NSString* lf = [self liveConsolePath];
+  file_write(lf, txt, YES);
+}
+
+- (void) writeToTiveConsole:(NSString*) txt {
+  NSString* lf = [self liveConsolePath];
+  file_write(lf, txt, YES);
+}
+
+- (void) mark:(id) sender {
+  NSString* ms = [NSString stringWithFormat:@"\e[44m\e[36m=== %ld\e[0m\n", markcount];
+  markcount++;
+  [self appendToTiveConsole:ms];
+}
+
+- (void) clear:(id) sender {
+  NSString* ms = @"\n";
+  markcount = 0;
+  [self writeToTiveConsole:ms];
 }
 
 - (void) filter:(id) sender {

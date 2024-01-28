@@ -1,0 +1,10 @@
+- currentDocument -> Document
+- documents -> array
+
+Document
+- mark:
+- clear:
+- appendToTiveConsole:
+- writeToTiveConsole:
+- liveConsolePath
+- filePath

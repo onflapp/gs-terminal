@@ -14,7 +14,9 @@
     };
     ConsoleTerminalView = {
 	Actions = (
-	    "filter:"
+	    "filter:",
+	    "mark:",
+	    "clear:"
 	);
 	Outlets = (
 	    filterField,
@@ -37,7 +39,9 @@
 	Actions = (
 	    "filter:",
 	    "kill:",
+	    "mark:",
 	    "modifyFont:",
+	    "clear:",
 	    "orderFrontFontPanel:",
 	    "pause:",
 	    "setup:",

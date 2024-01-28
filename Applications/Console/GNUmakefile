@@ -43,7 +43,9 @@ Resources/Document.gorm \
 Resources/Console.tiff \
 Resources/log.tiff \
 Resources/logview \
-Resources/../Preferences.subproj/Preferences.bundle 
+Resources/../Preferences.subproj/Preferences.bundle \
+Resources/ApplicationScripting.xlp \
+Resources/ScriptingInfo.plist 
 
 
 #
@@ -52,7 +54,8 @@ Resources/../Preferences.subproj/Preferences.bundle
 Console_HEADER_FILES = \
 AppController.h \
 ConsoleTerminalView.h \
-Document.h
+Document.h \
+STScriptingSupport.h
 
 #
 # Objective-C Class files
@@ -60,7 +63,9 @@ Document.h
 Console_OBJC_FILES = \
 AppController.m \
 ConsoleTerminalView.m \
-Document.m
+Document.m \
+STScriptingSupport.m \
+Document+scripting.m
 
 #
 # Other sources

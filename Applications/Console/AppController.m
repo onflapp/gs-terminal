@@ -36,6 +36,11 @@
 }
 
 - (void) applicationDidFinishLaunching: (NSNotification *)aNotif {
+  [NSApp setServicesProvider:self];
+  
+  if([NSApp isScriptingSupported]) {
+    [NSApp initializeApplicationScripting];
+  }
 }
 
 - (BOOL) applicationShouldTerminate: (id)sender {
@@ -78,6 +83,10 @@
     [[doc window] setFrameAutosaveName:@"document_window"];
     [[doc window] makeKeyAndOrderFront:self];
   }
+}
+
+- (Document*) currentDocument {
+  return [Document lastActiveDocument];
 }
 
 - (void) openSystemLog: (id)sender {

@@ -172,6 +172,7 @@ struct selection_range
 - (void)setAlternateAsMeta:(BOOL)altAsMeta;
 - (void)setTermProgram:(NSString *) term;
 
+- (int)programPID;
 - (NSString *)xtermTitle;
 - (NSString *)xtermIconTitle;
 - (NSString *)programPath;
@@ -198,6 +199,7 @@ struct selection_range
 @interface TerminalView (input_2)
 - (void)readData;
 
+- (void)sendSignal:(int)sig;
 - (void)closeProgram;
 - (BOOL)isProgramClosed;
 
