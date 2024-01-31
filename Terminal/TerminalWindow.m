@@ -256,11 +256,12 @@ NSString* const TerminalWindowSizeDidChangeNotification =
   NSString *miniTitle = [self shellPath];
   NSString *terminalWindowTitle = [tView xtermTitle];
   NSString *file;
+  Defaults *prefs = livePreferences?livePreferences:preferences;
 
   title = [NSString new];
 
   if (n) 
-    titleBarElementsMask = [preferences titleBarElementsMask]; //called from the notification, rather than directly
+    titleBarElementsMask = [prefs titleBarElementsMask]; //called from the notification, rather than directly
   
   if (titleBarElementsMask & TitleBarShellPath)
     title = [title stringByAppendingFormat:@"%@ ", [self shellPath]];
