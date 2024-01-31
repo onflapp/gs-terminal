@@ -115,7 +115,7 @@ void file_write(NSString* path, NSString* txt, BOOL append) {
 
 - (void) writeToTiveConsole:(NSString*) txt {
   NSString* lf = [self liveConsolePath];
-  file_write(lf, txt, YES);
+  file_write(lf, txt, NO);
 }
 
 - (void) mark:(id) sender {
