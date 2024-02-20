@@ -187,7 +187,7 @@ static const unichar *_set_translate(int charset)
 
   gotoxy(currcons, 0, 0);
   save_cur(currcons);
-  [self _csi_J:2];
+  [self _csi_J:3];
 }
 
 //-------------------------------------------------------------------------------
@@ -219,6 +219,11 @@ static const unichar *_set_translate(int charset)
     case 2: /* erase whole display */
       count = width*height;
       start = SCREEN(0,0);
+      break;
+    case 3: /* erase whole display + scroll-back */
+      count = width*height;
+      start = SCREEN(0,0);
+      [ts ts_handleClearBuffer];
       break;
     default:
       return;

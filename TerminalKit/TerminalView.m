@@ -1132,6 +1132,10 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   [self setNeedsDisplay:YES];
 }
 
+- (void)ts_handleClearBuffer
+{
+  [self clearBuffer:nil];
+}
 - (void)ts_handleXOSC:(NSString *)new_cmd
 {
   NSDebugLLog(@"ts",@"XOSC command:[%@]", new_cmd);
