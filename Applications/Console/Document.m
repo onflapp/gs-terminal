@@ -68,12 +68,18 @@ static NSMutableArray* _documents = nil;
 
   if ([path isEqualToString:SYSTEMLOG]) {
     [window setTitle:@"System Log - Console"];
+    [window setFrameUsingName:@"system_window"];
+    [window setFrameAutosaveName:@"system_window"];
   }
   else if ([path isEqualToString:DESKTOPLOG]) {
     [window setTitle:@"Desktop Log - Console"];
+    [window setFrameUsingName:@"desktop_window"];
+    [window setFrameAutosaveName:@"desktop_window"];
   }
   else {
     [window setTitle:[NSString stringWithFormat:@"%@ - Console", path]];
+    [window setFrameUsingName:@"console_window"];
+    [window setFrameAutosaveName:@"console_window"];
   }
   
   _filePath = [path retain];

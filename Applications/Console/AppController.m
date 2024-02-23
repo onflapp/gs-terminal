@@ -52,7 +52,6 @@
 
 - (BOOL) application: (NSApplication *)application openFile: (NSString *)fileName {
   Document* doc = [[Document alloc] initWithFile:fileName];
-  [[doc window] setFrameAutosaveName:@"document_window"];
   [[doc window] makeKeyAndOrderFront:self];
   return NO;
 }
@@ -80,7 +79,6 @@
   if ([panel runModalForTypes:nil] == NSOKButton) {
     NSString* fileName = [[panel filenames] firstObject];
     Document* doc = [Document documentForFile:fileName];
-    [[doc window] setFrameAutosaveName:@"document_window"];
     [[doc window] makeKeyAndOrderFront:self];
   }
 }
