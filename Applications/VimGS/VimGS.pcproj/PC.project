@@ -75,12 +75,11 @@
 		c,
 		h,
 		m,
-		el,
+                vim,
 		pl,
 		py,
 		java,
-		js,
-		st
+		js
 	    );
 	}
     );

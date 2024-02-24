@@ -79,8 +79,7 @@
 		pl,
 		py,
 		java,
-		js,
-		st
+		js
 	    );
 	}
     );
