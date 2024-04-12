@@ -52,6 +52,7 @@ complete. (TODO check this) */
 -(screen_char_t) ts_getCharAt:(int)x :(int)y;
 
 -(void) ts_setTitle:(NSString *)new_title type:(int)title_type;
+-(void) ts_setFilename:(NSString *)new_filename;
 - (void)ts_setMouseTracking:(BOOL) b;
 
 - (id)preferences;

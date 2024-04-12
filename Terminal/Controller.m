@@ -392,7 +392,7 @@ static TerminalWindowController* _last_active_twc = nil;
 {
   idleList = [[NSMutableArray alloc] init];
   
-  [TerminalView registerPasteboardTypes];
+  [TerminalViewX registerPasteboardTypes];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self

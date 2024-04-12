@@ -111,7 +111,7 @@ NSString* const TerminalWindowSizeDidChangeNotification =
     }
 
   // View
-  tView = [[TerminalView alloc] initWithPreferences:preferences];
+  tView = [[TerminalViewX alloc] initWithPreferences:preferences];
   [tView setIgnoreResize:YES];
   [tView setAutoresizingMask:NSViewHeightSizable|NSViewWidthSizable];
   [tView setScroller:scroller];

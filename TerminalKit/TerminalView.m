@@ -1140,6 +1140,10 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 {
   NSDebugLLog(@"ts",@"XOSC command:[%@]", new_cmd);
 }
+- (void)ts_setFilename:(NSString *)new_cmd
+{
+  NSDebugLLog(@"ts",@"setFilename [%@]", new_cmd);
+}
 - (void)ts_setTitle:(NSString *)new_title type:(int)title_type
 {
   NSDebugLLog(@"ts",@"setTitle: %@  type: %i",new_title,title_type);

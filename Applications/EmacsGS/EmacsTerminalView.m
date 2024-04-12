@@ -189,6 +189,8 @@
     NSString* p = [new_cmd substringFromIndex:5];
     NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:p, @"path", nil];
 
+    ASSIGN(currentFilename, p);
+
     [[NSNotificationCenter defaultCenter]
 		  postNotificationName:@"TerminalFileNameNotification"
                     object:self
@@ -204,6 +206,11 @@
 - (id)validRequestorForSendType:(NSString *)st
                      returnType:(NSString *)rt {
   if ([st isEqual:NSStringPboardType]) return self;
+
+  if ([currentFilename length]) {
+    if ([st isEqual:NSFilenamesPboardType]) return self;
+  }
+
   return nil;
 }
 
@@ -222,6 +229,11 @@
     [pb setString:currentSelection forType:NSStringPboardType];
     return YES;
   }
+  else if (currentFilename) {
+    [pb declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType] owner:nil];
+    [pb setPropertyList:[NSArray arrayWithObject:currentFilename] forType:NSFilenamesPboardType];
+    return YES;
+  }
   else {
     return NO;
   }
@@ -233,6 +245,7 @@
   RELEASE(copyDataFile);
   RELEASE(pasteDataFile);
   RELEASE(currentSelection);
+  RELEASE(currentFilename);
 
   [super dealloc];
 }

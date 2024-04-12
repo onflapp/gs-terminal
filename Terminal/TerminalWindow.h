@@ -17,6 +17,7 @@
 #include <AppKit/NSScroller.h>
 #include <GNUstepGUI/GSHbox.h>
 
+#import "TerminalViewX.h"
 #import "Defaults.h"
 
 extern NSString * const TerminalWindowNoMoreActiveWindowsNotification;
@@ -27,7 +28,7 @@ extern NSString * const TerminalWindowSizeDidChangeNotification;
   NSWindow     *win;
   GSHbox       *hBox;
   NSScroller   *scroller;
-  TerminalView *tView;
+  TerminalViewX *tView;
 
   Defaults     *preferences;
   Defaults     *livePreferences;

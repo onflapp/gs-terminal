@@ -53,6 +53,31 @@
   }
 }
 
+- (NSString*)_guessFilename:(NSString*) path withSelection:(NSString*) text {
+  NSFileManager *fm = [NSFileManager defaultManager];
+  BOOL isDir = NO;
+  BOOL exists = [fm fileExistsAtPath:path isDirectory:&isDir];
+  NSString *sel = [text stringByTrimmingCharactersInSet:
+	   [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+  if (exists) {
+    if (isDir && [sel length]) {
+      NSString *p = [path stringByAppendingPathComponent:sel];
+      exists = [fm fileExistsAtPath:p isDirectory:&isDir];
+
+      NSLog(@"guessing %@ -> %d", p, exists);
+      if (exists) return p;
+      else path;
+    }
+    else {
+      return path;
+    }
+  }
+  else {
+    return nil;
+  }
+}
+
 - (void) runVimWithFile:(NSString*) path {
   NSMutableArray* args = [NSMutableArray new];
   NSString* td = NSTemporaryDirectory();
@@ -182,6 +207,8 @@
     NSString* p = [new_cmd substringFromIndex:5];
     NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:p, @"path", nil];
 
+    ASSIGN(currentFilename, p);
+
     [[NSNotificationCenter defaultCenter]
 		  postNotificationName:@"TerminalFileNameNotification"
                     object:self
@@ -230,6 +257,9 @@
   if (mode == 'v') {
     if ([st isEqual:NSStringPboardType]) return self;
   }
+  if ([currentFilename length]) {
+    if ([st isEqual:NSFilenamesPboardType]) return self;
+  }
   return nil;
 }
 
@@ -237,15 +267,32 @@
                              types:(NSArray *)types {
 
   ASSIGN(currentSelection, @"");
-  [self ts_sendCString:"\e[1;0S~"];
 
-  //we should probably loop instead
-  NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.5];
-  [[NSRunLoop currentRunLoop] runUntilDate: limit];
+  if (mode == 'v') {
+    [self ts_sendCString:"\e[1;0S~"];
+
+    //we should probably loop instead
+    NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.3];
+    [[NSRunLoop currentRunLoop] runUntilDate: limit];
+  }
 
   if ([currentSelection length]) {
+    if (currentFilename) {
+      NSString *path = [self _guessFilename:currentFilename withSelection:currentSelection];
+      if (path) {
+        [pb declareTypes:[NSArray arrayWithObjects:NSStringPboardType, NSFilenamesPboardType, nil] owner:nil];
+        [pb setString:currentSelection forType:NSStringPboardType];
+        [pb setPropertyList:[NSArray arrayWithObject:path] forType:NSFilenamesPboardType];
+        return YES;
+      }
+    }
     [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
     [pb setString:currentSelection forType:NSStringPboardType];
+    return YES;
+  }
+  else if (currentFilename) {
+    [pb declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType] owner:nil];
+    [pb setPropertyList:[NSArray arrayWithObject:currentFilename] forType:NSFilenamesPboardType];
     return YES;
   }
   else {
@@ -256,6 +303,7 @@
 - (void) dealloc {
   [self closeProgram];
 
+  RELEASE(currentFilename);
   RELEASE(copyDataFile);
   RELEASE(pasteDataFile);
   RELEASE(currentSelection);

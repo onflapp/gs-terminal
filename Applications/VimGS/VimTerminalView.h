@@ -32,6 +32,7 @@
   NSString* copyDataFile;
   NSString* pasteDataFile;
   NSString* currentSelection;
+  NSString* currentFilename;
 
   char mode;
 }

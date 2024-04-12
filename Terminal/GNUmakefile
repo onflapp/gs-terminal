@@ -32,7 +32,7 @@ Terminal_OBJC_FILES = \
 	\
 	TerminalWindow.m \
 	TerminalWindow+scripting.m \
-	TerminalView.m \
+	TerminalViewX.m \
 	\
 	InfoPanel.m\
 	\

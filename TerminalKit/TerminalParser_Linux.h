@@ -44,7 +44,7 @@
 
 #define XOSC_BUF_SIZE 1024
   char xosc_buf[XOSC_BUF_SIZE+1];
-  unsigned int xosc_len;
+  unsigned int xosc_len, xosc_type;
 
   enum { ESnormal, ESesc, ESsquare, ESgetpars, ESgotpars, ESfunckey,
          EShash, ESsetG0, ESsetG1, ESpercent, ESignore, ESnonstd,

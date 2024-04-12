@@ -2,6 +2,10 @@
 
 @implementation TerminalWindowController(scripting)
 
+- (NSString*) currentDirectory {
+  return [tView currentDir];
+}
+
 - (void) sendCommandKeys:(NSString*) cmd {
   if ([cmd length]) {
     const char *c = [cmd cString];

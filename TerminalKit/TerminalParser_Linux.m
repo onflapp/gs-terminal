@@ -698,7 +698,17 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
           NSString *new_cmd;
           xosc_buf[xosc_len] = 0;
           new_cmd = [NSString stringWithCString:xosc_buf];
-          [ts ts_handleXOSC:new_cmd];
+          if (xosc_type == '7')
+            {
+              NSURL * url = [NSURL URLWithString:new_cmd];
+              if (url)
+                [ts ts_setFilename:[url path]];
+            }
+          else
+            {
+              [ts ts_handleXOSC:new_cmd];
+            }
+
           vc_state = ESnormal;
 
           return;
@@ -825,6 +835,8 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
 	return;
 
       case 'X':
+      case '7':
+        xosc_type = c;
 	vc_state=ESxosc_semi;
 	return;
 
