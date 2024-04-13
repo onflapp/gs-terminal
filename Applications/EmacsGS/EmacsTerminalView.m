@@ -229,7 +229,7 @@
     [pb setString:currentSelection forType:NSStringPboardType];
     return YES;
   }
-  else if (currentFilename) {
+  else if ([currentFilename length]) {
     [pb declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType] owner:nil];
     [pb setPropertyList:[NSArray arrayWithObject:currentFilename] forType:NSFilenamesPboardType];
     return YES;

@@ -274,23 +274,17 @@
     //we should probably loop instead
     NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.3];
     [[NSRunLoop currentRunLoop] runUntilDate: limit];
-  }
 
-  if ([currentSelection length]) {
-    if (currentFilename) {
-      NSString *path = [self _guessFilename:currentFilename withSelection:currentSelection];
-      if (path) {
-        [pb declareTypes:[NSArray arrayWithObjects:NSStringPboardType, NSFilenamesPboardType, nil] owner:nil];
+    if ([currentSelection length]) {
+        [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
         [pb setString:currentSelection forType:NSStringPboardType];
-        [pb setPropertyList:[NSArray arrayWithObject:path] forType:NSFilenamesPboardType];
         return YES;
-      }
     }
-    [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
-    [pb setString:currentSelection forType:NSStringPboardType];
-    return YES;
+    else {
+        return NO;
+    }
   }
-  else if (currentFilename) {
+  else if ([currentFilename length]) {
     [pb declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType] owner:nil];
     [pb setPropertyList:[NSArray arrayWithObject:currentFilename] forType:NSFilenamesPboardType];
     return YES;

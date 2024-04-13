@@ -215,8 +215,12 @@ NSString* const TerminalWindowSizeDidChangeNotification =
 // File name without extension
 - (NSString *)fileName
 {
-  return [[[[self window] representedFilename] lastPathComponent]
+  NSString *fna = [[[[self window] representedFilename] lastPathComponent]
            stringByDeletingPathExtension];
+
+  NSString *fnb = [[tView currentDir] lastPathComponent];
+
+  return (fnb ? fnb : fna);
 }
 
 - (NSString *)windowSizeString

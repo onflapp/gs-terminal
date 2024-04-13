@@ -100,13 +100,14 @@
     }
   }
   if (elementsMask & TitleBarFileName) {
+    NSString *fn = [twc fileName];
+    if (!fn) fn = @"";
+
     if ([title length] == 0) {
-      title = [NSString stringWithFormat:@"%@ ",
-                        (twc == nil) ? @"Default" : [twc fileName]];
+      title = [NSString stringWithFormat:@"%@ ", fn];
     }
     else {
-      title = [title stringByAppendingFormat:@"\u2014 %@ ",
-                  (twc == nil) ? @"Default" : [twc fileName]];
+      title = [title stringByAppendingFormat:@"\u2014 %@ ", fn];
     }
   }
   if (elementsMask & TitleBarXTermTitle)
