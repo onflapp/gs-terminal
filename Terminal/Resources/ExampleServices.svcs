@@ -42,7 +42,7 @@
 	};
 	"Open shell here" = {
 	    AcceptTypes = 3;
-	    Commandline = "cd %s && exec $SHELL";
+	    Commandline = "cd %d && exec $SHELL";
 	    Input = 2;
 	    Key = "";
 	    ExecType = 1;

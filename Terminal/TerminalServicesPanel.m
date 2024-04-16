@@ -153,7 +153,7 @@
   [self updateOutputMatrix];
   [self updateShellMatrix];
 
-  [commandTF setToolTip:@"If selection is to be placed on the command line, \nyou can mark the place to put it at with '%s' \n(otherwise it will be appended to the command line). \nYou can use '%%' to get a real '%'."];
+  [commandTF setToolTip:@"If selection is to be placed on the command line, \nyou can mark the place to put it at with '%s' \n(otherwise it will be appended to the command line). \nYou can use '%%' to get a real '%'.\nIn case of file selection, '%d' stands for directory, '%f' for file"];
 
   [panel setDefaultButtonCell:[okBtn cell]];
   

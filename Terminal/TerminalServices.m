@@ -18,6 +18,33 @@
 
 static NSDictionary *servicesDictionary = nil;
 
+NSString* _escape_path(NSString *path)
+{
+  return [path stringByReplacingOccurrencesOfString:@" "
+                                         withString:@"\\ "
+                                            options:0
+                                              range:NSMakeRange(0, [path length])];
+}
+
+NSString* _guess_dir(NSString *data)
+{
+  NSFileManager *fm = [NSFileManager defaultManager];
+  BOOL isDir = NO;
+  BOOL exists = [fm fileExistsAtPath:data isDirectory:&isDir];
+
+  if (exists && !isDir) {
+    return _escape_path([data stringByDeletingLastPathComponent]);
+  }
+  else {
+    return _escape_path(data);
+  }
+}
+
+NSString* _guess_file(NSString* data)
+{
+  return _escape_path(data);
+}
+
 @implementation TerminalServices
 
 + (NSDictionary *)terminalServicesDictionary
@@ -282,6 +309,22 @@ static NSDictionary *servicesDictionary = nil;
             add_args = NO;
             [str replaceCharactersInRange:NSMakeRange(i, 2)
                                withString:data];
+            i += [data length];
+            continue;
+        }
+        if (ch == 'f' && data && (input == 2)) {
+            add_args = NO;
+            NSString *file = _guess_file(data);
+            [str replaceCharactersInRange:NSMakeRange(i, 2)
+                               withString:file];
+            i += [data length];
+            continue;
+        }
+        if (ch == 'd' && data && (input == 2)) {
+            add_args = NO;
+            NSString *dir = _guess_dir(data);
+            [str replaceCharactersInRange:NSMakeRange(i, 2)
+                               withString:dir];
             i += [data length];
             continue;
         }
