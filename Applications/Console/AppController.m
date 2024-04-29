@@ -90,12 +90,14 @@
 - (void) openSystemLog: (id)sender {
   Document* doc = [Document documentForFile:SYSTEMLOG];
   [[doc window] setFrameAutosaveName:@"systemlog_window"];
+  [[doc window] setFrameUsingName:@"systemlog_window"];
   [[doc window] makeKeyAndOrderFront:self];
 }
 
 - (void) openDesktopLog: (id)sender {
   Document* doc = [Document documentForFile:DESKTOPLOG];
   [[doc window] setFrameAutosaveName:@"desktoplog_window"];
+  [[doc window] setFrameUsingName:@"desktoplog_window"];
   [[doc window] makeKeyAndOrderFront:self];
 }
 
@@ -113,6 +115,7 @@
 
   if (doc) {
     [[doc window] setFrameAutosaveName:@"xserverlog_window"];
+    [[doc window] setFrameUsingName:@"xserverlog_window"];
     [[doc window] makeKeyAndOrderFront:self];
   }
 }
