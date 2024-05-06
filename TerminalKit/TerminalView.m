@@ -608,11 +608,11 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 
 - (void)blinkCursor
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(blinkCursor) object:nil];
   if (!focus_mode) {
     cursorBlinkingState = 0;
   }
   else if (cursorBlinkingInterval > 0) {
-    NSTimeInterval td = [NSDate timeIntervalSinceReferenceDate] - lastCursorDraw;
     cursorBlinkingState = !cursorBlinkingState;
     [self setNeedsDisplayInRect:lastCursorRect];
 
@@ -1027,7 +1027,6 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   lastCursorRect.origin.y = y;
   lastCursorRect.size.width = fx;
   lastCursorRect.size.height = fy;
-  lastCursorDraw = [NSDate timeIntervalSinceReferenceDate];
 
   if (draw_cursor)
     {
@@ -1665,12 +1664,14 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 - (BOOL)becomeFirstResponder
 {
   focus_mode = 1;
+  [self blinkCursor];
   [self setNeedsDisplay:YES];
   return YES;
 }
 - (BOOL)resignFirstResponder
 {
   focus_mode = 0;
+  [self blinkCursor];
   [self setNeedsDisplay:YES];
   return YES;
 }
@@ -2337,6 +2338,7 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
         break;
     }
 
+  cursorBlinkingState = 0;
   if (cursor_x!=current_x || cursor_y!=current_y)
     {
       ADD_DIRTY(current_x,current_y,1,1);
@@ -3011,6 +3013,7 @@ static int handled_mask = (NSDragOperationCopy |
 
 - (void)dealloc
 {
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(blinkCursor) object:nil];
   focus_mode = 0;
   cursorBlinkingInterval = 0;
 
