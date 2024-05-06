@@ -1540,7 +1540,11 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
       break;
 
     default:
-      nstr = [e characters];
+      if (mask && ch > 1024)
+        NSDebugLLog(@"key",@"most likely a mod?");
+      else
+        nstr = [e characters];
+
       break;
     }
 
