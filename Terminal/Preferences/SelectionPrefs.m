@@ -75,6 +75,8 @@
   Defaults     *prefs;
   NSDictionary *uInfo;
 
+  if (![sender isKindOfClass:[NSButton class]]) return;
+
   prefs = [[Defaults alloc] initEmpty];
 
   [prefs setWordCharacters:[wordCharactersField stringValue]];
