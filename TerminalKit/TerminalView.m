@@ -1699,7 +1699,8 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   p.y = sy - p.y + current_scroll;
   ofs1 = ((int)p.x) + ((int)p.y) * sx;
 
-  struct selection_range r1 = [self _selectionRangeAt:ofs1 granularity:g];
+  struct selection_range r1;
+  r1 = [self _selectionRangeAt:ofs1 granularity:g];
   selection = r1;
   NSString *val = [self _selectionAsString];
   [self _clearSelection];
@@ -3074,7 +3075,8 @@ static int handled_mask = (NSDragOperationCopy |
   // j = abs(sb_length * sx) + range.length;
   // range.length = scrollbuffer size + visible area size in terms of chars
   len = 0;
-  for (int i = start_index; i < end_index; i++)
+  int i;
+  for (i = start_index; i < end_index; i++)
     {
       if (i < 0)
         ch = sbuf[ofs+i].ch;

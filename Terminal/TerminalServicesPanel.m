@@ -565,7 +565,8 @@ shouldEditTableColumn:(NSTableColumn *)tableColumn
   // Accessory view
   [saveServicesTable reloadData];
   // [saveServicesTable deselectAll:self]; // TODO: doesn't work
-  for (int i=0; i < [saveServicesTable numberOfRows]; i++)
+  int i;
+  for (i=0; i < [saveServicesTable numberOfRows]; i++)
     [saveServicesTable deselectRow:i];
   
   if (![savePanel accessoryView])

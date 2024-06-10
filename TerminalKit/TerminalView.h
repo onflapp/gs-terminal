@@ -148,6 +148,7 @@ struct selection_range
 
 - (NSObject<TerminalParser> *)terminalParser;
 
+- (struct selection_range)_selectionRangeAt:(int)pos granularity:(int)g;
 - (NSRange)selectedRange;
 - (void)setSelectedRange:(NSRange)range;
 - (void)scrollRangeToVisible:(NSRange)range;

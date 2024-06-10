@@ -1042,7 +1042,7 @@ static TerminalWindowController* _last_active_twc = nil;
   [[NSNotificationCenter defaultCenter]
        postNotificationName:TerminalPreferencesDidChangeNotification
                      object:[twc window]
-                   userInfo:@{@"Preferences":prefs}];
+                   userInfo:[NSDictionary dictionaryWithObject:prefs forKey:@"Preferences"]];
   
   [[twc window] makeKeyAndOrderFront:self];
 }

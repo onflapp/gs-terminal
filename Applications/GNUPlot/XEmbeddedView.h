@@ -49,6 +49,7 @@
 - (void) sendKey:(int)keyCode modifier:(int)keyMod;
 
 - (Window) embededXWindowID;
+- (NSRect) convertToNativeWindowRect;
 
 @end
 

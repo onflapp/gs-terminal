@@ -28,7 +28,8 @@
 
 - (void) replaceNullChars {
   char* buff = [self mutableBytes];
-  for (NSInteger i = 0; i < [self length];i++) {
+  NSInteger i;
+  for (i = 0; i < [self length];i++) {
     if (*(buff+i) == '\0') {
       *(buff+i) = '\n';
     }

@@ -187,7 +187,8 @@ void file_write(NSString* path, NSString* txt, BOOL append) {
 }
 
 - (void) ts_sendCString:(const char *)msg repeat:(int) r {
-  for (int x = 0; x < r; x++) {
+  int x;
+  for (x = 0; x < r; x++) {
     [self ts_sendCString:msg];
   }
 }
