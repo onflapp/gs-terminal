@@ -18,7 +18,7 @@ ADDITIONAL_LDFLAGS +=
 ADDITIONAL_INCLUDE_DIRS += -IPreferences.subproj 
 
 # Additional library directories the linker should search
-ADDITIONAL_LIB_DIRS += 
+ADDITIONAL_LIB_DIRS += -L/Library/Frameworks
 
 # Additional GUI libraries to link
-ADDITIONAL_GUI_LIBS +=  -lTerminalKit -lutil 
+ADDITIONAL_GUI_LIBS +=  -lTerminalKit -lutil -liconv

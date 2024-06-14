@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIR="${0%/*}"
 PREFDIR="$HOME/Library/Preferences"
@@ -10,6 +10,7 @@ trap cleanup EXIT
 
 if [ -n "$3" ];then
   GS="--grep=$3"
+  GREP="$3"
 fi
 if [ "$WRAPLINES" -ne "1" ];then
   WL="S"
@@ -40,11 +41,22 @@ function highlight {
   done
 }
 
-function readjournal {
+function readjournal_systemd {
   export SYSTEMD_LOG_COLOR="1"
   export SYSTEMD_COLORS="16"
   export SYSTEMD_COLORS=true
   /usr/bin/journalctl -n $MAXLINES -qeb -f --no-pager $GS | highlight >> $LF
+}
+
+function readjournal_messages {
+  ## ignore SIGINT, this will be handled by less
+  trap '' SIGINT
+
+  if [ -n "$GREP" ];then
+    tail --pid $MYPID -f -n $MAXLINES /var/log/messages | grep "$GREP" >> $LF
+  else
+    tail --pid $MYPID -f -n $MAXLINES /var/log/messages >> $LF
+  fi
 }
 
 export LANG=C
@@ -53,7 +65,15 @@ PN="]X;N"
 
 touch $LF
 
-readjournal &
-waitforready
+if [ -f /var/log/messages ];then
+  readjournal_messages &
+  sleep 0.3
 
-less -m --follow-name -Pm$PN -Pw$PF -srQf$WL +GF $LF
+  less -m --follow-name -Pm$PN -Pw$PF -srQf$WL +GF $LF
+else
+  readjournal_systemd &
+  waitforready
+
+  less -m --follow-name -Pm$PN -Pw$PF -srQf$WL +GF $LF
+fi
+read DD

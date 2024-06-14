@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIR="${0%/*}"
 CFG="$DIR/vimrc"
@@ -13,7 +13,7 @@ FILE="$1"
 if [[ "$FILE" =~ ^(.*):([0-9]+)$ ]];then
   FILE=${BASH_REMATCH[1]}
   LINE=${BASH_REMATCH[2]}
-  exec /usr/bin/vim -c "source $CFG" "+$LINE" "$FILE"
+  exec vim -c "source $CFG" "+$LINE" "$FILE"
 else
-  exec /usr/bin/vim -c "source $CFG" $@
+  exec vim -c "source $CFG" $@
 fi

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIR="${0%/*}"
 CFG="$DIR/init.el"

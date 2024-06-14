@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 clear
 
@@ -28,4 +28,4 @@ if [ -n "$2" ];then
   OPTS="$OPTS -F $2"
 fi
 
-exec /usr/bin/htop $OPTS
+exec htop $OPTS

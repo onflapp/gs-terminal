@@ -13,7 +13,8 @@
   
 # Things to do after installing
 after-install::
-	tic -x -o /etc/terminfo terminfo
+	if [ -d /etc/terminfo ];then tic -x -o /etc/terminfo terminfo ;fi
+	if [ -d /usr/local/share/terminfo ];then tic -x -o /usr/local/share/terminfo terminfo ;fi
 
 # Things to do before uninstalling
 # before-uninstall::
