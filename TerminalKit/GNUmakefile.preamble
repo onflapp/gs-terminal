@@ -22,4 +22,9 @@ ADDITIONAL_LIB_DIRS +=
 
 # Additional GUI libraries to link
 ADDITIONAL_GUI_LIBS += 
-LIBRARIES_DEPEND_UPON += -liconv -lutil
+
+ifeq ($(findstring gnu, $(GNUSTEP_TARGET_OS)), gnu)
+  LIBRARIES_DEPEND_UPON += -lutil
+else
+  LIBRARIES_DEPEND_UPON += -liconv -lutil
+endif

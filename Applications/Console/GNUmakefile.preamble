@@ -21,4 +21,4 @@ ADDITIONAL_INCLUDE_DIRS += -IPreferences.subproj
 ADDITIONAL_LIB_DIRS += -L/Library/Frameworks
 
 # Additional GUI libraries to link
-ADDITIONAL_GUI_LIBS +=  -lTerminalKit -lutil -liconv
+ADDITIONAL_GUI_LIBS +=  -lTerminalKit #-lutil -liconv

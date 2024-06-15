@@ -69,7 +69,8 @@ ADDITIONAL_OBJCFLAGS += -Wall -D$(subst -,_,$(GNUSTEP_HOST_OS)) -Wno-pointer-sig
 #	-Wnested-externs -Wno-unused-parameter
 
 Terminal_LDFLAGS =
-ADDITIONAL_GUI_LIBS = -lutil -lTerminalKit -liconv
+ADDITIONAL_GUI_LIBS = -lTerminalKit
+#ADDITIONAL_GUI_LIBS = -lutil -lTerminalKit -liconv
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
 include $(GNUSTEP_MAKEFILES)/application.make
