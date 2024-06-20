@@ -12,7 +12,7 @@ if [ -n "$3" ];then
   GS="--grep=$3"
   GREP="$3"
 fi
-if [ "$WRAPLINES" -ne "1" ];then
+if ! [ "$WRAPLINES" = "1" ];then
   WL="S"
 fi
 
@@ -25,7 +25,7 @@ function waitforready {
   while [ 1 ];do
     sleep 0.1
     NSZ=`stat -c %s $LF`
-    if [ "$NSZ" == "$LSZ" ];then
+    if [ "$NSZ" = "$LSZ" ];then
       return
     fi
     echo -n "."
@@ -45,7 +45,7 @@ function readjournal_systemd {
   export SYSTEMD_LOG_COLOR="1"
   export SYSTEMD_COLORS="16"
   export SYSTEMD_COLORS=true
-  /usr/bin/journalctl -n $MAXLINES -qeb -f --no-pager $GS | highlight >> $LF
+  journalctl -n $MAXLINES -qeb -f --no-pager $GS | highlight >> $LF
 }
 
 function readjournal_messages {
@@ -65,15 +65,14 @@ PN="]X;N"
 
 touch $LF
 
-if [ -f /var/log/messages ];then
-  readjournal_messages &
-  sleep 0.3
-
-  less -m --follow-name -Pm$PN -Pw$PF -srQf$WL +GF $LF
-else
+if command -V journalctl >/dev/null 2>&1 ;then
   readjournal_systemd &
   waitforready
 
   less -m --follow-name -Pm$PN -Pw$PF -srQf$WL +GF $LF
+else
+  readjournal_messages &
+  sleep 0.3
+
+  less -m --follow-name -Pm$PN -Pw$PF -srQf$WL +GF $LF
 fi
-read DD
