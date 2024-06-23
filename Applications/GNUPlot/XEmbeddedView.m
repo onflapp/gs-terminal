@@ -27,6 +27,11 @@
 #include "X11/Xutil.h"
 #include "X11/keysymdef.h"
 
+Display* currentXDisplay() {
+  GSDisplayServer *server = GSCurrentServer();
+  return (Display *)[server serverDevice];
+}
+
 XKeyEvent mk_xevent(Display *display, Window win,
                          int press, int keycode, int modifiers) {
   XKeyEvent event;
@@ -215,7 +220,7 @@ XKeyEvent mk_xevent(Display *display, Window win,
 }
 
 - (void) createXWindowID {
-  xdisplay = XOpenDisplay(NULL);
+  xdisplay = currentXDisplay();
   int screen = DefaultScreen(xdisplay);
 
   unsigned long white_pixel = WhitePixel(xdisplay, screen);
