@@ -46,6 +46,7 @@ struct selection_range
   
   NSObject<TerminalParser> *tp;
 
+
   NSFont	*font;
   NSFont	*boldFont;
   int		font_encoding;
@@ -61,6 +62,9 @@ struct selection_range
 
   NSScroller	*scroller;
   BOOL		scroll_bottom_on_input;
+
+  NSTimeInterval last_buf_change;
+  NSTimer* hb;
 
   unsigned char	*write_buf;
   int		write_buf_len, write_buf_size;
@@ -189,6 +193,7 @@ struct selection_range
 - (void)overrideTermColor:(NSInteger)index color:(NSColor*) color;
 - (void)updateColors:(Defaults *)prefs;
 - (void)setNeedsLazyDisplayInRect:(NSRect)r;
+- (void)clearBuffer:(id)sender;
 @end
 
 /* TODO: this is ugly */
@@ -198,6 +203,7 @@ struct selection_range
 
 @interface TerminalView (input_2)
 - (void)readData;
+- (void)waitingForData;
 
 - (void)sendSignal:(int)sig;
 - (void)closeProgram;

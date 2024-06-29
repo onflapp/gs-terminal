@@ -606,6 +606,18 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
     }
 }
 
+- (void)heartbeatTimer:(NSTimer*) timer
+{
+  NSTimeInterval td = [NSDate timeIntervalSinceReferenceDate] - last_buf_change;
+  if (td > 0.5 && td < 1) {
+    [self waitingForData];
+  }
+}
+
+- (void)waitingForData
+{
+}
+
 - (void)blinkCursor
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(blinkCursor) object:nil];
@@ -1067,6 +1079,10 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
       }
       draw_cursor = NO;
     }
+
+  if (draw_all != 2) {
+    last_buf_change = [NSDate timeIntervalSinceReferenceDate];
+  }
 
   NSDebugLLog(@"draw",@"total_draw=%i",total_draw);
 
@@ -2437,6 +2453,7 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   if (master_fd == -1)
     return;
 
+  [hb invalidate];
   NSDebugLLog(@"pty",@"closing master fd=%i\n",master_fd);
 
   [[NSRunLoop currentRunLoop] removeEvent:(void *)(intptr_t)master_fd
@@ -2993,6 +3010,13 @@ static int handled_mask = (NSDragOperationCopy |
 
   [self blinkCursor];
 
+  hb = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                        target:self
+                                      selector:@selector(heartbeatTimer:)
+                                      userInfo:NULL
+                                       repeats:YES];
+  [hb retain];
+
   return self;
 }
 
@@ -3014,7 +3038,11 @@ static int handled_mask = (NSDragOperationCopy |
 
 - (void)dealloc
 {
+  [hb invalidate];
+  RELEASE(hb);
+
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(blinkCursor) object:nil];
+
   focus_mode = 0;
   cursorBlinkingInterval = 0;
 

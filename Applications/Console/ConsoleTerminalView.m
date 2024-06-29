@@ -163,6 +163,7 @@ void file_write(NSString* path, NSString* txt, BOOL append) {
   if ([self isWaitingForData]) {
     [self ts_sendCString:""];
     [pauseButton setState:1];
+    mode = 0;
   }
 
   NSUserDefaults* cfg = [NSUserDefaults standardUserDefaults];
@@ -181,9 +182,28 @@ void file_write(NSString* path, NSString* txt, BOOL append) {
   if ([self isWaitingForData]) {
     [self ts_sendCString:""];
     [pauseButton setState:1];
+    mode = 0;
   }
 
   [super keyDown:e];
+}
+
+- (void) updateMode {
+  NSSize sz = [self windowSize];
+  screen_char_t ch = [self ts_getCharAt:0 :sz.height-1];
+
+  if (ch.ch == '.') {
+    mode = 1;
+    [pauseButton setState:0];
+  }
+  else if (ch.ch == ':') {
+    mode = 0;
+    [pauseButton setState:1];
+  }
+}
+
+- (void) waitingForData {
+  [self updateMode];
 }
 
 - (void) ts_sendCString:(const char *)msg repeat:(int) r {

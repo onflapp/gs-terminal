@@ -32,10 +32,11 @@ function readjournal {
 }
 
 export LANG=C
-PF="]X;F"
-PN="]X;N"
+PF="."
+PN=":"
 
 touch $LF
 readjournal &
 sleep 0.3
+
 less -m --follow-name -Pm$PN -Pw$PF -srQf$WL +GF $LF

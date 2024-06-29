@@ -31,8 +31,8 @@ function readjournal {
 }
 
 export LANG=C
-PF="]X;F"
-PN="]X;N"
+PF="."
+PN=":"
 
 touch $LF
 readjournal &
