@@ -155,9 +155,10 @@ NSString* _guess_file(NSString* data)
       // "Use Selection" block
       i = [[info objectForKey:Input] intValue];
       // Do not insert 'NSSendTypes' key if 'Use Selection - On Cmd Line'
-      // option was set and command line doesn't have '%s' symbol.
-      if ([[info objectForKey:Commandline] rangeOfString:@"%s"].location
-          == NSNotFound && i == INPUT_CMDLINE) {
+      // option was set and command line doesn't have '%s' of '%d' symbol.
+      if (([[info objectForKey:Commandline] rangeOfString:@"%s"].location == NSNotFound && 
+           [[info objectForKey:Commandline] rangeOfString:@"%d"].location == NSNotFound) &&
+            i == INPUT_CMDLINE) {
         i = INPUT_NO;
       }
       if (types && (i == INPUT_STDIN || i ==  INPUT_CMDLINE)) {
@@ -356,12 +357,9 @@ NSString* _guess_file(NSString* data)
     // No Shell/Default shell
     if (shell) {
       program = [[Defaults shared] shell];
-      program = [program stringByAppendingFormat:@" -c \"%@\"", cmdline];
       NSLog(@"Command line with default shell: %@", program);
       
-      arguments = [program componentsSeparatedByString:@" "];
-      program = [arguments objectAtIndex:0];
-      arguments = [arguments subarrayWithRange:NSMakeRange(1, [arguments count]-1)];
+      arguments = [NSArray arrayWithObjects:@"-c", cmdline, nil];
     }
     else {
       NSMutableArray *args;
@@ -421,6 +419,9 @@ NSString* _guess_file(NSString* data)
           s = [[NSString alloc] initWithData:result
                                     encoding:NSUTF8StringEncoding];
           s = [s autorelease];
+          if ([s hasSuffix:@"\n"])
+            s = [s substringToIndex:[s length]-1];
+
           NSDebugLLog(@"service",@"= '%@'",s);
 
           if (accepttypes == (ACCEPT_STRING|ACCEPT_FILENAMES)) {
