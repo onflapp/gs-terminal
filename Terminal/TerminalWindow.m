@@ -62,7 +62,7 @@ NSString* const TerminalWindowSizeDidChangeNotification =
   terminalRows = [preferences windowHeight];
   terminalColumns = [preferences windowWidth];
   titleBarElementsMask = [preferences titleBarElementsMask];
-  titleBarCustomTitle = [preferences customTitle];
+  ASSIGN(titleBarCustomTitle, [preferences customTitle]);
 
   // Sizes
   charCellSize = [Defaults characterCellSizeForFont:[preferences terminalFont]];
@@ -186,6 +186,7 @@ NSString* const TerminalWindowSizeDidChangeNotification =
   // NSLog(@"Window DEALLOC.");
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [titleBarCustomTitle release];
   // [preferences release];
   [super dealloc];
 }
@@ -433,7 +434,7 @@ NSString* const TerminalWindowSizeDidChangeNotification =
           titleBarElementsMask = intValue;
           [livePreferences setTitleBarElementsMask:intValue];
         }
-      titleBarCustomTitle = [prefs customTitle];
+      ASSIGN(titleBarCustomTitle,[prefs customTitle]);
       [livePreferences setCustomTitle:titleBarCustomTitle];
       [self updateTitleBar:nil];
     }
