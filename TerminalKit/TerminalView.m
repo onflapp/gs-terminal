@@ -303,6 +303,9 @@ NSString *TerminalViewSizeDidChangeNotification=@"TerminalViewSizeDidChange";
 
 @interface TerminalView (selection)
 - (void)_clearSelection;
+- (NSString *)_selectionAsString;
+- (void)mouseDownSelection:(NSEvent *)e;
+- (void)mouseEventReport:(NSEvent *)e;
 @end
 
 @interface TerminalView (input) <RunLoopEvents>
@@ -1516,7 +1519,6 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 
 @end
 
-
 //------------------------------------------------------------------------------
 //--- Scrolling
 //------------------------------------------------------------------------------
@@ -2491,14 +2493,14 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
   const char *cpath;
   const char *cargs[[args count]+2];
   const char *cdirectory;
-  const char *termenv;
+  char *termenv;
   char *tty_name;
   int i;
   int pipefd[2];
   int flags;
 
   if (termProgram) {
-    termenv = [[NSString stringWithFormat:@"TERM_PROGRAM=%@", termProgram] cString];
+    termenv = (char*)[[NSString stringWithFormat:@"TERM_PROGRAM=%@", termProgram] cString];
   }
   else {
     termenv = "TERM_PROGRAM=GNUstep_Terminal";
@@ -3235,6 +3237,9 @@ static int handled_mask = (NSDragOperationCopy |
   if (max_scrollback == lines) return;
   
   max_scrollback = lines;
+
+  if (max_scrollback > MAX_UNLIMITED_SCROLLBACK) 
+    max_scrollback = MAX_UNLIMITED_SCROLLBACK;
   
   if (max_scrollback == 0)
     [self clearBuffer:self];
@@ -3242,9 +3247,10 @@ static int handled_mask = (NSDragOperationCopy |
   {// Adopt scrollback buffer to new 'max_scrollback' value
     screen_char_t *nsbuf;
     int sby = (max_scrollback > 0) ? max_scrollback : 1;
+    size_t sz = sizeof(screen_char_t) * sx * sby;
 
-    nsbuf = malloc(sizeof(screen_char_t) * sx * sby);
-    memset(nsbuf, 0, sizeof(screen_char_t) * sx * sby);
+    nsbuf = malloc(sz);
+    memset(nsbuf, 0, sz);
     free(sbuf);
     sbuf = nsbuf;
   }  

@@ -21,6 +21,8 @@
 
 #import "Defaults.h"
 
+#define MAX_UNLIMITED_SCROLLBACK 1000000
+
 extern NSString *TerminalViewBecameIdleNotification;
 extern NSString *TerminalViewBecameNonIdleNotification;
 extern NSString *TerminalViewTitleDidChangeNotification;
@@ -147,7 +149,7 @@ struct selection_range
   CGFloat	INV_FG_B;
 }
 
-- initWithPreferences:(id)preferences;
+- initWithPreferences:(Defaults *)preferences;
 - (Defaults *)preferences; // used by terminal parser
 
 - (NSObject<TerminalParser> *)terminalParser;
@@ -189,11 +191,12 @@ struct selection_range
 
 @end
 
-@interface TerminalView (display) <TerminalScreen>
+@interface TerminalView (display_2) <TerminalScreen>
 - (void)overrideTermColor:(NSInteger)index color:(NSColor*) color;
 - (void)updateColors:(Defaults *)prefs;
 - (void)setNeedsLazyDisplayInRect:(NSRect)r;
 - (void)clearBuffer:(id)sender;
+- (void)blinkCursor;
 @end
 
 /* TODO: this is ugly */
