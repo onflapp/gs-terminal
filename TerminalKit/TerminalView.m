@@ -1053,6 +1053,7 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
           case CURSOR_BLOCK_INVERT: // 0
             DPSrectfill(cur,x,y,fx,fy);
             screen_char_t *ch = &SCREEN(cursor_x,cursor_y);
+            NSLog(@"aaaaaaaaaaaaaaaaaaaaa");
             if (ch->ch > 0) {
               [normalTextColor set];
 
@@ -1511,6 +1512,9 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 // Menu item "Edit > Clear Buffer"
 - (void)clearBuffer:(id)sender
 {
+  if (screen_alt)
+    return;
+
   sb_length = 0;
   current_scroll = 0;
   [self _updateScroller];
@@ -1527,7 +1531,11 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 
 - (void)_updateScroller
 {
-  if (sb_length)
+  if (screen_alt)
+    {
+      [scroller setEnabled:NO];
+    }
+  else if (sb_length)
     {
       [scroller setEnabled:YES];
       [scroller setFloatValue:(current_scroll+sb_length)/(float)(sb_length)
@@ -2747,6 +2755,32 @@ static int handled_mask = (NSDragOperationCopy |
 //------------------------------------------------------------------------------
 
 @implementation TerminalView
+
+- (void)_switchScreen:(BOOL)alt
+{
+  [self _clearSelection];
+  if (alt)
+    {
+      screen_alt = screen;
+      sx_alt = sx;
+      sy_alt = sy;
+      screen = malloc(sx*sy*sizeof(screen_char_t));
+      memset(screen, 0, sizeof(screen_char_t) * sx * sy);
+
+      [self setNeedsDisplay:YES];
+      [self _updateScroller];
+    }
+  else if (screen_alt)
+    {
+      free(screen);
+      screen = screen_alt;
+      screen_alt = NULL;
+      sx = sx_alt;
+      sy = sy_alt;
+
+      [self _resizeTerminalTo:[self frame].size];
+    }
+}
 
 // ---
 // Resize

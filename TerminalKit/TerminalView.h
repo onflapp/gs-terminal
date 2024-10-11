@@ -79,6 +79,9 @@ struct selection_range
   int		sx,sy;
   screen_char_t *screen;
 
+  int		sx_alt,sy_alt;
+  screen_char_t *screen_alt;
+
   int cursor_x, cursor_y;
   int current_x,current_y;
 
@@ -189,6 +192,8 @@ struct selection_range
 
 - (BOOL)writeScrollBufferToFile:(NSString*) path;
 
+- (void)_resizeTerminalTo:(NSSize)size;
+- (void)_switchScreen:(BOOL)alt;
 @end
 
 @interface TerminalView (display_2) <TerminalScreen>

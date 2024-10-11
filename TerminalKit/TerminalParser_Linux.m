@@ -553,6 +553,11 @@ static unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
         report_mouse_1005 = on_off ? 1005 : 0;
         [ts ts_setMouseTracking:on_off ? YES : NO];
         break;
+      case 1049:
+        NSDebugLLog(@"term",@"alt screen %d", on_off); //alt screen
+        [self _default_attr];
+        [ts _switchScreen:on_off ? YES : NO];
+        break;
       } else switch(par[i]) {		/* ANSI modes set/reset */
       case 3:			/* Monitor (display ctrls) */
         disp_ctrl = on_off;
