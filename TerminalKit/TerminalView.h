@@ -80,6 +80,7 @@ struct selection_range
   screen_char_t *screen;
 
   int		sx_alt,sy_alt;
+  int		max_scrollback_alt;
   screen_char_t *screen_alt;
 
   int cursor_x, cursor_y;

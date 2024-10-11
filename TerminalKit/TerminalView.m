@@ -2755,9 +2755,10 @@ static int handled_mask = (NSDragOperationCopy |
 - (void)_switchScreen:(BOOL)alt
 {
   [self _clearSelection];
-  if (alt)
+  if (alt && screen_alt == NULL)
     {
       screen_alt = screen;
+      max_scrollback_alt = max_scrollback;
       sx_alt = sx;
       sy_alt = sy;
       screen = malloc(sx*sy*sizeof(screen_char_t));
@@ -2773,6 +2774,7 @@ static int handled_mask = (NSDragOperationCopy |
       screen_alt = NULL;
       sx = sx_alt;
       sy = sy_alt;
+      max_scrollback = max_scrollback_alt;
 
       [self _resizeTerminalTo:[self frame].size];
     }
