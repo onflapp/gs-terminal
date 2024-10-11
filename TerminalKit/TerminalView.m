@@ -1053,15 +1053,12 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
           case CURSOR_BLOCK_INVERT: // 0
             DPSrectfill(cur,x,y,fx,fy);
             screen_char_t *ch = &SCREEN(cursor_x,cursor_y);
-            NSLog(@"aaaaaaaaaaaaaaaaaaaaa");
             if (ch->ch > 0) {
               [normalTextColor set];
 
               __encodechar(encoding, ch, buf);
               DPSmoveto(cur,x+fx0,y+fy0);
               DPSshow(cur,buf);
-
-              [cursorColor set];
             }
             break;
           case CURSOR_BLOCK_STROKE: // 1
@@ -1107,8 +1104,6 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 
 - (void)setNeedsLazyDisplayInRect:(NSRect)r
 {
-  if (draw_all == 1)
-    draw_all = 0;
   [super setNeedsDisplayInRect:r];
 }
 
@@ -2390,6 +2385,7 @@ void __encodechar(int encoding, screen_char_t *ch, char *buf)
 // NSLog(@"-> dirty=(%g %g)+(%g %g)\n",dirty.origin.x,dirty.origin.y,dirty.size.width,dirty.size.height);
       dr.origin.x += border_x;
       dr.origin.y += border_y;
+
       [self setNeedsLazyDisplayInRect:dr];
 
       if (current_scroll != 0)
