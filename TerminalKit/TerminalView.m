@@ -2758,11 +2758,16 @@ static int handled_mask = (NSDragOperationCopy |
   if (alt && screen_alt == NULL)
     {
       screen_alt = screen;
+      sbuf_alt = sbuf;
       max_scrollback_alt = max_scrollback;
       sx_alt = sx;
       sy_alt = sy;
+
       screen = malloc(sx*sy*sizeof(screen_char_t));
       memset(screen, 0, sizeof(screen_char_t) * sx * sy);
+
+      sbuf = malloc(sizeof(screen_char_t)*sx*max_scrollback);
+      memset(sbuf,0,sizeof(screen_char_t)*sx*max_scrollback);
 
       [self setNeedsDisplay:YES];
       [self _updateScroller];
@@ -2770,8 +2775,11 @@ static int handled_mask = (NSDragOperationCopy |
   else if (screen_alt)
     {
       free(screen);
+      free(sbuf);
       screen = screen_alt;
+      sbuf = sbuf_alt;
       screen_alt = NULL;
+      sbuf_alt = NULL;
       sx = sx_alt;
       sy = sy_alt;
       max_scrollback = max_scrollback_alt;
@@ -3088,6 +3096,11 @@ static int handled_mask = (NSDragOperationCopy |
 
   [scroller setTarget:nil];
   DESTROY(scroller);
+
+  if (screen_alt) free(screen_alt);
+  if (sbuf_alt) free(sbuf_alt);
+  screen_alt=NULL;
+  sbuf_alt=NULL;
 
   free(screen);
   free(sbuf);
