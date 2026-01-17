@@ -46,6 +46,8 @@
 #  include <util.h>
 #  include <sys/ioctl.h>
 #elif defined (__GNU__)
+#elif defined (__GNUC__) && (__GNUC__ >= 14)
+#  include <termios.h>
 #else
 #  include <termio.h>
 #endif
